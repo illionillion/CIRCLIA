@@ -28,6 +28,7 @@ import {
   ModalBody,
   ModalFooter,
   Text,
+  useOS,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -135,6 +136,7 @@ export const CircleForm: FC<CircleFormProps> = ({
   mode,
   instructors,
 }) => {
+  const os = useOS()
   const user = circle?.members?.find((member) => member.id === userId)
   const [isLoading, { on: start, off: end }] = useBoolean()
   const [imagePreview, setImagePreview] = useState<string>(
@@ -271,7 +273,11 @@ export const CircleForm: FC<CircleFormProps> = ({
             control={control}
             render={({ field: { ref, name, onChange, onBlur } }) => (
               <HStack w="full" justifyContent="center">
-                <Tooltip label="画像を選択" placement="bottom">
+                <Tooltip
+                  label="画像を選択"
+                  placement="bottom"
+                  disabled={os === "ios" || os === "macos"}
+                >
                   <FileButton
                     {...{ ref, name, onChange, onBlur }}
                     w="16"
@@ -285,7 +291,11 @@ export const CircleForm: FC<CircleFormProps> = ({
                     variant="outline"
                   />
                 </Tooltip>
-                <Tooltip label="画像を削除" placement="bottom">
+                <Tooltip
+                  label="画像を削除"
+                  placement="bottom"
+                  disabled={os === "ios" || os === "macos"}
+                >
                   <IconButton
                     w="16"
                     h="16"
