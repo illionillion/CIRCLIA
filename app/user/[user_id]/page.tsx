@@ -74,13 +74,13 @@ const Page = async ({ params }: Props) => {
         flexDir={{ base: "row", sm: "column" }}
       >
         <Avatar
-          src={user?.profileImageUrl || ""}
+          src={user.profileImageUrl || ""}
           boxSize={{ base: "2xs", md: "28", sm: "24" }}
         />
         <VStack maxW="xl">
-          <Heading fontSize="2xl">{user?.name}</Heading>
+          <Heading fontSize="2xl">{user.name}</Heading>
           <HStack justifyContent="space-between" flexWrap="wrap">
-            <Text>{user?.studentNumber}</Text>
+            <Text>{user.studentNumber}</Text>
             {userId === session?.user?.id ? (
               <Button
                 as={Link}
@@ -130,7 +130,7 @@ const Page = async ({ params }: Props) => {
         h="full"
       >
         {circles?.length ? (
-          circles?.map((data) => <CircleCard key={data.id} data={data} />)
+          circles.map((data) => <CircleCard key={data.id} data={data} />)
         ) : (
           <Center w="full" h="full" as={VStack}>
             <Text>サークルに入っていません</Text>
@@ -142,7 +142,7 @@ const Page = async ({ params }: Props) => {
           </Center>
         )}
       </Grid>
-      {user?.instructorFlag && (
+      {user.instructorFlag && (
         <>
           <Heading as="h3" size="sm">
             講師担当サークル
@@ -163,7 +163,7 @@ const Page = async ({ params }: Props) => {
             h="full"
           >
             {instructorCircles?.length ? (
-              instructorCircles?.map((data) => (
+              instructorCircles.map((data) => (
                 <CircleCard key={data.id} data={data} />
               ))
             ) : (

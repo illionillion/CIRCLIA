@@ -1,6 +1,6 @@
 "use client"
 import type { FC } from "@yamada-ui/react"
-import { Divider, Heading, Text, VStack } from "@yamada-ui/react"
+import { Separator, Heading, Text, VStack } from "@yamada-ui/react"
 import { NotificationListItem } from "../data-display/notification-list-item"
 import { PaginationList } from "../navigation/pagination-list"
 import type { getAnnouncementsByUserId } from "@/data/announcement"
@@ -20,7 +20,7 @@ export const NotificationPage: FC<NotificationPageProps> = ({
             <Heading as="h2" size="lg">
               お知らせ
             </Heading>
-            <Divider
+            <Separator
               w="full"
               borderWidth="2px"
               orientation="horizontal"

@@ -1,5 +1,3 @@
-
-
 import type { FC } from "@yamada-ui/react"
 import { Button } from "@yamada-ui/react"
 import Link from "next/link"

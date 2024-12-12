@@ -28,7 +28,7 @@ const Page = async ({ params }: Props) => {
   const { circle_id: circleId } = params
   const session = await auth()
   const circle = await getCircleById(circleId || "")
-  const isMember = circle?.members?.some(
+  const isMember = circle?.members.some(
     (member) => member.id === session?.user?.id,
   )
   return isMember ? (

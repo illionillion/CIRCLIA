@@ -141,7 +141,7 @@ export const ThreadCard: FC<ThreadCardProps> = ({
           </FormControl>
           <IconButton
             type="submit"
-            isLoading={isSubmitting}
+            loading={isSubmitting}
             variant="ghost"
             icon={<TriangleIcon transform="rotate(90deg)" fill="black" />}
           />

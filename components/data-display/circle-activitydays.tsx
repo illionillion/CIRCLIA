@@ -180,7 +180,7 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
             <Button
               as={Link}
               href={`/circles/${circle?.id}/activities/new`}
-              leftIcon={<PlusIcon fontSize="2xl" />}
+              startIcon={<PlusIcon fontSize="2xl" />}
               colorScheme="riverBlue"
             >
               追加
@@ -192,7 +192,7 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
                 <Loading fontSize="xl" />
               </Center>
             ) : activitys && activitys.length > 0 ? (
-              activitys?.map((activity) => (
+              activitys.map((activity) => (
                 <GridItem key={activity.id}>
                   <Card variant="outline" as={LinkBox} bg="white">
                     <CardBody>

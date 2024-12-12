@@ -5,10 +5,10 @@ import {
   CardBody,
   CardHeader,
   Center,
-  Divider,
   Grid,
   GridItem,
   Heading,
+  Separator,
   Text,
   VStack,
 } from "@yamada-ui/react"
@@ -51,7 +51,7 @@ export default async function Home() {
             {user?.name}
           </Text>
         </Heading>
-        <Divider
+        <Separator
           w="full"
           borderWidth="2px"
           orientation="horizontal"
@@ -143,7 +143,7 @@ export default async function Home() {
                 h="full"
               >
                 {instructorCircles?.length ? (
-                  instructorCircles?.map((data) => (
+                  instructorCircles.map((data) => (
                     <CircleCard key={data.id} data={data} />
                   ))
                 ) : (
@@ -179,7 +179,7 @@ export default async function Home() {
               h="full"
             >
               {circles?.length ? (
-                circles?.map((data) => <CircleCard key={data.id} data={data} />)
+                circles.map((data) => <CircleCard key={data.id} data={data} />)
               ) : (
                 <Center w="full" h="full" as={VStack}>
                   <Text>サークルに入っていません</Text>

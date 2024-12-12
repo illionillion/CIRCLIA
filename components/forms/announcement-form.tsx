@@ -153,7 +153,7 @@ export const AnnouncementForm: FC<AnnouncementFormProps> = ({
           name="isImportant"
           control={control}
           render={({ field: { value, ...rest } }) => (
-            <Switch isChecked={value} {...rest}>
+            <Switch checked={value} {...rest}>
               重要なお知らせ
             </Switch>
           )}
@@ -168,7 +168,7 @@ export const AnnouncementForm: FC<AnnouncementFormProps> = ({
           >
             キャンセル
           </Button>
-          <Button colorScheme="riverBlue" type="submit" isLoading={isLoading}>
+          <Button colorScheme="riverBlue" type="submit" loading={isLoading}>
             {mode === "create" ? "作成" : "更新"}
           </Button>
         </Center>

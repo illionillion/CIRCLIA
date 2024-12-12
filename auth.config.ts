@@ -29,7 +29,7 @@ export default {
 
         const isValidPassword = comparePassword(
           data.password,
-          user?.password || "",
+          user.password || "",
         )
 
         if (!isValidPassword) {

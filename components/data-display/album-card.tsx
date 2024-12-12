@@ -93,7 +93,7 @@ export const AlbumCard: FC<AlbumCard> = ({
                   as={IconButton}
                   icon={<EllipsisIcon fontSize="2xl" />}
                   variant="ghost"
-                  isRounded
+                  fullRounded
                 />
                 <MenuList>
                   <MenuItem

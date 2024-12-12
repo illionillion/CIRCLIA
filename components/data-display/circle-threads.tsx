@@ -171,7 +171,7 @@ export const CircleThreads: FC<CircleThreadsProps> = ({
             <Menu>
               <MenuButton
                 as={Button}
-                leftIcon={<PlusIcon fontSize="2xl" />}
+                startIcon={<PlusIcon fontSize="2xl" />}
                 colorScheme="riverBlue"
               >
                 作成

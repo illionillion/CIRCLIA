@@ -23,6 +23,6 @@ export const handleImageValidation = async (
   const result = await AlbumImageSchema.safeParseAsync(allFiles)
   if (result.success) return { valid: result.data, error: null }
   const errorMessage =
-    result.error.errors?.[0]?.message || "不明なエラーが発生しました。"
+    result.error.errors[0]?.message || "不明なエラーが発生しました。"
   return { valid: null, error: errorMessage }
 }

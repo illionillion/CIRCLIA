@@ -34,7 +34,7 @@ export const PostCommentAction = async (
     }
 
     const result = await postComment(
-      session?.user?.id || "",
+      session.user.id || "",
       parsedData.data,
       threadId,
     )

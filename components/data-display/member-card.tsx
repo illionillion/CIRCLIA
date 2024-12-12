@@ -11,7 +11,7 @@ import {
   IconButton,
   Menu,
   MenuButton,
-  MenuDivider,
+  MenuSeparator,
   MenuItem,
   MenuList,
   Text,
@@ -54,12 +54,12 @@ export const MemberCard: FC<MemberCard> = ({
   handleRemoveMember,
 }) => {
   const {
-    isOpen: isRoleOpen,
+    open: isRoleOpen,
     onOpen: onRoleOpen,
     onClose: onRoleClose,
   } = useDisclosure()
   const {
-    isOpen: isRemoveOpen,
+    open: isRemoveOpen,
     onOpen: onRemoveOpen,
     onClose: onRemoveClose,
   } = useDisclosure()
@@ -119,13 +119,13 @@ export const MemberCard: FC<MemberCard> = ({
             <Text>{member.name}</Text>
             <Text>{member.studentNumber}</Text>
           </LinkOverlay>
-          {isAdmin && userId !== member.id && member?.role?.id !== 0 ? (
+          {isAdmin && userId !== member.id && member.role.id !== 0 ? (
             <Menu>
               <MenuButton
                 as={IconButton}
                 icon={<EllipsisIcon fontSize="2xl" />}
                 variant="outline"
-                isRounded
+                fullRounded
               />
               <MenuList>
                 {/* 代表のメニューオプション */}
@@ -133,23 +133,23 @@ export const MemberCard: FC<MemberCard> = ({
                   <>
                     <MenuItem
                       onClick={() => openRoleDialog(0, "代表")}
-                      isDisabled={member.role?.id === 0}
+                      isDisabled={member.role.id === 0}
                     >
                       代表
                     </MenuItem>
                     <MenuItem
                       onClick={() => openRoleDialog(1, "副代表")}
-                      isDisabled={member.role?.id === 1}
+                      isDisabled={member.role.id === 1}
                     >
                       副代表
                     </MenuItem>
                     <MenuItem
                       onClick={() => openRoleDialog(2, "一般")}
-                      isDisabled={member.role?.id === 2}
+                      isDisabled={member.role.id === 2}
                     >
                       一般
                     </MenuItem>
-                    <MenuDivider />
+                    <MenuSeparator />
                     <MenuItem color="red" onClick={() => openRemoveDialog()}>
                       退会
                     </MenuItem>
@@ -161,17 +161,17 @@ export const MemberCard: FC<MemberCard> = ({
                   <>
                     <MenuItem
                       onClick={() => openRoleDialog(1, "副代表")}
-                      isDisabled={member.role?.id === 1}
+                      isDisabled={member.role.id === 1}
                     >
                       副代表
                     </MenuItem>
                     <MenuItem
                       onClick={() => openRoleDialog(2, "一般")}
-                      isDisabled={member.role?.id === 2}
+                      isDisabled={member.role.id === 2}
                     >
                       一般
                     </MenuItem>
-                    <MenuDivider />
+                    <MenuSeparator />
                     <MenuItem color="red" onClick={() => openRemoveDialog()}>
                       退会
                     </MenuItem>
@@ -182,7 +182,7 @@ export const MemberCard: FC<MemberCard> = ({
           ) : undefined}
 
           {/* 権限変更確認モーダル */}
-          <Modal isOpen={isRoleOpen} onClose={onRoleClose}>
+          <Modal open={isRoleOpen} onClose={onRoleClose}>
             <ModalOverlay />
             <ModalHeader>権限変更の確認</ModalHeader>
             <ModalBody>
@@ -198,7 +198,7 @@ export const MemberCard: FC<MemberCard> = ({
           </Modal>
 
           {/* 退会確認モーダル */}
-          <Modal isOpen={isRemoveOpen} onClose={onRemoveClose}>
+          <Modal open={isRemoveOpen} onClose={onRemoveClose}>
             <ModalOverlay />
             <ModalHeader>サークルの退会確認</ModalHeader>
             <ModalBody>本当に {member.name} さんを退会させますか？</ModalBody>

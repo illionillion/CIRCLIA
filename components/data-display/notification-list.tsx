@@ -13,8 +13,8 @@ export const NotificationList: FC<NotificationList> = ({ announcements }) => (
   <PaginationList data={announcements} itemsPerPage={3}>
     {(announcements) => (
       <VStack w="full" h="full" overflowY="auto" gap="md">
-        {announcements?.length ? (
-          announcements?.map((announcement) => (
+        {announcements.length ? (
+          announcements.map((announcement) => (
             <NotificationListItem
               announcement={announcement}
               key={announcement.id}

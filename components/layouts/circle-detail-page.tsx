@@ -56,9 +56,9 @@ export const CircleDetailPage: FC<{
     fetchData()
   }, [])
 
-  const isMember = circle?.members?.some((member) => member.id === userId)
+  const isMember = circle?.members.some((member) => member.id === userId)
   // ユーザーがサークルの管理者かどうかを確認
-  const isAdmin = circle?.members?.some(
+  const isAdmin = circle?.members.some(
     (member) => member.id === userId && [0, 1].includes(member.role.id),
   )
 
@@ -91,7 +91,7 @@ export const CircleDetailPage: FC<{
                 {circle?.description}
               </Text>
               <HStack flexWrap="wrap">
-                {circle?.tags?.map((tag) => (
+                {circle?.tags.map((tag) => (
                   <Tag key={tag.id}>{tag.tagName}</Tag>
                 ))}
               </HStack>
@@ -100,7 +100,7 @@ export const CircleDetailPage: FC<{
               <Text>
                 講師：
                 {circle?.instructors
-                  ?.map((instructor) => instructor.name)
+                  .map((instructor) => instructor.name)
                   .join(", ")}
               </Text>
               <VStack
@@ -109,7 +109,7 @@ export const CircleDetailPage: FC<{
                 flexWrap="wrap"
               >
                 <Text textAlign="end">
-                  人数：{circleData?.members?.length}人
+                  人数：{circleData?.members.length}人
                 </Text>
                 <Text textAlign="end">活動場所：{circle?.location}</Text>
               </VStack>

@@ -41,7 +41,7 @@ export const MemberRequestCard: FC<MemberRequestCardProps> = ({
   fetchData,
   handleSnack,
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { open, onOpen, onClose } = useDisclosure()
   const [isApproveLoading, { on: approveStart, off: approveEnd }] = useBoolean()
   const [isRejectLoading, { on: rejectStart, off: rejectEnd }] = useBoolean()
   const [confirmState, setConfirmState] = useState("")
@@ -93,7 +93,7 @@ export const MemberRequestCard: FC<MemberRequestCardProps> = ({
   return (
     <GridItem w="full" rounded="md" as={Card} bg="white">
       <Dialog
-        isOpen={isOpen}
+        open={open}
         onClose={onClose}
         onSuccess={() => {
           if (confirmState === "approve") {
