@@ -18,6 +18,8 @@ export const metadata: Metadata = {
     icon: "/favicon.ico",
     apple: "/icon.png",
   },
+  manifest: "/manifest.json",
+  themeColor: "#ffffff", // テーマカラー
 }
 
 export default async function RootLayout({
