@@ -29,8 +29,6 @@ import {
   ModalFooter,
   Text,
   useOS,
-  useSnacks,
-  Snacks,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -138,7 +136,6 @@ export const CircleForm: FC<CircleFormProps> = ({
   mode,
   instructors,
 }) => {
-  const { snack, snacks } = useSnacks()
   const user = circle?.members.find((member) => member.id === userId)
   const os = useOS()
   const [isLoading, { on: start, off: end }] = useBoolean()
@@ -197,9 +194,6 @@ export const CircleForm: FC<CircleFormProps> = ({
         } else {
           // サークル作成に失敗した場合の処理
           console.error("サークルの作成に失敗しました。", error)
-          if (typeof error === "string") {
-            snack({ title: error, status: "error" })
-          }
           end()
         }
       } else if (mode === "edit") {
@@ -216,7 +210,6 @@ export const CircleForm: FC<CircleFormProps> = ({
         } else {
           // サークル更新に失敗した場合の処理
           console.error("サークルの更新に失敗しました。", error)
-          snack({ title: error, status: "error" })
           end()
         }
       }
@@ -488,7 +481,6 @@ export const CircleForm: FC<CircleFormProps> = ({
               )}
             </VStack>
           </FormControl>
-          <Snacks snacks={snacks} />
           <Center gap="md" justifyContent="end">
             <Button
               as={Link}

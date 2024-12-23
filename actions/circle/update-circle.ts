@@ -6,7 +6,6 @@ import {
   updateInstructors,
   updateTags,
   updateCircle,
-  findCircleByName,
 } from "@/data/circle"
 import type { BackCircleForm } from "@/schema/circle"
 import { BackCircleSchema } from "@/schema/circle"
@@ -60,12 +59,6 @@ export const UpdateCircle = async (
       success: false,
       error: "ユーザーが存在しません。",
     }
-  }
-
-  // 同じサークル名のサークルがないかチェック
-  const existingCircle = await findCircleByName(values.name, circleId)
-  if (existingCircle) {
-    return { success: false, error: "同じ名前のサークルが存在します。" }
   }
 
   // サークルの更新処理

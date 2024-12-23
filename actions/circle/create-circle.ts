@@ -6,7 +6,6 @@ import {
   addInitialMember,
   addInstructors,
   addTags,
-  findCircleByName,
 } from "@/data/circle"
 import type { BackCircleForm } from "@/schema/circle"
 import { BackCircleSchema } from "@/schema/circle"
@@ -29,12 +28,6 @@ export const CreateCircle = async (values: BackCircleForm, userId: string) => {
   const user = await getUserById(userId)
   if (!user) {
     return { success: false, error: "ユーザーが存在しません。" }
-  }
-
-  // 同じサークル名のサークルがないかチェック
-  const existingCircles = await findCircleByName(values.name)
-  if (existingCircles) {
-    return { success: false, error: "同じ名前のサークルが存在します。" }
   }
 
   const circle = await addCircle(values)

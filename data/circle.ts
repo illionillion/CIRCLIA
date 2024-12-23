@@ -47,19 +47,6 @@ export const findActiveMember = async (userId: string, circleId: string) => {
   })
 }
 
-export const findCircleByName = async (
-  name: string,
-  excludeCircleId?: string,
-) => {
-  return await db.circle.findFirst({
-    where: {
-      name,
-      deletedAt: null,
-      ...(excludeCircleId && { id: { not: excludeCircleId } }),
-    },
-  })
-}
-
 // メンバーの入会処理
 export const addMemberToCircle = async (
   userId: string,

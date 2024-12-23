@@ -55,7 +55,6 @@ interface CircleThreadsProps {
 export const CircleThreads: FC<CircleThreadsProps> = ({
   userId,
   isAdmin,
-  isMember,
   circle,
   currentThread: thread,
   currentAnnouncement: announcement,
@@ -139,7 +138,6 @@ export const CircleThreads: FC<CircleThreadsProps> = ({
           circleId={circle?.id || ""}
           currentThread={currentThread}
           isAdmin={!!isAdmin}
-          isMember={!!isMember}
           fetchData={fetchData}
           handleDelete={handleDelete}
         />
@@ -149,7 +147,6 @@ export const CircleThreads: FC<CircleThreadsProps> = ({
           circleId={circle?.id || ""}
           currentAnnouncement={currentAnnouncement}
           isAdmin={!!isAdmin}
-          isMember={!!isMember}
           handleDelete={handleDelete}
         />
       ) : (
@@ -208,7 +205,6 @@ export const CircleThreads: FC<CircleThreadsProps> = ({
                   key={topic.id}
                   userId={userId}
                   isAdmin={!!isAdmin}
-                  isMember={!!isMember}
                   circle={circle}
                   handleDelete={handleDelete}
                   topic={topic}

@@ -58,7 +58,7 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
             </Text>
           )}
           <Flex w="full" justifyContent="right">
-            {parseDate(announcement.createdAt)}
+            {parseDate(announcement.updatedAt)}
           </Flex>
         </LinkOverlay>
       </HStack>
