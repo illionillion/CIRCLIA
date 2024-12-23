@@ -21,7 +21,6 @@ interface AnnouncementCardProps {
   userId: string
   circleId: string
   isAdmin: boolean
-  isMember: boolean
   currentAnnouncement: NonNullable<
     Awaited<ReturnType<typeof getAnnouncementById>>
   >
@@ -30,7 +29,6 @@ interface AnnouncementCardProps {
 
 export const AnnouncementCard: FC<AnnouncementCardProps> = ({
   isAdmin,
-  isMember,
   userId,
   circleId,
   currentAnnouncement,
@@ -56,8 +54,7 @@ export const AnnouncementCard: FC<AnnouncementCardProps> = ({
                 )}
                 <Text>{currentAnnouncement.title}</Text>
               </HStack>
-              {isAdmin ||
-              (currentAnnouncement.userId === userId && isMember) ? (
+              {isAdmin || currentAnnouncement.userId === userId ? (
                 <ThreadMenuButton
                   editLink={`/circles/${circleId}/${currentAnnouncement.type}/${currentAnnouncement.id}/edit`}
                   handleDelete={() => {

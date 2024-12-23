@@ -222,8 +222,8 @@ export const AppLayout: FC<{
             title="プロフィール"
           />
           <MenuList>
-            <MenuItem as={Link} href={`/user/${user?.id}`}>
-              <HStack w="full">
+            <MenuItem>
+              <HStack w="full" as={Link} href={`/user/${user?.id}`}>
                 <Avatar src={user?.profileImageUrl || ""} boxSize="8xs" />
                 <Text>プロフィール</Text>
               </HStack>

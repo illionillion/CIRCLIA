@@ -14,12 +14,6 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "CIRCLIA",
   description: "CIRCLIA",
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/icon.png",
-  },
-  manifest: "/manifest.json",
-  themeColor: "#ffffff", // テーマカラー
 }
 
 export default async function RootLayout({
