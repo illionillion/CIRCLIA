@@ -21,6 +21,7 @@ import { parseFullDate } from "@/utils/format"
 interface ThreadItemProps {
   userId: string
   isAdmin: boolean
+  isMember: boolean
   circle: Awaited<ReturnType<typeof getCircleById>>
   topic: Awaited<ReturnType<typeof fetchTopics>>[number]
   handleDelete: (topicId: string, type: TopicType) => Promise<void>
@@ -29,6 +30,7 @@ interface ThreadItemProps {
 export const ThreadItem: FC<ThreadItemProps> = ({
   userId,
   isAdmin,
+  isMember,
   circle,
   topic,
   handleDelete,
@@ -72,7 +74,7 @@ export const ThreadItem: FC<ThreadItemProps> = ({
             <Text fontSize="sm" color="gray.500">
               {parseFullDate(topic.createdAt)}
             </Text>
-            {isAdmin || topic.userId === userId ? (
+            {isAdmin || (topic.userId === userId && isMember) ? (
               <ThreadMenuButton
                 editLink={`/circles/${circle?.id}/${topic.type}/${topic.id}/edit`}
                 handleDelete={() => handleDelete(topic.id, topic.type)}
