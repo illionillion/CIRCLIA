@@ -71,8 +71,12 @@ export const AnnouncementCard: FC<AnnouncementCardProps> = ({
               {currentAnnouncement.content}
             </Text>
             <VStack alignItems="end" gap={0}>
-              <Text>{parseFullDate(currentAnnouncement.updatedAt)} 更新</Text>
-              <Text>{parseFullDate(currentAnnouncement.createdAt)} 作成</Text>
+              <Text color="gray" fontSize="sm">
+                {parseFullDate(currentAnnouncement.updatedAt)} 更新
+              </Text>
+              <Text color="gray" fontSize="sm">
+                {parseFullDate(currentAnnouncement.createdAt)} 作成
+              </Text>
               <Text>作成者：{currentAnnouncement.user.name}</Text>
             </VStack>
           </VStack>
