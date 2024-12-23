@@ -14,6 +14,10 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "CIRCLIA",
   description: "CIRCLIA",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/icon.png",
+  },
 }
 
 export default async function RootLayout({
@@ -25,9 +29,6 @@ export default async function RootLayout({
   const user = await getUserById(session?.user?.id || "")
   return (
     <html lang="ja">
-      <head>
-        <link rel="icon" href="/amo.png" sizes="any" />
-      </head>
       <body className={inter.className}>
         <UIProvider theme={theme}>
           <SessionProvider>
