@@ -38,15 +38,22 @@ export const AnnouncementCard: FC<AnnouncementCardProps> = ({
   return (
     <Card w="full" h="full" bg="white">
       <CardBody>
-        <HStack w="full">
+        <HStack w="full" alignItems="start">
           <Avatar
             src={currentAnnouncement.user.profileImageUrl || ""}
             as={Link}
             href={`/user/${currentAnnouncement.user.id}`}
+            display={{ base: "block", md: "none" }}
           />
           <VStack w="full">
             <HStack justifyContent="space-between">
               <HStack>
+                <Avatar
+                  src={currentAnnouncement.user.profileImageUrl || ""}
+                  as={Link}
+                  href={`/user/${currentAnnouncement.user.id}`}
+                  display={{ base: "none", md: "block" }}
+                />
                 {currentAnnouncement.isImportant && (
                   <Badge textAlign="center" colorScheme="red">
                     重要
