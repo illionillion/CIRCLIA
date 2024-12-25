@@ -90,16 +90,16 @@ export const CircleAlbums: FC<CircleAlbums> = ({
   return (
     <VStack w="full" h="full">
       {isMember && (
-      <HStack justifyContent="end">
-        <Button
-          as={Link}
-          href={`/circles/${circleId}/album/create`}
-          startIcon={<PlusIcon fontSize="2xl" />}
-          colorScheme="riverBlue"
-        >
-          作成
-        </Button>
-      </HStack>
+        <HStack justifyContent="end">
+          <Button
+            as={Link}
+            href={`/circles/${circleId}/album/create`}
+            startIcon={<PlusIcon fontSize="2xl" />}
+            colorScheme="riverBlue"
+          >
+            作成
+          </Button>
+        </HStack>
       )}
       <Snacks snacks={snacks} />
       {currentAlbum ? (

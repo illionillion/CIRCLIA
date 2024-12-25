@@ -198,9 +198,9 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
               href={`/circles/${circle?.id}/activities/new`}
               startIcon={<PlusIcon fontSize="2xl" />}
               colorScheme="riverBlue"
-            >
-              追加
-            </Button>
+              >
+                追加
+              </Button>
             )}
           </HStack>
           <VStack w="full" h="full">
