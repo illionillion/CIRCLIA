@@ -146,7 +146,7 @@ export default async function Home() {
             </Heading>
           </CardHeader>
           <CardBody>
-            <CircleList circles={circles} instructor={user?.instructorFlag} />
+            <CircleList circles={circles} />
           </CardBody>
         </GridItem>
         <WeekCalendar calendarData={calendarData} userId={user?.id || ""} />
