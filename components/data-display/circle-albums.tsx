@@ -53,6 +53,7 @@ interface CircleAlbums {
 export const CircleAlbums: FC<CircleAlbums> = ({
   userId,
   circleId,
+  isMember,
   isAdmin,
   currentAlbum: album,
 }) => {
@@ -88,16 +89,18 @@ export const CircleAlbums: FC<CircleAlbums> = ({
   }, [])
   return (
     <VStack w="full" h="full">
-      <HStack justifyContent="end">
-        <Button
-          as={Link}
-          href={`/circles/${circleId}/album/create`}
-          startIcon={<PlusIcon fontSize="2xl" />}
-          colorScheme="riverBlue"
-        >
-          作成
-        </Button>
-      </HStack>
+      {isMember && (
+        <HStack justifyContent="end">
+          <Button
+            as={Link}
+            href={`/circles/${circleId}/album/create`}
+            startIcon={<PlusIcon fontSize="2xl" />}
+            colorScheme="riverBlue"
+          >
+            作成
+          </Button>
+        </HStack>
+      )}
       <Snacks snacks={snacks} />
       {currentAlbum ? (
         <AlbumCard

@@ -171,31 +171,33 @@ export const CircleThreads: FC<CircleThreadsProps> = ({
               <Option value="announcement">お知らせ</Option>
               <Option value="isImportant">重要</Option>
             </MultiSelect>
-            <Menu>
-              <MenuButton
-                as={Button}
-                startIcon={<PlusIcon fontSize="2xl" />}
-                colorScheme="riverBlue"
-              >
-                作成
-              </MenuButton>
-              <MenuList>
-                <MenuItem
-                  icon={<BellPlusIcon fontSize="2xl" />}
-                  as={Link}
-                  href={`/circles/${circle?.id}/announcement/create`}
+            {isMember && (
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  startIcon={<PlusIcon fontSize="2xl" />}
+                  colorScheme="riverBlue"
                 >
-                  お知らせ
-                </MenuItem>
-                <MenuItem
-                  icon={<MessageCircleMoreIcon fontSize="2xl" />}
-                  as={Link}
-                  href={`/circles/${circle?.id}/thread/create`}
-                >
-                  スレッド
-                </MenuItem>
-              </MenuList>
-            </Menu>
+                  作成
+                </MenuButton>
+                <MenuList>
+                  <MenuItem
+                    icon={<BellPlusIcon fontSize="2xl" />}
+                    as={Link}
+                    href={`/circles/${circle?.id}/announcement/create`}
+                  >
+                    お知らせ
+                  </MenuItem>
+                  <MenuItem
+                    icon={<MessageCircleMoreIcon fontSize="2xl" />}
+                    as={Link}
+                    href={`/circles/${circle?.id}/thread/create`}
+                  >
+                    スレッド
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            )}
           </HStack>
           {loading ? (
             <Center w="full" h="full">
