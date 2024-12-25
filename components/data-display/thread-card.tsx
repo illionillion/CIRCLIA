@@ -2,7 +2,9 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { TopicType } from "@prisma/client"
-import { TriangleIcon } from "@yamada-ui/lucide"
+import {
+  PlayIcon,
+} from "@yamada-ui/lucide"
 import type { FC } from "@yamada-ui/react"
 import {
   Avatar,
@@ -154,7 +156,7 @@ export const ThreadCard: FC<ThreadCardProps> = ({
             type="submit"
             loading={isSubmitting}
             variant="ghost"
-            icon={<TriangleIcon transform="rotate(90deg)" fill="black" />}
+            icon={<PlayIcon fill="black" />}
           />
         </CardFooter>
       </Card>
