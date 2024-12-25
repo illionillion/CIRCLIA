@@ -180,7 +180,7 @@ export const CircleAlbums: FC<CircleAlbums> = ({
                           <MenuButton
                             as={IconButton}
                             icon={<EllipsisIcon fontSize="2xl" />}
-                            variant="outline"
+                            variant="ghost"
                             fullRounded
                           />
                           <MenuList>
