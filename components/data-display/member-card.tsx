@@ -124,7 +124,7 @@ export const MemberCard: FC<MemberCard> = ({
               <MenuButton
                 as={IconButton}
                 icon={<EllipsisIcon fontSize="2xl" />}
-                variant="outline"
+                variant="ghost"
                 fullRounded
               />
               <MenuList>
