@@ -171,6 +171,7 @@ export const CircleThreads: FC<CircleThreadsProps> = ({
               <Option value="announcement">お知らせ</Option>
               <Option value="isImportant">重要</Option>
             </MultiSelect>
+            {isMember && (
             <Menu>
               <MenuButton
                 as={Button}
@@ -196,6 +197,7 @@ export const CircleThreads: FC<CircleThreadsProps> = ({
                 </MenuItem>
               </MenuList>
             </Menu>
+            )}
           </HStack>
           {loading ? (
             <Center w="full" h="full">

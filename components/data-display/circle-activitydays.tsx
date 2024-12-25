@@ -192,7 +192,8 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
                 />
               </HStack>
             </HStack>
-            <Button
+            {isMember && (
+              <Button
               as={Link}
               href={`/circles/${circle?.id}/activities/new`}
               startIcon={<PlusIcon fontSize="2xl" />}
@@ -200,6 +201,7 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
             >
               追加
             </Button>
+            )}
           </HStack>
           <VStack w="full" h="full">
             {loading ? (
