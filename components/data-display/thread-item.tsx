@@ -72,7 +72,7 @@ export const ThreadItem: FC<ThreadItemProps> = ({
           </HStack>
           <HStack w="full" justifyContent="end">
             <Text fontSize="sm" color="gray.500">
-              {parseFullDate(topic.createdAt)}
+              {parseFullDate(topic.updatedAt)}
             </Text>
             {isAdmin || (topic.userId === userId && isMember) ? (
               <ThreadMenuButton
