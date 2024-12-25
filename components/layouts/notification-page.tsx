@@ -15,7 +15,7 @@ export const NotificationPage: FC<NotificationPageProps> = ({
   return (
     <PaginationList data={announcements}>
       {(currentAnnouncements) => (
-        <VStack w="full" h="full" gap="md">
+        <VStack w="full" h="full" gap="md" maxW="9xl" m="auto">
           <VStack>
             <Heading as="h2" size="lg">
               お知らせ

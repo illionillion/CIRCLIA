@@ -80,6 +80,8 @@ export const CircleDetailPage: FC<{
         >
           <HStack
             w="full"
+            maxW="9xl"
+            m="auto"
             flexDirection={{
               base: `row`,
               md: `column`,
