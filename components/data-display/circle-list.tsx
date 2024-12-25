@@ -20,8 +20,8 @@ interface CircleListProps {
 }
 
 export const CircleList: FC<CircleListProps> = ({ circles, instructor }) => {
-  const [columns, setColumns] = useState(2)
-  const [perPage, setPerPage] = useState(2)
+  const [columns, setColumns] = useState(0)
+  const [perPage, setPerPage] = useState(0)
 
   useBreakpointEffect((breakpoint) => {
     switch (breakpoint) {
