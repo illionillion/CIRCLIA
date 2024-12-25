@@ -39,7 +39,7 @@ export default async function Home() {
   const calendarData = await getWeeklyActivities(user?.id || "")
 
   return (
-    <VStack w="full" h="fit-content" p="md">
+    <VStack w="full" maxW="9xl" h="fit-content" p="md" m="auto">
       <VStack>
         <Heading as="h2" size="lg">
           ようこそ！
