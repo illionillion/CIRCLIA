@@ -34,6 +34,7 @@ interface ThreadCardProps {
   userId: string
   circleId: string
   isAdmin: boolean
+  isMember: boolean
   currentThread: NonNullable<Awaited<ReturnType<typeof getThreadById>>>
   fetchData: () => Promise<void>
   handleDelete: (topicId: string, type: TopicType) => Promise<void>
@@ -43,6 +44,7 @@ export const ThreadCard: FC<ThreadCardProps> = ({
   circleId,
   currentThread,
   isAdmin,
+  isMember,
   userId,
   fetchData,
   handleDelete,
@@ -96,7 +98,7 @@ export const ThreadCard: FC<ThreadCardProps> = ({
                 </Text>
               </VStack>
               <HStack>
-                {isAdmin || currentThread.userId === userId ? (
+                {isAdmin || (currentThread.userId === userId && isMember) ? (
                   <ThreadMenuButton
                     editLink={`/circles/${circleId}/${currentThread.type}/${currentThread.id}/edit`}
                     handleDelete={() => {
