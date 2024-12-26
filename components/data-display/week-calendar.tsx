@@ -137,6 +137,11 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
                           key={i}
                           as={Link}
                           href={`/circles/${activity.circle.id}/activities/${activity.id}`}
+                          transition="0.5s"
+                          _hover={{
+                            transform: "scale(1.05)",
+                            transition: "0.5s",
+                          }}
                         >
                           {activity.title}
                         </Tag>
