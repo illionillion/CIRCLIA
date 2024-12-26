@@ -60,6 +60,8 @@ export const CircleMembershipButton: FC<CircleMembershipButtonProps> = ({
         colorScheme="riverBlue"
         as={Link}
         href={`/circles/${circleId}/edit`}
+        transition="0.5s"
+        _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
       >
         サークル編集
       </Button>
@@ -77,7 +79,7 @@ export const CircleMembershipButton: FC<CircleMembershipButtonProps> = ({
         colorScheme="riverBlue"
         onClick={handleMemberButtonClick}
         loading={isLoading}
-        transition={"0.5s"}
+        transition="0.5s"
         _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
       >
         退会申請
@@ -94,7 +96,7 @@ export const CircleMembershipButton: FC<CircleMembershipButtonProps> = ({
         colorScheme="riverBlue"
         onClick={handleMemberButtonClick}
         loading={isLoading}
-        transition={"0.5s"}
+        transition="0.5s"
         _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
       >
         入会申請

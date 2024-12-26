@@ -27,6 +27,8 @@ export const CircleDetailButton: FC<CircleDetailButtonProps> = ({
               colorScheme="riverBlue"
               as={Link}
               href={`/circles/${circle?.id}/edit`}
+              transition="0.5s"
+              _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
             >
               サークル編集
             </Button>
@@ -50,6 +52,8 @@ export const CircleDetailButton: FC<CircleDetailButtonProps> = ({
               colorScheme="riverBlue"
               as={Link}
               href={`/circles/${circle?.id}/edit`}
+              transition="0.5s"
+              _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
             >
               サークル編集
             </Button>
@@ -73,6 +77,8 @@ export const CircleDetailButton: FC<CircleDetailButtonProps> = ({
               colorScheme="riverBlue"
               as={Link}
               href={`/circles/${circle?.id}/edit`}
+              transition="0.5s"
+              _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
             >
               サークル編集
             </Button>
