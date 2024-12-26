@@ -24,7 +24,8 @@ export const ThreadMenuButton: FC<ThreadMenuButtonProps> = ({
       <MenuButton
         as={IconButton}
         icon={<EllipsisIcon fontSize="2xl" />}
-        variant="outline"
+        variant="ghost"
+        fullRounded
       />
       <MenuList>
         <MenuItem icon={<PenIcon fontSize="2xl" />} as={Link} href={editLink}>

@@ -153,7 +153,7 @@ export const AnnouncementForm: FC<AnnouncementFormProps> = ({
           name="isImportant"
           control={control}
           render={({ field: { value, ...rest } }) => (
-            <Switch checked={value} {...rest}>
+            <Switch checked={value} {...rest} colorScheme="riverBlue">
               重要なお知らせ
             </Switch>
           )}

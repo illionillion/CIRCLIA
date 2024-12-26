@@ -55,7 +55,14 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
 
   return (
     <>
-      <VStack ref={scrollRef} w="full" h="fit-content" gap={0}>
+      <VStack
+        ref={scrollRef}
+        w="full"
+        maxW="9xl"
+        h="fit-content"
+        gap={0}
+        m="auto"
+      >
         <VStack
           position="sticky"
           p="md"
@@ -92,7 +99,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
               as={Link}
               href="/circles/create"
               colorScheme="riverBlue"
-              transition={"0.5s"}
+              transition="0.5s"
               _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
             >
               サークル作成

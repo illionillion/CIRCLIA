@@ -55,6 +55,7 @@ interface CircleThreadsProps {
 export const CircleThreads: FC<CircleThreadsProps> = ({
   userId,
   isAdmin,
+  isMember,
   circle,
   currentThread: thread,
   currentAnnouncement: announcement,
@@ -138,6 +139,7 @@ export const CircleThreads: FC<CircleThreadsProps> = ({
           circleId={circle?.id || ""}
           currentThread={currentThread}
           isAdmin={!!isAdmin}
+          isMember={!!isMember}
           fetchData={fetchData}
           handleDelete={handleDelete}
         />
@@ -147,6 +149,7 @@ export const CircleThreads: FC<CircleThreadsProps> = ({
           circleId={circle?.id || ""}
           currentAnnouncement={currentAnnouncement}
           isAdmin={!!isAdmin}
+          isMember={!!isMember}
           handleDelete={handleDelete}
         />
       ) : (
@@ -168,33 +171,35 @@ export const CircleThreads: FC<CircleThreadsProps> = ({
               <Option value="announcement">お知らせ</Option>
               <Option value="isImportant">重要</Option>
             </MultiSelect>
-            <Menu>
-              <MenuButton
-                as={Button}
-                startIcon={<PlusIcon fontSize="2xl" />}
-                colorScheme="riverBlue"
-                transition={"0.5s"}
-                _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
-              >
-                作成
-              </MenuButton>
-              <MenuList>
-                <MenuItem
-                  icon={<BellPlusIcon fontSize="2xl" />}
-                  as={Link}
-                  href={`/circles/${circle?.id}/announcement/create`}
+            {isMember && (
+              <Menu>
+                <MenuButton
+                  as={Button}
+                  startIcon={<PlusIcon fontSize="2xl" />}
+                  colorScheme="riverBlue"
+                  transition="0.5s"
+                  _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
                 >
-                  お知らせ
-                </MenuItem>
-                <MenuItem
-                  icon={<MessageCircleMoreIcon fontSize="2xl" />}
-                  as={Link}
-                  href={`/circles/${circle?.id}/thread/create`}
-                >
-                  スレッド
-                </MenuItem>
-              </MenuList>
-            </Menu>
+                  作成
+                </MenuButton>
+                <MenuList>
+                  <MenuItem
+                    icon={<BellPlusIcon fontSize="2xl" />}
+                    as={Link}
+                    href={`/circles/${circle?.id}/announcement/create`}
+                  >
+                    お知らせ
+                  </MenuItem>
+                  <MenuItem
+                    icon={<MessageCircleMoreIcon fontSize="2xl" />}
+                    as={Link}
+                    href={`/circles/${circle?.id}/thread/create`}
+                  >
+                    スレッド
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            )}
           </HStack>
           {loading ? (
             <Center w="full" h="full">
@@ -207,6 +212,7 @@ export const CircleThreads: FC<CircleThreadsProps> = ({
                   key={topic.id}
                   userId={userId}
                   isAdmin={!!isAdmin}
+                  isMember={!!isMember}
                   circle={circle}
                   handleDelete={handleDelete}
                   topic={topic}

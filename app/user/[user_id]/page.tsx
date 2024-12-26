@@ -168,7 +168,7 @@ const Page = async ({ params }: Props) => {
               ))
             ) : (
               <Center w="full" h="full">
-                <Text>講師にに入っていません</Text>
+                <Text>講師を担当していません</Text>
               </Center>
             )}
           </Grid>

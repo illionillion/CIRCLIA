@@ -102,7 +102,7 @@ export const MemberCard: FC<MemberCard> = ({
       rounded="md"
       as={Card}
       bg="white"
-      transition={"0.5s"}
+      transition="0.5s"
       _hover={{ transform: "scale(1.02)", transition: "0.5s" }}
     >
       <CardBody as={LinkBox}>
@@ -131,7 +131,7 @@ export const MemberCard: FC<MemberCard> = ({
               <MenuButton
                 as={IconButton}
                 icon={<EllipsisIcon fontSize="2xl" />}
-                variant="outline"
+                variant="ghost"
                 fullRounded
               />
               <MenuList>

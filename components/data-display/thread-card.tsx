@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { TopicType } from "@prisma/client"
-import { TriangleIcon } from "@yamada-ui/lucide"
+import { PlayIcon } from "@yamada-ui/lucide"
 import type { FC } from "@yamada-ui/react"
 import {
   Avatar,
@@ -34,6 +34,7 @@ interface ThreadCardProps {
   userId: string
   circleId: string
   isAdmin: boolean
+  isMember: boolean
   currentThread: NonNullable<Awaited<ReturnType<typeof getThreadById>>>
   fetchData: () => Promise<void>
   handleDelete: (topicId: string, type: TopicType) => Promise<void>
@@ -43,6 +44,7 @@ export const ThreadCard: FC<ThreadCardProps> = ({
   circleId,
   currentThread,
   isAdmin,
+  isMember,
   userId,
   fetchData,
   handleDelete,
@@ -82,33 +84,38 @@ export const ThreadCard: FC<ThreadCardProps> = ({
           alignItems={{ md: "end" }}
           flexDir={{ base: "row", md: "column-reverse" }}
         >
-          <HStack>
-            <Avatar
-              src={currentThread.user.profileImageUrl || ""}
-              as={Link}
-              href={`/user/${currentThread.user.id}`}
-            />
-            <VStack gap={0}>
-              <Text>{currentThread.title}</Text>
-              <Text fontSize="sm" as="pre" textWrap="wrap">
-                {currentThread.content}
-              </Text>
-            </VStack>
-          </HStack>
-          <VStack w="auto">
+          <VStack>
             <HStack>
-              <Text>{parseFullDate(currentThread.createdAt)}</Text>
-              {isAdmin || currentThread.userId === userId ? (
-                <ThreadMenuButton
-                  editLink={`/circles/${circleId}/${currentThread.type}/${currentThread.id}/edit`}
-                  handleDelete={() => {
-                    handleDelete(currentThread.id, currentThread.type)
-                    router.push(`/circles/${circleId}/notifications/`)
-                  }}
-                />
-              ) : undefined}
+              <Avatar
+                src={currentThread.user.profileImageUrl || ""}
+                as={Link}
+                href={`/user/${currentThread.user.id}`}
+              />
+              <VStack>
+                <Text>{currentThread.title}</Text>
+                <Text as="pre" textWrap="wrap">
+                  {currentThread.content}
+                </Text>
+              </VStack>
+              <HStack>
+                {isAdmin || (currentThread.userId === userId && isMember) ? (
+                  <ThreadMenuButton
+                    editLink={`/circles/${circleId}/${currentThread.type}/${currentThread.id}/edit`}
+                    handleDelete={() => {
+                      handleDelete(currentThread.id, currentThread.type)
+                      router.push(`/circles/${circleId}/notifications/`)
+                    }}
+                  />
+                ) : undefined}
+              </HStack>
             </HStack>
-            <Text>作成者：{currentThread.user.name}</Text>
+            <HStack>
+              <Text w="full">作成者：{currentThread.user.name}</Text>
+              <VStack gap={0} color="gray" fontSize="sm" textAlign="right">
+                <Text>{parseFullDate(currentThread.updatedAt)} 更新</Text>
+                <Text>{parseFullDate(currentThread.createdAt)} 作成</Text>
+              </VStack>
+            </HStack>
           </VStack>
         </CardHeader>
         <CardBody flexGrow={1} minH="sm">
@@ -128,7 +135,9 @@ export const ThreadCard: FC<ThreadCardProps> = ({
                     </Text>
                   </VStack>
                 </HStack>
-                <Text>{parseFullDate(comment.createdAt)}</Text>
+                <Text textAlign="right">
+                  {parseFullDate(comment.createdAt)}
+                </Text>
               </CardBody>
             </Card>
           ))}
@@ -152,7 +161,7 @@ export const ThreadCard: FC<ThreadCardProps> = ({
             type="submit"
             loading={isSubmitting}
             variant="ghost"
-            icon={<TriangleIcon transform="rotate(90deg)" fill="black" />}
+            icon={<PlayIcon fill="black" />}
           />
         </CardFooter>
       </Card>

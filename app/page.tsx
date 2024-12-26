@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Button,
   Card,
   CardBody,
   CardHeader,
@@ -19,7 +18,7 @@ import {
 } from "@/actions/circle/fetch-circle"
 import { getUserById } from "@/actions/user/user"
 import { auth } from "@/auth"
-import { CircleCard } from "@/components/data-display/circle-card"
+import { CircleList } from "@/components/data-display/circle-list"
 import { NotificationList } from "@/components/data-display/notification-list"
 import { WeekCalendar } from "@/components/data-display/week-calendar"
 import { getWeeklyActivities } from "@/data/activity"
@@ -40,7 +39,7 @@ export default async function Home() {
   const calendarData = await getWeeklyActivities(user?.id || "")
 
   return (
-    <VStack w="full" h="fit-content" p="md">
+    <VStack w="full" maxW="9xl" h="fit-content" p="md" m="auto">
       <VStack>
         <Heading as="h2" size="lg">
           ようこそ！
@@ -56,7 +55,6 @@ export default async function Home() {
           borderWidth="2px"
           orientation="horizontal"
           variant="solid"
-          borderColor="black"
         />
       </VStack>
       <Grid
@@ -76,14 +74,22 @@ export default async function Home() {
         "notification calendar calendar calendar" 
         "notification calendar calendar calendar" 
         `,
-          md: `
+          md: user?.instructorFlag
+            ? `
+            "avatar"
+            "notification"
+            "instructor-circles"
+            "circles"
+            "calendar"
+          `
+            : `
         "avatar"
         "notification"
         "circles"
         "calendar"
         `,
         }}
-        gap="lg"
+        gap={{ base: "lg", lg: "sm" }}
       >
         <GridItem
           area="avatar"
@@ -97,7 +103,7 @@ export default async function Home() {
             src={user?.profileImageUrl || ""}
             boxSize={{ base: "xs", md: "24" }}
             title="プロフィールへ移動"
-            transition={"0.5s"}
+            transition="0.5s"
             _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
           />
           <Heading display={{ base: "none", md: "block" }} fontSize="lg">
@@ -128,32 +134,10 @@ export default async function Home() {
               </Heading>
             </CardHeader>
             <CardBody>
-              <Grid
-                gridTemplateColumns={
-                  instructorCircles?.length
-                    ? {
-                        base: "repeat(3, 1fr)",
-                        xl: "repeat(2, 1fr)",
-                        lg: "repeat(1, 1fr)",
-                        md: "repeat(2, 1fr)",
-                        sm: "repeat(1, 1fr)",
-                      }
-                    : undefined
-                }
-                gap="md"
-                w="full"
-                h="full"
-              >
-                {instructorCircles?.length ? (
-                  instructorCircles.map((data) => (
-                    <CircleCard key={data.id} data={data} />
-                  ))
-                ) : (
-                  <Center w="full" h="full" as={VStack}>
-                    <Text>講師を担当していません</Text>
-                  </Center>
-                )}
-              </Grid>
+              <CircleList
+                circles={instructorCircles}
+                instructor={user?.instructorFlag}
+              />
             </CardBody>
           </GridItem>
         )}
@@ -164,33 +148,7 @@ export default async function Home() {
             </Heading>
           </CardHeader>
           <CardBody>
-            <Grid
-              gridTemplateColumns={
-                circles?.length
-                  ? {
-                      base: "repeat(3, 1fr)",
-                      xl: "repeat(2, 1fr)",
-                      lg: "repeat(1, 1fr)",
-                      md: "repeat(2, 1fr)",
-                      sm: "repeat(1, 1fr)",
-                    }
-                  : undefined
-              }
-              gap="md"
-              w="full"
-              h="full"
-            >
-              {circles?.length ? (
-                circles.map((data) => <CircleCard key={data.id} data={data} />)
-              ) : (
-                <Center w="full" h="full" as={VStack}>
-                  <Text>サークルに入っていません</Text>
-                  <Button as={Link} href="/circles">
-                    サークルを探す
-                  </Button>
-                </Center>
-              )}
-            </Grid>
+            <CircleList circles={circles} />
           </CardBody>
         </GridItem>
         <WeekCalendar calendarData={calendarData} userId={user?.id || ""} />

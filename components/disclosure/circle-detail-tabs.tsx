@@ -54,7 +54,7 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
   const { data } = membershipRequests
 
   return (
-    <Tabs index={tabIndex} w="full" h="full">
+    <Tabs index={tabIndex} w="full" maxW="9xl" h="full" m="auto">
       <TabList overflowX="auto" overflowY="hidden">
         <Tab
           flexShrink={0}

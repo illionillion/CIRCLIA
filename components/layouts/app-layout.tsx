@@ -233,8 +233,8 @@ export const AppLayout: FC<{
             _hover={{ transform: "scale(1.4)" }}
           />
           <MenuList>
-            <MenuItem>
-              <HStack w="full" as={Link} href={`/user/${user?.id}`}>
+            <MenuItem as={Link} href={`/user/${user?.id}`}>
+              <HStack w="full">
                 <Avatar src={user?.profileImageUrl || ""} boxSize="8xs" />
                 <Text>プロフィール</Text>
               </HStack>

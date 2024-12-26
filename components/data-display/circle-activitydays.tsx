@@ -192,16 +192,18 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
                 />
               </HStack>
             </HStack>
-            <Button
-              as={Link}
-              href={`/circles/${circle?.id}/activities/new`}
-              startIcon={<PlusIcon fontSize="2xl" />}
-              colorScheme="riverBlue"
-              transition={"0.5s"}
-              _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
-            >
-              追加
-            </Button>
+            {isMember && (
+              <Button
+                as={Link}
+                href={`/circles/${circle?.id}/activities/new`}
+                startIcon={<PlusIcon fontSize="2xl" />}
+                colorScheme="riverBlue"
+                transition="0.5s"
+                _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
+              >
+                追加
+              </Button>
+            )}
           </HStack>
           <VStack w="full" h="full">
             {loading ? (

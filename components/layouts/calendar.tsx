@@ -41,7 +41,7 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
   }, [currentMonth])
 
   return (
-    <Container p={4}>
+    <Container maxW="9xl" m="auto" p={4}>
       <Heading mb={4}>カレンダー</Heading>
       <Calendar
         month={currentMonth}

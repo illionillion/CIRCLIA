@@ -53,6 +53,7 @@ interface CircleAlbums {
 export const CircleAlbums: FC<CircleAlbums> = ({
   userId,
   circleId,
+  isMember,
   isAdmin,
   currentAlbum: album,
 }) => {
@@ -88,18 +89,20 @@ export const CircleAlbums: FC<CircleAlbums> = ({
   }, [])
   return (
     <VStack w="full" h="full">
-      <HStack justifyContent="end">
-        <Button
-          as={Link}
-          href={`/circles/${circleId}/album/create`}
-          startIcon={<PlusIcon fontSize="2xl" />}
-          colorScheme="riverBlue"
-          transition={"0.5s"}
-          _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
-        >
-          作成
-        </Button>
-      </HStack>
+      {isMember && (
+        <HStack justifyContent="end">
+          <Button
+            as={Link}
+            href={`/circles/${circleId}/album/create`}
+            startIcon={<PlusIcon fontSize="2xl" />}
+            colorScheme="riverBlue"
+            transition="0.5s"
+            _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
+          >
+            作成
+          </Button>
+        </HStack>
+      )}
       <Snacks snacks={snacks} />
       {currentAlbum ? (
         <AlbumCard
@@ -132,7 +135,7 @@ export const CircleAlbums: FC<CircleAlbums> = ({
               as={Card}
               flexDir="column"
               bg="white"
-              transition={"0.5s"}
+              transition="0.5s"
               _hover={{ transform: "scale(1.05)", transition: "0.5s" }}
             >
               <LinkBox>
@@ -186,7 +189,7 @@ export const CircleAlbums: FC<CircleAlbums> = ({
                           <MenuButton
                             as={IconButton}
                             icon={<EllipsisIcon fontSize="2xl" />}
-                            variant="outline"
+                            variant="ghost"
                             fullRounded
                           />
                           <MenuList>
