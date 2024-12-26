@@ -2,9 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { TopicType } from "@prisma/client"
-import {
-  PlayIcon,
-} from "@yamada-ui/lucide"
+import { PlayIcon } from "@yamada-ui/lucide"
 import type { FC } from "@yamada-ui/react"
 import {
   Avatar,

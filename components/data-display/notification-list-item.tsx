@@ -25,7 +25,7 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
   preview,
 }) => {
   return (
-    <HStack bg="white" as={Card}>
+    <HStack bg="white" as={Card} marginBottom="5px">
       <HStack as={LinkBox} w="full" p="sm">
         <Box>
           <Avatar
@@ -58,7 +58,7 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
             </Text>
           )}
           <Flex w="full" justifyContent="right">
-            {parseDate(announcement.updatedAt)}
+            {parseDate(announcement.createdAt)}
           </Flex>
         </LinkOverlay>
       </HStack>
