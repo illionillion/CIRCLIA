@@ -40,8 +40,12 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
     switch (notification.type) {
       case "CIRCLE_INVITE":
         return `/circles/${notification.circleId}/members`
+      case "CIRCLE_ANNOUNCEMENT":
+        return `/circles/${notification.circleId}/announcement/${notification.relatedEntityId}`
+      case "CIRCLE_THREAD":
+        return `/circles/${notification.circleId}/thread/${notification.relatedEntityId}`
       default:
-        return `/circles/${notification.circleId}/notifications`
+        return `/circles/${notification.circleId}/`
     }
   }
   const link = generateLink(notification)

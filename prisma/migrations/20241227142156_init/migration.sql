@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "NotificationType" AS ENUM ('GENERAL', 'CIRCLE_INVITE', 'EVENT_UPDATE', 'MESSAGE');
+CREATE TYPE "NotificationType" AS ENUM ('GENERAL', 'CIRCLE_INVITE', 'CIRCLE_ANNOUNCEMENT', 'CIRCLE_THREAD');
 
 -- CreateTable
 CREATE TABLE "Notification" (
