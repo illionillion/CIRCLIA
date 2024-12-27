@@ -10,7 +10,12 @@ const Page = async () => {
   const session = await auth()
   const notifications = await getNotificationsByUserId(session?.user?.id || "")
 
-  return <NotificationPage notifications={notifications} />
+  return (
+    <NotificationPage
+      userId={session?.user?.id || ""}
+      notifications={notifications}
+    />
+  )
 }
 
 export default Page

@@ -1,3 +1,4 @@
+"use client"
 import { CircleAlertIcon } from "@yamada-ui/lucide"
 import type { FC } from "@yamada-ui/react"
 import {
@@ -12,16 +13,24 @@ import {
 } from "@yamada-ui/react"
 import Link from "next/link"
 import type { getNotificationsByUserId } from "@/data/notification"
+import { useMarkNotificationAsRead } from "@/utils/notification"
 
 interface NotificationListItemProps {
+  userId: string
   notification: Awaited<ReturnType<typeof getNotificationsByUserId>>[number]
   preview?: boolean
 }
 
 export const NotificationListItem: FC<NotificationListItemProps> = ({
+  userId,
   notification,
   preview,
 }) => {
+  const { isPending, markAsRead } = useMarkNotificationAsRead()
+
+  const handleMarkAsRead = () => {
+    markAsRead(userId, notification.id)
+  }
   const generateLink = (
     notification: Awaited<ReturnType<typeof getNotificationsByUserId>>[number],
   ) => {
@@ -50,7 +59,12 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
           </VStack>
         </LinkOverlay>
         {notification.readAt || !preview ? undefined : (
-          <Button colorScheme="riverBlue" m="auto">
+          <Button
+            colorScheme="riverBlue"
+            m="auto"
+            onClick={handleMarkAsRead}
+            loading={isPending}
+          >
             既読
           </Button>
         )}

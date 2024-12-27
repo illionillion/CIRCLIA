@@ -2,6 +2,36 @@ import type { NotificationType } from "@prisma/client"
 import { db } from "@/utils/db"
 
 /**
+ * 通知を既読にする
+ * @param userId string - ユーザーID
+ * @param notificationId string - 通知ID
+ * @returns Promise<boolean> - 更新成功時に`true`、失敗時に`false`
+ */
+export const markNotificationAsRead = async (
+  userId: string,
+  notificationId: string,
+) => {
+  try {
+    const result = await db.notificationState.updateMany({
+      where: {
+        userId,
+        notificationId,
+        readAt: null, // 既読でない場合に限定
+      },
+      data: {
+        readAt: new Date(),
+      },
+    })
+
+    // 更新されたレコードが1件以上で成功
+    return result.count > 0
+  } catch (error) {
+    console.error("Error marking notification as read:", error)
+    return false
+  }
+}
+
+/**
  * ユーザーIDから全ての通知を取得
  * @param userId string - 対象のユーザーID
  * @returns Promise<Array<object>> - 通知とその状態を含む配列

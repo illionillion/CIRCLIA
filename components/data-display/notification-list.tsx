@@ -7,25 +7,37 @@ import type { getNotificationsByUserId } from "@/data/notification"
 
 interface NotificationList {
   notifications: Awaited<ReturnType<typeof getNotificationsByUserId>>
+  userId: string
+  preview?: boolean
+  itemsPerPage?: number
 }
 
-export const NotificationList: FC<NotificationList> = ({ notifications }) => (
-  <PaginationList data={notifications} itemsPerPage={3}>
-    {(notifications) => (
-      <VStack w="full" h="full" overflowY="auto" gap="md">
-        {notifications.length ? (
-          notifications.map((notification) => (
-            <NotificationListItem
-              notification={notification}
-              key={notification.id}
-            />
-          ))
-        ) : (
-          <Center w="full" h="full">
-            <Text>お知らせはありません</Text>
-          </Center>
-        )}
-      </VStack>
-    )}
-  </PaginationList>
-)
+export const NotificationList: FC<NotificationList> = ({
+  userId,
+  notifications,
+  preview,
+  itemsPerPage,
+}) => {
+  return (
+    <PaginationList data={notifications} itemsPerPage={itemsPerPage}>
+      {(notifications) => (
+        <VStack w="full" h="full" overflowY="auto" gap="md">
+          {notifications.length ? (
+            notifications.map((notification) => (
+              <NotificationListItem
+                userId={userId}
+                notification={notification}
+                key={notification.id}
+                preview={preview}
+              />
+            ))
+          ) : (
+            <Center w="full" h="full">
+              <Text>通知はありません</Text>
+            </Center>
+          )}
+        </VStack>
+      )}
+    </PaginationList>
+  )
+}

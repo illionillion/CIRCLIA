@@ -121,7 +121,11 @@ export default async function Home() {
             </Heading>
           </CardHeader>
           <CardBody>
-            <NotificationList notifications={notifications} />
+            <NotificationList
+              userId={session?.user?.id || ""}
+              notifications={notifications}
+              itemsPerPage={3}
+            />
           </CardBody>
         </GridItem>
         {user?.instructorFlag && (
