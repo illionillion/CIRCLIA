@@ -3,21 +3,21 @@ import type { FC } from "@yamada-ui/react"
 import { Center, Text, VStack } from "@yamada-ui/react"
 import { PaginationList } from "../navigation/pagination-list"
 import { NotificationListItem } from "./notification-list-item"
-import type { getAnnouncementsByUserId } from "@/data/announcement"
+import type { getNotificationsByUserId } from "@/data/notification"
 
 interface NotificationList {
-  announcements: Awaited<ReturnType<typeof getAnnouncementsByUserId>>
+  notifications: Awaited<ReturnType<typeof getNotificationsByUserId>>
 }
 
-export const NotificationList: FC<NotificationList> = ({ announcements }) => (
-  <PaginationList data={announcements} itemsPerPage={3}>
-    {(announcements) => (
+export const NotificationList: FC<NotificationList> = ({ notifications }) => (
+  <PaginationList data={notifications} itemsPerPage={3}>
+    {(notifications) => (
       <VStack w="full" h="full" overflowY="auto" gap="md">
-        {announcements.length ? (
-          announcements.map((announcement) => (
+        {notifications.length ? (
+          notifications.map((notification) => (
             <NotificationListItem
-              announcement={announcement}
-              key={announcement.id}
+              notification={notification}
+              key={notification.id}
             />
           ))
         ) : (

@@ -1,15 +1,11 @@
 "use client"
-import { CircleAlertIcon } from "@yamada-ui/lucide"
 import type { FC } from "@yamada-ui/react"
 import {
-  Button,
-  Card,
-  CardBody,
-  Center,
   Heading,
   Text,
   VStack,
 } from "@yamada-ui/react"
+import { NotificationListItem } from "../data-display/notification-list-item"
 import { PaginationList } from "../navigation/pagination-list"
 import type { getNotificationsByUserId } from "@/data/notification"
 
@@ -31,26 +27,11 @@ export const NotificationPage: FC<NotificationPageProps> = ({
           </VStack>
           {currentNotification.length ? (
             currentNotification.map((notification) => (
-              <Card key={notification.id} bg="white">
-                <CardBody flexDir="row">
-                  <Center m="auto">
-                    <CircleAlertIcon
-                      color="danger"
-                      fontSize="2xl"
-                      visibility={notification.readAt ? "hidden" : "visible"}
-                    />
-                  </Center>
-                  <VStack>
-                    <Text fontSize="lg">{notification.title}</Text>
-                    <Text>{notification.content}</Text>
-                  </VStack>
-                  {notification.readAt ? undefined : (
-                    <Button colorScheme="riverBlue" m="auto">
-                      既読
-                    </Button>
-                  )}
-                </CardBody>
-              </Card>
+              <NotificationListItem
+                notification={notification}
+                key={notification.id}
+                preview
+              />
             ))
           ) : (
             <Text>通知はありません</Text>

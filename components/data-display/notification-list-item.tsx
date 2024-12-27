@@ -1,67 +1,60 @@
-import { InfoIcon } from "@yamada-ui/lucide"
+import { CircleAlertIcon } from "@yamada-ui/lucide"
 import type { FC } from "@yamada-ui/react"
 import {
-  Avatar,
-  Box,
+  Button,
   Card,
-  Flex,
-  Heading,
-  HStack,
+  CardBody,
+  Center,
   LinkBox,
   LinkOverlay,
   Text,
+  VStack,
 } from "@yamada-ui/react"
 import Link from "next/link"
-import type { getAnnouncementsByUserId } from "@/data/announcement"
-import { parseDate } from "@/utils/format"
+import type { getNotificationsByUserId } from "@/data/notification"
 
 interface NotificationListItemProps {
-  announcement: Awaited<ReturnType<typeof getAnnouncementsByUserId>>[number]
+  notification: Awaited<ReturnType<typeof getNotificationsByUserId>>[number]
   preview?: boolean
 }
 
 export const NotificationListItem: FC<NotificationListItemProps> = ({
-  announcement,
+  notification,
   preview,
 }) => {
+  const generateLink = (
+    notification: Awaited<ReturnType<typeof getNotificationsByUserId>>[number],
+  ) => {
+    switch (notification.type) {
+      case "CIRCLE_INVITE":
+        return `/circles/${notification.circleId}/members`
+      default:
+        return `/circles/${notification.circleId}/notifications`
+    }
+  }
+  const link = generateLink(notification)
   return (
-    <HStack bg="white" as={Card}>
-      <HStack as={LinkBox} w="full" p="sm">
-        <Box>
-          <Avatar
-            src={announcement.user.profileImageUrl || ""}
-            alt={`${announcement.user.name}のアイコン画像`}
+    <Card bg="white" as={LinkBox}>
+      <CardBody flexDir="row">
+        <Center m="auto">
+          <CircleAlertIcon
+            color="danger"
+            fontSize="2xl"
+            visibility={notification.readAt ? "hidden" : "visible"}
           />
-        </Box>
-        <LinkOverlay
-          w="full"
-          as={Link}
-          justifyContent="center"
-          alignItems="start"
-          display="flex"
-          gap="md"
-          flexDir="column"
-          href={`/circles/${announcement.circleId}/announcement/${announcement.id}`}
-        >
-          <Text>{announcement.circle.name}</Text>
-          <HStack gap="sm">
-            {announcement.isImportant ? (
-              <InfoIcon fontSize="lg" color="primary" />
-            ) : undefined}
-            <Heading size="xs" as="h4">
-              {announcement.title}
-            </Heading>
-          </HStack>
-          {preview && (
-            <Text as="pre" textWrap="wrap">
-              {announcement.content}
-            </Text>
-          )}
-          <Flex w="full" justifyContent="right">
-            {parseDate(announcement.updatedAt)}
-          </Flex>
+        </Center>
+        <LinkOverlay as={Link} href={link} w="full">
+          <VStack>
+            <Text fontSize="lg">{notification.title}</Text>
+            {preview ? <Text>{notification.content}</Text> : undefined}
+          </VStack>
         </LinkOverlay>
-      </HStack>
-    </HStack>
+        {notification.readAt || !preview ? undefined : (
+          <Button colorScheme="riverBlue" m="auto">
+            既読
+          </Button>
+        )}
+      </CardBody>
+    </Card>
   )
 }
