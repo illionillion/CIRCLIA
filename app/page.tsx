@@ -22,7 +22,6 @@ import { CircleList } from "@/components/data-display/circle-list"
 import { NotificationList } from "@/components/data-display/notification-list"
 import { WeekCalendar } from "@/components/data-display/week-calendar"
 import { getWeeklyActivities } from "@/data/activity"
-import { getNotificationsByUserId } from "@/data/notification"
 
 export const metadata = {
   title: "ホーム - CIRCLIA",
@@ -35,7 +34,6 @@ export default async function Home() {
   const instructorCircles = user?.instructorFlag
     ? await getCirclesByInstructorId(user.id || "")
     : []
-  const notifications = await getNotificationsByUserId(session?.user?.id || "")
   const calendarData = await getWeeklyActivities(user?.id || "")
 
   return (
@@ -123,7 +121,6 @@ export default async function Home() {
           <CardBody>
             <NotificationList
               userId={session?.user?.id || ""}
-              notifications={notifications}
               itemsPerPage={3}
             />
           </CardBody>

@@ -1,6 +1,9 @@
 "use server"
 
-import { markNotificationAsRead } from "@/data/notification"
+import {
+  getNotificationsByUserId,
+  markNotificationAsRead,
+} from "@/data/notification"
 
 /**
  * 通知を既読にするサーバーアクション
@@ -19,4 +22,8 @@ export async function markNotificationAsReadAction(
   } else {
     return { success: false, error: "Failed to mark notification as read" }
   }
+}
+
+export const getNotificationsByUserIdAction = async (userId: string) => {
+  return await getNotificationsByUserId(userId)
 }

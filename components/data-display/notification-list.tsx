@@ -1,12 +1,11 @@
 "use client"
 import type { FC } from "@yamada-ui/react"
-import { Center, Text, VStack } from "@yamada-ui/react"
+import { Center, Text, useSafeLayoutEffect, VStack } from "@yamada-ui/react"
 import { PaginationList } from "../navigation/pagination-list"
 import { NotificationListItem } from "./notification-list-item"
-import type { getNotificationsByUserId } from "@/data/notification"
+import { useNotifications } from "@/provider/notification-provider"
 
 interface NotificationList {
-  notifications: Awaited<ReturnType<typeof getNotificationsByUserId>>
   userId: string
   preview?: boolean
   itemsPerPage?: number
@@ -14,10 +13,15 @@ interface NotificationList {
 
 export const NotificationList: FC<NotificationList> = ({
   userId,
-  notifications,
   preview,
   itemsPerPage,
 }) => {
+  const { notifications, refreshNotifications } = useNotifications()
+
+  useSafeLayoutEffect(() => {
+    refreshNotifications(userId)
+  }, [])
+
   return (
     <PaginationList data={notifications} itemsPerPage={itemsPerPage}>
       {(notifications) => (
@@ -29,6 +33,7 @@ export const NotificationList: FC<NotificationList> = ({
                 notification={notification}
                 key={notification.id}
                 preview={preview}
+                refreshNotifications={refreshNotifications}
               />
             ))
           ) : (

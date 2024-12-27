@@ -19,17 +19,20 @@ interface NotificationListItemProps {
   userId: string
   notification: Awaited<ReturnType<typeof getNotificationsByUserId>>[number]
   preview?: boolean
+  refreshNotifications: (userId: string) => Promise<void>
 }
 
 export const NotificationListItem: FC<NotificationListItemProps> = ({
   userId,
   notification,
   preview,
+  refreshNotifications,
 }) => {
   const { isPending, markAsRead } = useMarkNotificationAsRead()
 
   const handleMarkAsRead = () => {
     markAsRead(userId, notification.id)
+    refreshNotifications(userId)
   }
   const generateLink = (
     notification: Awaited<ReturnType<typeof getNotificationsByUserId>>[number],
@@ -45,13 +48,11 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
   return (
     <Card bg="white" as={LinkBox}>
       <CardBody flexDir="row">
-        <Center m="auto">
-          <CircleAlertIcon
-            color="danger"
-            fontSize="2xl"
-            visibility={notification.readAt ? "hidden" : "visible"}
-          />
-        </Center>
+        {notification.readAt ? undefined : (
+          <Center m="auto">
+            <CircleAlertIcon color="danger" fontSize="2xl" />
+          </Center>
+        )}
         <LinkOverlay as={Link} href={link} w="full">
           <VStack>
             <Text fontSize="lg">{notification.title}</Text>
