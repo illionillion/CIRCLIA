@@ -6,6 +6,15 @@ erDiagram
 announcement announcement
         }
 
+
+
+        NotificationType {
+            GENERAL GENERAL
+CIRCLE_INVITE CIRCLE_INVITE
+EVENT_UPDATE EVENT_UPDATE
+MESSAGE MESSAGE
+        }
+
   "User" {
     String id "🗝️"
     String studentNumber
@@ -142,6 +151,27 @@ announcement announcement
     DateTime deletedAt "❓"
     }
 
+
+  "Notification" {
+    String id "🗝️"
+    NotificationType type
+    String title
+    String content "❓"
+    String circleId "❓"
+    String relatedEntityId "❓"
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  "NotificationState" {
+    String id "🗝️"
+    DateTime readAt "❓"
+    Boolean isDeleted
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
     "User" o{--}o "Account" : "accounts"
     "User" o{--}o "CircleMember" : "CircleMember"
     "User" o{--}o "CircleInstructor" : "CircleInstructor"
@@ -152,6 +182,7 @@ announcement announcement
     "User" o{--}o "Topic" : "topics"
     "User" o{--}o "Comment" : "comments"
     "User" o{--}o "Album" : "album"
+    "User" o{--}o "NotificationState" : "NotificationState"
     "Account" o|--|| "User" : "user"
     "Circle" o{--}o "CircleMember" : "CircleMember"
     "Circle" o{--}o "CircleInstructor" : "CircleInstructor"
@@ -185,4 +216,8 @@ announcement announcement
     "Album" o|--|| "Circle" : "circle"
     "Album" o|--|| "User" : "creator"
     "AlbumImage" o|--|| "Album" : "album"
+    "Notification" o|--|| "NotificationType" : "enum:type"
+    "Notification" o{--}o "NotificationState" : "NotificationState"
+    "NotificationState" o|--|| "User" : "user"
+    "NotificationState" o|--|| "Notification" : "notification"
 ```

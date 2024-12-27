@@ -1,6 +1,6 @@
 import { auth } from "@/auth"
 import { NotificationPage } from "@/components/layouts/notification-page"
-import { getAnnouncementsByUserId } from "@/data/announcement"
+import { getNotificationsByUserId } from "@/data/notification"
 
 export const metadata = {
   title: "通知 - CIRCLIA",
@@ -8,9 +8,9 @@ export const metadata = {
 
 const Page = async () => {
   const session = await auth()
-  const announcements = await getAnnouncementsByUserId(session?.user?.id || "")
+  const notifications = await getNotificationsByUserId(session?.user?.id || "")
 
-  return <NotificationPage announcements={announcements} />
+  return <NotificationPage notifications={notifications} />
 }
 
 export default Page

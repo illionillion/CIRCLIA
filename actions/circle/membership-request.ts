@@ -1,4 +1,5 @@
 "use server"
+import { getCircleById } from "./fetch-circle"
 import { auth } from "@/auth"
 import {
   addMemberToCircle,
@@ -15,6 +16,7 @@ import {
   fetchPendingMembershipRequests,
   rejectMembershipRequest,
 } from "@/data/membership"
+import { createNotification } from "@/data/notification"
 
 // メンバーシップリクエスト処理関数
 export const handleMembershipRequest = async (
@@ -61,15 +63,8 @@ export const handleMembershipRequest = async (
     await createMembershipRequest(userId, circleId, requestType)
 
     // サークル情報とオーナー情報を取得
-    const ownerUser = await getCircleOwner(circleId)
-    // const circle = await getCircleById(circleId)
-
-    if (!ownerUser?.user.email) {
-      return {
-        success: false,
-        message: "サークルオーナーのメールアドレスが見つかりません。",
-      }
-    }
+    const ownerUsers = await getCircleOwner(circleId)
+    const circle = await getCircleById(circleId)
 
     if (!session.user.accessToken) {
       return {
@@ -78,21 +73,13 @@ export const handleMembershipRequest = async (
       }
     }
 
-    /* if (session.user.accessToken) {
-      // メール送信
-      const mailContent = `
-<p>${ownerUser?.user.name}さん。こんにちは。</p>
-<p>${circle?.name}に${session.user.name}さんからの${requestType === "join" ? "入会" : "退会"}申請が届いています。</p>
-<br/>
-<p><a href="https://circlia.vercel.app/circles/${circle?.id}/members">申請を許可する</a></p>
-`
-      await sendMail(
-        session.user.accessToken,
-        ownerUser.user.email,
-        `サークルメンバー${requestType === "join" ? "入会" : "退会"}申請が届いています。`,
-        mailContent,
-      )
-    } */
+    await createNotification(
+      "CIRCLE_INVITE",
+      `${circle?.name}への${requestType === "join" ? "入会" : "退会"}申請`,
+      `${circle?.name}に${session.user.name}さんからの${requestType === "join" ? "入会" : "退会"}申請が届いています。`,
+      ownerUsers.map((user) => user.userId),
+      circle?.id,
+    )
 
     return { success: true, message: "申請が成功しました。" }
   } catch (error) {
@@ -201,7 +188,7 @@ export const handleMembershipRequestAction = async (
     if (!isAdmin) {
       return { success: false, message: "サークルの管理者ではありません。" }
     }
-    // const circle = await getCircleById(circleId)
+    const circle = await getCircleById(circleId)
     // 承認または拒否処理
     if (action === "approve") {
       // 承認と共に対象となるユーザーID（申請者のID）を取得
@@ -209,27 +196,17 @@ export const handleMembershipRequestAction = async (
         requestId,
         adminUserId,
       )
-      // const targetUser = await getUserById(targetUserId)
 
       // リクエストタイプに応じて入会/退会処理を行う
       if (requestType === "join") {
         await addMemberToCircle(targetUserId, circleId, 2) // 対象ユーザーをメンバーに追加
-        /*
-      if (session.user.accessToken) {
-          // メール送信
-          const mailContent = `
-<p>${targetUser?.name}さん。こんにちは。</p>
-<p>${circle?.name}への入会が完了しました。</p>
-<br/>
-<p><a href="https://circlia.vercel.app/circles/${circle?.id}/members">サークルを見る</a></p>
-    `
-          await sendMail(
-            session.user.accessToken,
-            targetUser?.email || "",
-            `${circle?.name}への入会が完了しました。`,
-            mailContent,
-          )
-        } */
+        await createNotification(
+          "CIRCLE_INVITE",
+          `${circle?.name}への入会完了`,
+          `${circle?.name}への入会が完了しました。`,
+          [targetUserId],
+          circle?.id,
+        )
         return {
           success: true,
           message: "入会申請を承認しました。メンバーに追加しました。",
