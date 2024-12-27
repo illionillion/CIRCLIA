@@ -2,6 +2,7 @@
 
 import {
   getNotificationsByUserId,
+  markAllNotificationAsRead,
   markNotificationAsRead,
 } from "@/data/notification"
 
@@ -21,6 +22,21 @@ export async function markNotificationAsReadAction(
     return { success: true }
   } else {
     return { success: false, error: "Failed to mark notification as read" }
+  }
+}
+
+/**
+ * 全ての通知を既読にするサーバーアクション
+ * @param userId string - ユーザーID
+ * @returns Promise<Response> - 処理結果を含むレスポンス
+ */
+export async function markAllNotificationAsReadAction(userId: string) {
+  const success = await markAllNotificationAsRead(userId)
+
+  if (success) {
+    return { success: true }
+  } else {
+    return { success: false, error: "Failed to mark all notification as read" }
   }
 }
 
