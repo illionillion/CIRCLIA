@@ -180,17 +180,27 @@ export const AppLayout: FC<{
         backdropFilter="auto"
         backdropSaturate="180%"
       >
-        <IconButton
-          w="50px"
-          h="50px"
-          justifyContent="center"
-          alignItems="center"
-          as={Link}
-          variant="ghost"
-          href="/notifications"
-          icon={<BellIcon fontSize="2xl" />}
-          title="通知"
-        />
+        <Indicator
+          label={unreadCount}
+          showZero={false}
+          offset={4}
+          ping
+          pingScale={1.4}
+          withBorder
+          size="sm"
+        >
+          <IconButton
+            w="50px"
+            h="50px"
+            justifyContent="center"
+            alignItems="center"
+            as={Link}
+            variant="ghost"
+            href="/notifications"
+            icon={<BellIcon fontSize="2xl" />}
+            title="通知"
+          />
+        </Indicator>
         <IconButton
           w="50px"
           h="50px"
