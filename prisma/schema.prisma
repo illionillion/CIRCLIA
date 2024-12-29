@@ -25,6 +25,7 @@ model User {
     profileText     String? // Optional: Markdown profile text
     instructorFlag  Boolean  @default(false) // Indicates if the user is an instructor
     emailVerified   Boolean? @default(false)
+    subscription   Json?    // サブスクリプション情報を保存
 
     accounts            Account[] // One-to-many relationship with Account (for OAuth)
     CircleMember        CircleMember[]

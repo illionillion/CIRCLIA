@@ -28,6 +28,7 @@ CIRCLE_THREAD CIRCLE_THREAD
     String profileText "❓"
     Boolean instructorFlag
     Boolean emailVerified "❓"
+    Json subscription "❓"
     }
 
 

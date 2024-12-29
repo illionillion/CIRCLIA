@@ -1,10 +1,12 @@
 "use server"
 
+import type { InputJsonValue} from "@prisma/client/runtime/library";
 import {
   getNotificationsByUserId,
   markAllNotificationAsRead,
   markNotificationAsRead,
 } from "@/data/notification"
+import { db } from "@/utils/db"
 
 /**
  * 通知を既読にするサーバーアクション
@@ -42,4 +44,25 @@ export async function markAllNotificationAsReadAction(userId: string) {
 
 export const getNotificationsByUserIdAction = async (userId: string) => {
   return await getNotificationsByUserId(userId)
+}
+
+export const saveSubscription = async (
+  userId: string,
+  subscription: PushSubscriptionJSON,
+) => {
+  try {
+    const parsedSubscription = JSON.parse(
+      JSON.stringify(subscription),
+    ) as InputJsonValue
+
+    await db.user.update({
+      where: { id: userId },
+      data: { subscription: parsedSubscription },
+    })
+
+    return { success: true, message: "サブスクリプションを保存しました。" }
+  } catch (error) {
+    console.error("サブスクリプション保存エラー:", error)
+    return { success: false, message: "サブスクリプション保存に失敗しました。" }
+  }
 }

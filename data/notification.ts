@@ -1,5 +1,7 @@
 import type { NotificationType } from "@prisma/client"
+import type webpush from "web-push"
 import { db } from "@/utils/db"
+import { sendWebPushNotification } from "@/utils/web-push"
 
 /**
  * 全ての通知を既読にする
@@ -125,5 +127,38 @@ export async function createNotification(
     await tx.notificationState.createMany({
       data: notificationStates,
     })
+    // 通知に関連する全ユーザーのサブスクリプション情報を取得
+    const subscriptions = await tx.user.findMany({
+      where: {
+        id: { in: userIds }, // 該当するユーザーID
+        subscription: { not: undefined }, // サブスクリプションが設定されている
+      },
+      select: {
+        id: true,
+        subscription: true,
+      },
+    })
+
+    // Web Push通知を送信
+    for (const user of subscriptions) {
+      try {
+        const payload = {
+          title,
+          body: content || "新しい通知があります",
+          url: `/notifications`, // 通知をクリックしたときの遷移先
+        }
+
+        await sendWebPushNotification(
+          user.subscription as unknown as webpush.PushSubscription,
+          payload,
+        )
+        console.log(`プッシュ通知を送信しました: ユーザーID ${user.id}`)
+      } catch (err) {
+        console.error(
+          `ユーザーID ${user.id} へのプッシュ通知の送信中にエラーが発生しました`,
+          err,
+        )
+      }
+    }
   })
 }
