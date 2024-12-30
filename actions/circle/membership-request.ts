@@ -66,13 +66,6 @@ export const handleMembershipRequest = async (
     const ownerUsers = await getCircleOwner(circleId)
     const circle = await getCircleById(circleId)
 
-    if (!session.user.accessToken) {
-      return {
-        success: false,
-        message: "アクセストークンが取得できませんでした。",
-      }
-    }
-
     await createNotification(
       "CIRCLE_INVITE",
       `${circle?.name}への${requestType === "join" ? "入会" : "退会"}申請`,
