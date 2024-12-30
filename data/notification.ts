@@ -136,6 +136,7 @@ export async function createNotification(
           const payload = {
             title,
             body: content || "新しい通知があります",
+            icon: "/icon.png",
             url: `/notifications`,
           }
 
