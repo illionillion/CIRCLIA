@@ -2,8 +2,8 @@ import webpush from "web-push"
 
 webpush.setVapidDetails(
   "mailto:your-email@example.com", // 連絡先メールアドレス
-  process.env.VAPID_PUBLIC_KEY || "",
-  process.env.VAPID_PRIVATE_KEY || "",
+  process.env.VAPID_PUBLIC_KEY!,
+  process.env.VAPID_PRIVATE_KEY!,
 )
 
 export const sendWebPushNotification = async (

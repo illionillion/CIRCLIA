@@ -144,6 +144,8 @@ jobs:
       - name: Set up Database
         env:
           DATABASE_URL: postgres://testuser:testpass@localhost:5432/testdb
+          VAPID_PUBLIC_KEY: ""
+          VAPID_PRIVATE_KEY: ""
         run: |
           pnpm migrate
           pnpm generate
