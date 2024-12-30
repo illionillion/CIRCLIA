@@ -105,9 +105,7 @@ export async function createNotification(
   circleId: string | null = null,
   relatedEntityId: string | null = null,
 ) {
-  // トランザクション内で通知と通知状態を同時に作成
   await db.$transaction(async (tx) => {
-    // 通知自体を作成
     const notification = await tx.notification.create({
       data: {
         type,
@@ -118,7 +116,6 @@ export async function createNotification(
       },
     })
 
-    // 通知状態を作成
     const notificationStates = userIds.map((userId) => ({
       userId,
       notificationId: notification.id,
@@ -127,38 +124,33 @@ export async function createNotification(
     await tx.notificationState.createMany({
       data: notificationStates,
     })
-    // 通知に関連する全ユーザーのサブスクリプション情報を取得
-    const subscriptions = await tx.user.findMany({
-      where: {
-        id: { in: userIds }, // 該当するユーザーID
-        subscription: { not: undefined }, // サブスクリプションが設定されている
-      },
-      select: {
-        id: true,
-        subscription: true,
-      },
+
+    // サブスクリプションを取得
+    const subscriptions = await tx.subscriptions.findMany({
+      where: { userId: { in: userIds } },
     })
 
-    // Web Push通知を送信
-    for (const user of subscriptions) {
-      try {
-        const payload = {
-          title,
-          body: content || "新しい通知があります",
-          url: `/notifications`, // 通知をクリックしたときの遷移先
-        }
+    await Promise.all(
+      subscriptions.map(async (sub) => {
+        try {
+          const payload = {
+            title,
+            body: content || "新しい通知があります",
+            url: `/notifications`,
+          }
 
-        await sendWebPushNotification(
-          user.subscription as unknown as webpush.PushSubscription,
-          payload,
-        )
-        console.log(`プッシュ通知を送信しました: ユーザーID ${user.id}`)
-      } catch (err) {
-        console.error(
-          `ユーザーID ${user.id} へのプッシュ通知の送信中にエラーが発生しました`,
-          err,
-        )
-      }
-    }
+          await sendWebPushNotification(
+            sub.subscription as unknown as webpush.PushSubscription,
+            payload,
+          )
+          console.log(`プッシュ通知を送信しました: ユーザーID ${sub.userId}`)
+        } catch (err) {
+          console.error(
+            `ユーザーID ${sub.userId} へのプッシュ通知の送信中にエラーが発生しました`,
+            err,
+          )
+        }
+      }),
+    )
   })
 }

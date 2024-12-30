@@ -1,6 +1,5 @@
 "use server"
 
-import type { InputJsonValue} from "@prisma/client/runtime/library";
 import {
   getNotificationsByUserId,
   markAllNotificationAsRead,
@@ -51,13 +50,32 @@ export const saveSubscription = async (
   subscription: PushSubscriptionJSON,
 ) => {
   try {
-    const parsedSubscription = JSON.parse(
-      JSON.stringify(subscription),
-    ) as InputJsonValue
+    // サブスクリプションをJSON文字列化
+    const subscriptionString = JSON.stringify(subscription)
 
-    await db.user.update({
-      where: { id: userId },
-      data: { subscription: parsedSubscription },
+    // サブスクリプションが既に存在するか確認
+    const existing = await db.subscriptions.findFirst({
+      where: {
+        userId,
+        subscription: {
+          equals: subscriptionString, // JSONフィルタを使用
+        },
+      },
+    })
+
+    if (existing) {
+      return {
+        success: true,
+        message: "サブスクリプションは既に登録されています。",
+      }
+    }
+
+    // 新規登録
+    await db.subscriptions.create({
+      data: {
+        userId,
+        subscription: JSON.parse(subscriptionString), // JSON文字列で保存
+      },
     })
 
     return { success: true, message: "サブスクリプションを保存しました。" }

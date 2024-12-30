@@ -173,6 +173,14 @@ CIRCLE_THREAD CIRCLE_THREAD
     DateTime updatedAt
     }
 
+
+  "Subscriptions" {
+    String id "🗝️"
+    Json subscription
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
     "User" o{--}o "Account" : "accounts"
     "User" o{--}o "CircleMember" : "CircleMember"
     "User" o{--}o "CircleInstructor" : "CircleInstructor"
@@ -184,6 +192,7 @@ CIRCLE_THREAD CIRCLE_THREAD
     "User" o{--}o "Comment" : "comments"
     "User" o{--}o "Album" : "album"
     "User" o{--}o "NotificationState" : "NotificationState"
+    "User" o{--}o "Subscriptions" : "subscriptions"
     "Account" o|--|| "User" : "user"
     "Circle" o{--}o "CircleMember" : "CircleMember"
     "Circle" o{--}o "CircleInstructor" : "CircleInstructor"
@@ -221,4 +230,5 @@ CIRCLE_THREAD CIRCLE_THREAD
     "Notification" o{--}o "NotificationState" : "NotificationState"
     "NotificationState" o|--|| "User" : "user"
     "NotificationState" o|--|| "Notification" : "notification"
+    "Subscriptions" o|--|| "User" : "user"
 ```
