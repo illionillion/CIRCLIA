@@ -2,11 +2,13 @@ import type { BackCircleForm } from "@/schema/circle"
 import { db } from "@/utils/db"
 
 export const getCircleOwner = async (circleId: string) => {
-  return await db.circleMember.findFirst({
+  return await db.circleMember.findMany({
     where: {
       circleId,
       leaveDate: null,
-      roleId: 0,
+      roleId: {
+        in: [0, 1],
+      },
     },
     include: {
       user: {

@@ -1,4 +1,4 @@
-import type { FC} from "@yamada-ui/react";
+import type { FC } from "@yamada-ui/react"
 import { Icon } from "@yamada-ui/react"
 
 export const MicrosoftIcon: FC = () => (

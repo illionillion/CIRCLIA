@@ -1,31 +1,48 @@
 "use client"
 import type { FC } from "@yamada-ui/react"
-import { Center, Text, VStack } from "@yamada-ui/react"
+import { Center, Text, useSafeLayoutEffect, VStack } from "@yamada-ui/react"
 import { PaginationList } from "../navigation/pagination-list"
 import { NotificationListItem } from "./notification-list-item"
-import type { getAnnouncementsByUserId } from "@/data/announcement"
+import { useNotifications } from "@/provider/notification-provider"
 
 interface NotificationList {
-  announcements: Awaited<ReturnType<typeof getAnnouncementsByUserId>>
+  userId: string
+  preview?: boolean
+  itemsPerPage?: number
 }
 
-export const NotificationList: FC<NotificationList> = ({ announcements }) => (
-  <PaginationList data={announcements} itemsPerPage={3}>
-    {(announcements) => (
-      <VStack w="full" h="full" overflowY="auto" gap="md">
-        {announcements.length ? (
-          announcements.map((announcement) => (
-            <NotificationListItem
-              announcement={announcement}
-              key={announcement.id}
-            />
-          ))
-        ) : (
-          <Center w="full" h="full">
-            <Text>お知らせはありません</Text>
-          </Center>
-        )}
-      </VStack>
-    )}
-  </PaginationList>
-)
+export const NotificationList: FC<NotificationList> = ({
+  userId,
+  preview,
+  itemsPerPage,
+}) => {
+  const { notifications, refreshNotifications } = useNotifications()
+
+  useSafeLayoutEffect(() => {
+    refreshNotifications(userId)
+  }, [])
+
+  return (
+    <PaginationList data={notifications} itemsPerPage={itemsPerPage}>
+      {(notifications) => (
+        <VStack w="full" h="full" overflowY="auto" gap="md">
+          {notifications.length ? (
+            notifications.map((notification) => (
+              <NotificationListItem
+                userId={userId}
+                notification={notification}
+                key={notification.id}
+                preview={preview}
+                refreshNotifications={refreshNotifications}
+              />
+            ))
+          ) : (
+            <Center w="full" h="full">
+              <Text>通知はありません</Text>
+            </Center>
+          )}
+        </VStack>
+      )}
+    </PaginationList>
+  )
+}

@@ -37,7 +37,7 @@ export const generateWeekDates = (currentDate: Date) => {
   const startOfWeek = new Date(currentDate)
   const currentDay = currentDate.getDay()
   const offset = currentDay === 0 ? -6 : 1 - currentDay
-  startOfWeek.setDate(currentDate.getDate() + offset) 
+  startOfWeek.setDate(currentDate.getDate() + offset)
 
   const dates = []
   for (let i = 0; i < 7; i++) {
