@@ -25,6 +25,7 @@ model User {
     profileText     String? // Optional: Markdown profile text
     instructorFlag  Boolean  @default(false) // Indicates if the user is an instructor
     emailVerified   Boolean? @default(false)
+    subscription   Json?    // サブスクリプション情報を保存
 
     accounts            Account[] // One-to-many relationship with Account (for OAuth)
     CircleMember        CircleMember[]
@@ -37,6 +38,7 @@ model User {
     comments            Comment[] // User created Comments
     album               Album[] // User created Comments
     NotificationState   NotificationState[] // ユーザーが受け取る通知の状態
+    subscriptions  Subscriptions[] // webpushのサブスクリプション情報
 
     @@index([email]) // Optional: Index on email
 }
@@ -286,4 +288,14 @@ model NotificationState {
     @@unique([userId, notificationId]) // ユーザーと通知の組み合わせはユニーク
     @@index([notificationId]) // notificationIdで検索を効率化
     @@index([userId]) // userIdで検索を効率化
+}
+
+model Subscriptions {
+  id            String   @id @default(uuid())
+  userId        String
+  subscription  Json     // PushSubscriptionオブジェクト全体を保存
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

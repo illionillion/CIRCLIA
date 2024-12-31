@@ -2,6 +2,7 @@
 import type { FC } from "@yamada-ui/react"
 import { Button, Heading, HStack, VStack } from "@yamada-ui/react"
 import { NotificationList } from "../data-display/notification-list"
+import { EnablePushNotificationButton } from "../forms/push-notification-button"
 import { markAllNotificationAsReadAction } from "@/actions/notification"
 import { useNotifications } from "@/provider/notification-provider"
 
@@ -19,12 +20,15 @@ export const NotificationPage: FC<NotificationPageProps> = ({ userId }) => {
   return (
     <VStack w="full" h="full" gap="md" maxW="9xl" m="auto">
       <HStack justifyContent="space-between" p={4}>
-        <Heading as="h2" size="lg">
+        <Heading as="h2" size="lg" textWrap="nowrap">
           通知
         </Heading>
-        <Button colorScheme="riverBlue" onClick={handleClick}>
-          全て既読
-        </Button>
+        <HStack flexWrap="wrap" justifyContent="end">
+          <EnablePushNotificationButton userId={userId} />
+          <Button colorScheme="riverBlue" onClick={handleClick}>
+            全て既読
+          </Button>
+        </HStack>
       </HStack>
       <NotificationList userId={userId} itemsPerPage={5} preview />
     </VStack>

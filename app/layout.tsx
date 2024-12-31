@@ -4,6 +4,7 @@ import { getUserById } from "@/actions/user/user"
 import { auth } from "@/auth"
 import { AppLayout } from "@/components/layouts/app-layout"
 import { AppProvider } from "@/provider"
+import { ServiceWorkerRegister } from "@/utils/add-sw"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -28,6 +29,7 @@ export default async function RootLayout({
   return (
     <html lang="ja">
       <body className={inter.className}>
+        <ServiceWorkerRegister />
         <AppProvider>
           <AppLayout user={user}>{children}</AppLayout>
         </AppProvider>
