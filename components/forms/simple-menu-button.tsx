@@ -10,12 +10,12 @@ import {
 } from "@yamada-ui/react"
 import Link from "next/link"
 
-interface ThreadMenuButtonProps {
+interface SimpleMenuButtonProps {
   editLink: string
   handleDelete: () => void
 }
 
-export const ThreadMenuButton: FC<ThreadMenuButtonProps> = ({
+export const SimpleMenuButton: FC<SimpleMenuButtonProps> = ({
   editLink,
   handleDelete,
 }) => {
