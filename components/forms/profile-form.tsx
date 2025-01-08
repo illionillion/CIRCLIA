@@ -11,19 +11,21 @@ import {
   Heading,
   HStack,
   Label,
+  Loading,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   Snacks,
   Text,
-  Textarea,
   useBoolean,
+  useOS,
   useSafeLayoutEffect,
   useSnacks,
   VStack,
   type FC,
 } from "@yamada-ui/react"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -35,6 +37,7 @@ import {
   UserIconSchema,
 } from "@/schema/user"
 import type { FrontUserProfileForm } from "@/schema/user"
+// import MDEditor from '@uiw/react-md-editor';
 
 interface ProfileForm {
   user: Awaited<ReturnType<typeof getUserById>>
@@ -46,7 +49,6 @@ export const ProfileForm: FC<ProfileForm> = ({ user }) => {
   )
   const [isLoading, { on: start, off: end }] = useBoolean()
   const {
-    register,
     control,
     handleSubmit,
     watch,
@@ -61,6 +63,15 @@ export const ProfileForm: FC<ProfileForm> = ({ user }) => {
   })
   const { snack, snacks } = useSnacks()
   const router = useRouter()
+  const os = useOS()
+  const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
+    ssr: false,
+    loading: () => (
+      <Center w="full" h="full">
+        <Loading />
+      </Center>
+    ),
+  })
   const onSubmit = async (data: FrontUserProfileForm) => {
     start()
     if (watch("profileImageUrl") && !data.profileImageUrl) {
@@ -200,11 +211,23 @@ export const ProfileForm: FC<ProfileForm> = ({ user }) => {
       >
         <Label flexGrow={1}>自己紹介</Label>
         <VStack w="auto">
-          <Textarea
-            placeholder="例）よろしくお願いします"
-            minH="md"
-            autosize
-            {...register("profileText")}
+          <Controller
+            name="profileText"
+            control={control}
+            render={({ field: { value, onChange } }) => (
+              <MDEditor
+                value={value}
+                onChange={onChange}
+                height={300}
+                data-color-mode="light"
+                preview={os === "ios" || os === "android" ? "edit" : "live"}
+                previewOptions={{
+                  wrapperElement: {
+                    "data-color-mode": "light",
+                  },
+                }}
+              />
+            )}
           />
           {errors.profileText ? (
             <ErrorMessage mt={0}>{errors.profileText.message}</ErrorMessage>
