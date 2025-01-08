@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: "CIRCLIA",
   icons: {
     icon: "/favicon.ico",
-    apple: "/icon.png",
+    apple: "/images/icon.png",
   },
   manifest: "/manifest.json",
   themeColor: "#ffffff", // テーマカラー
