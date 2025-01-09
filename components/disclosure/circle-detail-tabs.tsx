@@ -49,12 +49,12 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
   currentAlbum,
   fetchData,
 }) => {
-  const userRole = circle?.members?.find((member) => member.id === userId)?.role
+  const userRole = circle?.members.find((member) => member.id === userId)?.role
   const tabIndex = handlingTab(tabKey || "")
   const { data } = membershipRequests
 
   return (
-    <Tabs index={tabIndex} w="full" h="full">
+    <Tabs index={tabIndex} w="full" maxW="9xl" h="full" m="auto">
       <TabList overflowX="auto" overflowY="hidden">
         <Tab
           flexShrink={0}
@@ -80,7 +80,7 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
             placement="right"
             offset={-1.5}
             label={data?.length}
-            isDisabled={!data?.length || !isAdmin}
+            disabled={!data?.length || !isAdmin}
           >
             メンバー一覧
           </Indicator>

@@ -18,7 +18,7 @@ import Link from "next/link"
 import { useState } from "react"
 import { getWeeklyActivitiesActioins } from "@/actions/circle/fetch-activity"
 import type { getWeeklyActivities } from "@/data/activity"
-import { parseMonthDate } from "@/utils/format"
+import { parseMonthDate, getDayColor, generateWeekDates } from "@/utils/format"
 
 interface WeekCalendarProps {
   userId: string
@@ -32,26 +32,9 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
   const [calendarData, setCalendarData] =
     useState<Awaited<ReturnType<typeof getWeeklyActivities>>>(initialData)
-  const dates = Object.keys(calendarData)
-  const todayKey = parseMonthDate(new Date())
 
-  // 前の週へ移動
-  const prevDate = () => {
-    setCurrentDate((prev) => {
-      const newDate = new Date(prev)
-      newDate.setDate(prev.getDate() - 7) // 1週間前
-      return newDate
-    })
-  }
-
-  // 次の週へ移動
-  const nextDate = () => {
-    setCurrentDate((prev) => {
-      const newDate = new Date(prev)
-      newDate.setDate(prev.getDate() + 7) // 1週間後
-      return newDate
-    })
-  }
+  // 現在の日付から週の日付配列を生成
+  const weekDates = generateWeekDates(currentDate)
 
   // 今日の週へ移動
   const goToToday = () => {
@@ -62,7 +45,16 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
   const fetchData = async () => {
     const data = await getWeeklyActivitiesActioins(userId, currentDate)
     if (data) {
-      setCalendarData(data)
+      setCalendarData((prevData) => {
+        const mergedData = { ...prevData }
+        for (const [key, value] of Object.entries(data)) {
+          mergedData[key] = {
+            ...(mergedData[key] || {}),
+            ...value,
+          }
+        }
+        return mergedData
+      })
     }
   }
 
@@ -70,6 +62,24 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
   useSafeLayoutEffect(() => {
     fetchData()
   }, [currentDate])
+
+  // 前の週へ移動する関数
+  const PreviousWeek = () => {
+    setCurrentDate((prev) => {
+      const newDate = new Date(prev)
+      newDate.setDate(prev.getDate() - 7)
+      return newDate
+    })
+  }
+
+  // 次の週へ移動する関数
+  const NextWeek = () => {
+    setCurrentDate((prev) => {
+      const newDate = new Date(prev)
+      newDate.setDate(prev.getDate() + 7)
+      return newDate
+    })
+  }
 
   return (
     <GridItem
@@ -85,19 +95,16 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
             カレンダー
           </Heading>
           <HStack>
-            <Button colorScheme="riverBlue" onClick={prevDate}>
+            <Button colorScheme="riverBlue" onClick={PreviousWeek}>
               前の週
             </Button>
-            <Button colorScheme="riverBlue" onClick={nextDate}>
+            <Button colorScheme="riverBlue" onClick={NextWeek}>
               次の週
             </Button>
           </HStack>
           <HStack>
             <Text>{currentDate.getFullYear()}</Text>
-            <Button
-              colorScheme="riverBlue"
-              onClick={goToToday}
-            >
+            <Button colorScheme="riverBlue" onClick={goToToday}>
               今日
             </Button>
           </HStack>
@@ -106,35 +113,49 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
       <CardBody>
         <ScrollArea w="full" h="full" mb="md" as={Card}>
           <HStack w="full" h="full" gap={0}>
-            {dates.map((date, index) => (
-              <VStack
-                key={date}
-                h="full"
-                flex={1}
-                borderRightWidth={index < dates.length - 1 ? 1 : 0}
-                p="md"
-                minW="2xs"
-                bg="white"
-              >
-                <Box
-                  fontWeight={date === todayKey ? "bold" : "normal"}
-                  fontSize={date === todayKey ? "lg" : "md"}
+            {weekDates.map((date, index) => {
+              const dayKey = parseMonthDate(date)
+              return (
+                <VStack
+                  key={dayKey}
+                  h="full"
+                  flex={1}
+                  borderRightWidth={index < weekDates.length - 1 ? 1 : 0}
+                  p="md"
+                  minW="2xs"
+                  bg="white"
                 >
-                  {calendarData[date].date}
-                </Box>
-                <VStack h="sm" overflowY="auto">
-                  {calendarData[date].activities.map((activity, i) => (
-                    <Tag
-                      key={i}
-                      as={Link}
-                      href={`/circles/${activity.circle.id}/activities/${activity.id}`}
-                    >
-                      {activity.title}
-                    </Tag>
-                  ))}
+                  <Box
+                    fontWeight={
+                      dayKey === parseMonthDate(new Date()) ? "bold" : "normal"
+                    }
+                    fontSize={
+                      dayKey === parseMonthDate(new Date()) ? "lg" : "md"
+                    }
+                    color={getDayColor(date.getDay())}
+                  >
+                    {date.toLocaleDateString("ja-JP", {
+                      month: "numeric",
+                      day: "numeric",
+                      weekday: "short", // 曜日を追加
+                    })}
+                  </Box>
+                  <VStack h="sm" overflowY="auto">
+                    {(calendarData[dayKey]?.activities || []).map(
+                      (activity, i) => (
+                        <Tag
+                          key={i}
+                          as={Link}
+                          href={`/circles/${activity.circle.id}/activities/${activity.id}`}
+                        >
+                          {activity.title}
+                        </Tag>
+                      ),
+                    )}
+                  </VStack>
                 </VStack>
-              </VStack>
-            ))}
+              )
+            })}
           </HStack>
         </ScrollArea>
       </CardBody>

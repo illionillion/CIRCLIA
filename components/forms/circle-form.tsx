@@ -28,6 +28,9 @@ import {
   ModalBody,
   ModalFooter,
   Text,
+  useOS,
+  useSnacks,
+  Snacks,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -52,7 +55,7 @@ const DeleteCircleButton: FC<{ circleId: string; userId: string }> = ({
   circleId,
   userId,
 }) => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { open, onOpen, onClose } = useDisclosure()
   const [isDone, { on: doneOn, off: doneOff }] = useBoolean()
   const router = useRouter()
   const handleDelete = async () => {
@@ -81,7 +84,7 @@ const DeleteCircleButton: FC<{ circleId: string; userId: string }> = ({
 
       {/* 削除確認モーダル  */}
       <Modal
-        isOpen={isOpen}
+        open={open}
         onClose={isDone ? () => router.push("/circles") : onClose}
       >
         <ModalOverlay />
@@ -135,7 +138,9 @@ export const CircleForm: FC<CircleFormProps> = ({
   mode,
   instructors,
 }) => {
-  const user = circle?.members?.find((member) => member.id === userId)
+  const { snack, snacks } = useSnacks()
+  const user = circle?.members.find((member) => member.id === userId)
+  const os = useOS()
   const [isLoading, { on: start, off: end }] = useBoolean()
   const [imagePreview, setImagePreview] = useState<string>(
     circle?.imagePath || "",
@@ -156,9 +161,8 @@ export const CircleForm: FC<CircleFormProps> = ({
       location: circle?.location,
       activityDay: circle?.activityDay || "",
       imagePath: circle?.imagePath,
-      tags: circle?.tags?.map((tag) => tag.tagName),
-      instructors:
-        circle?.instructors?.map((instructor) => instructor.id) || [],
+      tags: circle?.tags.map((tag) => tag.tagName),
+      instructors: circle?.instructors.map((instructor) => instructor.id) || [],
     },
   })
 
@@ -193,6 +197,9 @@ export const CircleForm: FC<CircleFormProps> = ({
         } else {
           // サークル作成に失敗した場合の処理
           console.error("サークルの作成に失敗しました。", error)
+          if (typeof error === "string") {
+            snack({ title: error, status: "error" })
+          }
           end()
         }
       } else if (mode === "edit") {
@@ -209,6 +216,7 @@ export const CircleForm: FC<CircleFormProps> = ({
         } else {
           // サークル更新に失敗した場合の処理
           console.error("サークルの更新に失敗しました。", error)
+          snack({ title: error, status: "error" })
           end()
         }
       }
@@ -271,7 +279,11 @@ export const CircleForm: FC<CircleFormProps> = ({
             control={control}
             render={({ field: { ref, name, onChange, onBlur } }) => (
               <HStack w="full" justifyContent="center">
-                <Tooltip label="画像を選択" placement="bottom">
+                <Tooltip
+                  label="画像を選択"
+                  placement="bottom"
+                  disabled={os === "ios" || os === "macos"}
+                >
                   <FileButton
                     {...{ ref, name, onChange, onBlur }}
                     w="16"
@@ -281,11 +293,15 @@ export const CircleForm: FC<CircleFormProps> = ({
                     bg="gray.100"
                     onChange={onChange}
                     icon={<CameraIcon fontSize="5xl" color="gray" />}
-                    isRounded
+                    fullRounded
                     variant="outline"
                   />
                 </Tooltip>
-                <Tooltip label="画像を削除" placement="bottom">
+                <Tooltip
+                  label="画像を削除"
+                  placement="bottom"
+                  disabled={os === "ios" || os === "macos"}
+                >
                   <IconButton
                     w="16"
                     h="16"
@@ -293,7 +309,7 @@ export const CircleForm: FC<CircleFormProps> = ({
                     variant="outline"
                     onClick={onResetImage}
                     icon={<TrashIcon fontSize="5xl" />}
-                    isRounded
+                    fullRounded
                   />
                 </Tooltip>
               </HStack>
@@ -472,6 +488,7 @@ export const CircleForm: FC<CircleFormProps> = ({
               )}
             </VStack>
           </FormControl>
+          <Snacks snacks={snacks} />
           <Center gap="md" justifyContent="end">
             <Button
               as={Link}
@@ -480,7 +497,7 @@ export const CircleForm: FC<CircleFormProps> = ({
             >
               キャンセル
             </Button>
-            <Button type="submit" isLoading={isLoading} colorScheme="riverBlue">
+            <Button type="submit" loading={isLoading} colorScheme="riverBlue">
               {mode === "create" ? "作成" : "更新"}
             </Button>
           </Center>

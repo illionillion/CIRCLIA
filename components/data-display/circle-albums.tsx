@@ -1,11 +1,6 @@
 "use client"
 import { Carousel, CarouselSlide } from "@yamada-ui/carousel"
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  EllipsisIcon,
-  PlusIcon,
-} from "@yamada-ui/lucide"
+import { ArrowLeftIcon, ArrowRightIcon, PlusIcon } from "@yamada-ui/lucide"
 import type { FC } from "@yamada-ui/react"
 import {
   Button,
@@ -15,15 +10,10 @@ import {
   GridItem,
   Heading,
   HStack,
-  IconButton,
   Image,
   LinkBox,
   LinkOverlay,
   Loading,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Snacks,
   Text,
   useBoolean,
@@ -33,6 +23,7 @@ import {
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useState } from "react"
+import { SimpleMenuButton } from "../forms/simple-menu-button"
 import { AlbumCard } from "./album-card"
 import {
   handleDeleteAlbum,
@@ -53,6 +44,7 @@ interface CircleAlbums {
 export const CircleAlbums: FC<CircleAlbums> = ({
   userId,
   circleId,
+  isMember,
   isAdmin,
   currentAlbum: album,
 }) => {
@@ -88,22 +80,25 @@ export const CircleAlbums: FC<CircleAlbums> = ({
   }, [])
   return (
     <VStack w="full" h="full">
-      <HStack justifyContent="end">
-        <Button
-          as={Link}
-          href={`/circles/${circleId}/album/create`}
-          leftIcon={<PlusIcon fontSize="2xl" />}
-          colorScheme="riverBlue"
-        >
-          作成
-        </Button>
-      </HStack>
+      {isMember && (
+        <HStack justifyContent="end">
+          <Button
+            as={Link}
+            href={`/circles/${circleId}/album/create`}
+            startIcon={<PlusIcon fontSize="2xl" />}
+            colorScheme="riverBlue"
+          >
+            作成
+          </Button>
+        </HStack>
+      )}
       <Snacks snacks={snacks} />
       {currentAlbum ? (
         <AlbumCard
           userId={userId}
           circleId={circleId}
           isAdmin={isAdmin}
+          isMember={isMember}
           currentAlbum={currentAlbum}
           handleDelete={handleDelete}
         />
@@ -172,29 +167,11 @@ export const CircleAlbums: FC<CircleAlbums> = ({
                     </Heading>
                     <HStack ml="auto">
                       <Text>{parseDate(album.createdAt)}</Text>
-                      {isAdmin || album.createdBy === userId ? (
-                        <Menu>
-                          <MenuButton
-                            as={IconButton}
-                            icon={<EllipsisIcon fontSize="2xl" />}
-                            variant="outline"
-                            isRounded
-                          />
-                          <MenuList>
-                            <MenuItem
-                              as={Link}
-                              href={`/circles/${circleId}/album/${album.id}/edit`}
-                            >
-                              編集
-                            </MenuItem>
-                            <MenuItem
-                              color="red"
-                              onClick={() => handleDelete(album.id)}
-                            >
-                              削除
-                            </MenuItem>
-                          </MenuList>
-                        </Menu>
+                      {isAdmin || (album.createdBy === userId && isMember) ? (
+                        <SimpleMenuButton
+                          editLink={`/circles/${circleId}/album/${album.id}/edit`}
+                          handleDelete={() => handleDelete(album.id)}
+                        />
                       ) : undefined}
                     </HStack>
                   </HStack>

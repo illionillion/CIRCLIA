@@ -57,9 +57,20 @@ export const getActivitiesByMonth = async (
   month: number,
   circleId: string,
 ) => {
-  // 月の開始日と終了日を取得
-  const startDate = new Date(year, month - 1, 1)
-  const endDate = new Date(year, month, 0, 23, 59, 59)
+  // 月の開始日と終了日をLuxonで取得し、時差を調整
+  const startDate = DateTime.fromObject(
+    { year, month, day: 1 },
+    { zone: "Asia/Tokyo" },
+  )
+    .toUTC()
+    .toJSDate()
+  const endDate = DateTime.fromObject(
+    { year, month, day: DateTime.local(year, month).daysInMonth },
+    { zone: "Asia/Tokyo" },
+  )
+    .endOf("day")
+    .toUTC()
+    .toJSDate()
 
   // イベントの取得（参加者一覧を含む）
   return await db.activity.findMany({

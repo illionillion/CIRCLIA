@@ -122,6 +122,7 @@ export const getAlbumsByCircleId = async (circleId: string) =>
         },
       },
     },
+    orderBy: [{ updatedAt: "desc" }, { createdAt: "desc" }],
   })
 
 export const getAlbums = async () =>

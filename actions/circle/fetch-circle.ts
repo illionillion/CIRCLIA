@@ -44,7 +44,7 @@ export const getCircleById = async (id: string) => {
       ? {
           ...circle,
           memberCount, // 退会していないメンバーのみカウント
-          members: circle?.CircleMember.map((member) => ({
+          members: circle.CircleMember.map((member) => ({
             id: member.user.id,
             name: member.user.name,
             email: member.user.email,
@@ -54,7 +54,7 @@ export const getCircleById = async (id: string) => {
             joinDate: member.joinDate,
             role: member.role,
           })),
-          instructors: circle?.CircleInstructor.map((instructor) => ({
+          instructors: circle.CircleInstructor.map((instructor) => ({
             id: instructor.user.id,
             name: instructor.user.name,
             email: instructor.user.email,
@@ -62,7 +62,7 @@ export const getCircleById = async (id: string) => {
             studentNumber: instructor.user.studentNumber,
             profileText: instructor.user.profileText,
           })),
-          tags: circle?.CircleTag.map((tag) => ({
+          tags: circle.CircleTag.map((tag) => ({
             id: tag.id,
             tagName: tag.tagName,
           })),

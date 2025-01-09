@@ -1,6 +1,8 @@
 "use server"
 import { auth } from "@/auth"
 import { getMemberByCircleId } from "@/data/circle"
+import { createNotification } from "@/data/notification"
+import { getThreadById } from "@/data/thread"
 import { postComment } from "@/data/thread-comment"
 import type { CommentFormInput } from "@/schema/topic"
 import { CommentFormSchema } from "@/schema/topic"
@@ -16,6 +18,7 @@ export const PostCommentAction = async (
       return { success: false, error: "認証されていません。" }
     }
 
+    const thread = await getThreadById(threadId)
     // サークルメンバーかどうかを確認
     const members = await getMemberByCircleId(circleId)
     const isMember = members?.some((member) => member.id === session.user?.id)
@@ -34,8 +37,16 @@ export const PostCommentAction = async (
     }
 
     const result = await postComment(
-      session?.user?.id || "",
+      session.user.id || "",
       parsedData.data,
+      threadId,
+    )
+    await createNotification(
+      "CIRCLE_THREAD",
+      `スレッドにコメントがつきました`,
+      `${parsedData.data.content}`,
+      [thread?.userId || ""],
+      circleId,
       threadId,
     )
     return { success: true, data: result }

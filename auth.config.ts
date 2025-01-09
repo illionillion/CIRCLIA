@@ -29,7 +29,7 @@ export default {
 
         const isValidPassword = comparePassword(
           data.password,
-          user?.password || "",
+          user.password || "",
         )
 
         if (!isValidPassword) {
@@ -45,7 +45,7 @@ export default {
       issuer: process.env.AUTH_MICROSOFT_ENTRA_ID_ISSUER,
       authorization: {
         params: {
-          scope: "openid profile email offline_access",
+          scope: "openid profile email offline_access User.Read Mail.Send",
           prompt: "login", // キャッシュ問題を抑制
         },
       },

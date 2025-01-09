@@ -95,7 +95,7 @@ export const CircleMembers: FC<CircleMembersProps> = ({
             handleSnack={handleSnack}
           />
         ))}
-        {circle?.members?.map((member) => (
+        {circle?.members.map((member) => (
           <MemberCard
             key={member.id}
             member={member}
