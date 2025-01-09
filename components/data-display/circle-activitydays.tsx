@@ -63,6 +63,7 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
   const fetchActivities = async () => {
     if (!currentMonth) return
     loadingOn()
+    console.log(currentMonth) // デバッグ用
     const { events } = await fetchActivitiesByMonth(
       currentMonth,
       circle?.id || "",
@@ -151,14 +152,32 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
         />
       ) : (
         <>
-          <HStack justifyContent="space-between">
-            <HStack justifyContent="start">
+          <HStack
+            justifyContent="space-between"
+            alignItems="start"
+            flexWrap="wrap"
+          >
+            <HStack justifyContent="start" flexWrap="wrap">
               <MonthPicker
-                w="md"
+                w={{ base: "md", md: "xs", sm: "2xs" }}
                 locale="ja"
                 defaultValue={currentMonth}
                 value={currentMonth}
-                onChange={setCurrentMonth}
+                onChange={(newMonth) => {
+                  if (newMonth) {
+                    const now = new Date()
+                    const updatedDate = new Date(
+                      newMonth.getFullYear(),
+                      newMonth.getMonth(),
+                      now.getDate(),
+                      now.getHours(),
+                      now.getMinutes(),
+                      now.getSeconds(),
+                      now.getMilliseconds(),
+                    )
+                    setCurrentMonth(updatedDate)
+                  }
+                }}
               />
               <HStack>
                 <IconButton
@@ -173,14 +192,16 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
                 />
               </HStack>
             </HStack>
-            <Button
-              as={Link}
-              href={`/circles/${circle?.id}/activities/new`}
-              leftIcon={<PlusIcon fontSize="2xl" />}
-              colorScheme="riverBlue"
-            >
-              追加
-            </Button>
+            {isMember && (
+              <Button
+                as={Link}
+                href={`/circles/${circle?.id}/activities/new`}
+                startIcon={<PlusIcon fontSize="2xl" />}
+                colorScheme="riverBlue"
+              >
+                追加
+              </Button>
+            )}
           </HStack>
           <VStack w="full" h="full">
             {loading ? (
@@ -188,7 +209,7 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
                 <Loading fontSize="xl" />
               </Center>
             ) : activitys && activitys.length > 0 ? (
-              activitys?.map((activity) => (
+              activitys.map((activity) => (
                 <GridItem key={activity.id}>
                   <Card variant="outline" as={LinkBox} bg="white">
                     <CardBody>

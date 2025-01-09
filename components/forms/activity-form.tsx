@@ -334,7 +334,7 @@ export const ActivityForm: FC<ActivityFormProps> = ({
           >
             キャンセル
           </Button>
-          <Button type="submit" isLoading={isLoading} colorScheme="riverBlue">
+          <Button type="submit" loading={isLoading} colorScheme="riverBlue">
             {mode === "create" ? "追加" : "更新"}
           </Button>
         </Center>

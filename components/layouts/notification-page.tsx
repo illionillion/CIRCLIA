@@ -1,45 +1,36 @@
 "use client"
 import type { FC } from "@yamada-ui/react"
-import { Divider, Heading, Text, VStack } from "@yamada-ui/react"
-import { NotificationListItem } from "../data-display/notification-list-item"
-import { PaginationList } from "../navigation/pagination-list"
-import type { getAnnouncementsByUserId } from "@/data/announcement"
+import { Button, Heading, HStack, VStack } from "@yamada-ui/react"
+import { NotificationList } from "../data-display/notification-list"
+import { EnablePushNotificationButton } from "../forms/push-notification-button"
+import { markAllNotificationAsReadAction } from "@/actions/notification"
+import { useNotifications } from "@/provider/notification-provider"
 
 interface NotificationPageProps {
-  announcements: Awaited<ReturnType<typeof getAnnouncementsByUserId>>
+  userId: string
 }
 
-export const NotificationPage: FC<NotificationPageProps> = ({
-  announcements,
-}) => {
+export const NotificationPage: FC<NotificationPageProps> = ({ userId }) => {
+  const { refreshNotifications } = useNotifications()
+  const handleClick = async () => {
+    await markAllNotificationAsReadAction(userId)
+
+    refreshNotifications(userId)
+  }
   return (
-    <PaginationList data={announcements}>
-      {(currentAnnouncements) => (
-        <VStack w="full" h="full" gap="md">
-          <VStack>
-            <Heading as="h2" size="lg">
-              お知らせ
-            </Heading>
-            <Divider
-              w="full"
-              borderWidth="2px"
-              orientation="horizontal"
-              variant="solid"
-            />
-          </VStack>
-          {currentAnnouncements.length ? (
-            currentAnnouncements.map((announcement) => (
-              <NotificationListItem
-                announcement={announcement}
-                key={announcement.id}
-                preview
-              />
-            ))
-          ) : (
-            <Text>お知らせはありません</Text>
-          )}
-        </VStack>
-      )}
-    </PaginationList>
+    <VStack w="full" h="full" gap="md" maxW="9xl" m="auto">
+      <HStack justifyContent="space-between" p={4}>
+        <Heading as="h2" size="lg" textWrap="nowrap">
+          通知
+        </Heading>
+        <HStack flexWrap="wrap" justifyContent="end">
+          <EnablePushNotificationButton userId={userId} />
+          <Button colorScheme="riverBlue" onClick={handleClick}>
+            全て既読
+          </Button>
+        </HStack>
+      </HStack>
+      <NotificationList userId={userId} itemsPerPage={5} preview />
+    </VStack>
   )
 }

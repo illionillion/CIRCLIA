@@ -28,7 +28,7 @@ export const generateStaticParams = async () => {
   if (!circles) return []
 
   // 各サークルのIDとタブキーの組み合わせを生成
-  return circles?.flatMap((circle) =>
+  return circles.flatMap((circle) =>
     list.map((tab_key) => ({
       circle_id: circle.id,
       tab_key: tab_key,

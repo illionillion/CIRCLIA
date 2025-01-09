@@ -116,7 +116,7 @@ export const AlbumForm: FC<AlbumFormProps> = ({ circleId, mode, album }) => {
               <VStack display={{ base: "none", md: "flex" }}>
                 <FileButton
                   {...{ ref, ...rest }}
-                  leftIcon={<ImageIcon />}
+                  startIcon={<ImageIcon />}
                   alignItems="center"
                   multiple
                   accept="image/*"
@@ -185,7 +185,7 @@ export const AlbumForm: FC<AlbumFormProps> = ({ circleId, mode, album }) => {
                   <Text>画像をドラッグ&ドロップ</Text>
                 )}
               </Dropzone>
-              {errors?.images && (
+              {errors.images && (
                 <ErrorMessage mt={0}>{errors.images.message}</ErrorMessage>
               )}
             </>
@@ -230,7 +230,7 @@ export const AlbumForm: FC<AlbumFormProps> = ({ circleId, mode, album }) => {
         >
           キャンセル
         </Button>
-        <Button colorScheme="riverBlue" type="submit" isLoading={isLoading}>
+        <Button colorScheme="riverBlue" type="submit" loading={isLoading}>
           {mode === "create" ? "作成" : "更新"}
         </Button>
       </Center>

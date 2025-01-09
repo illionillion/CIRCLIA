@@ -1,9 +1,15 @@
-import type { User as NextAuthUser } from "next-auth" // `next-auth`からUser型をインポート
+import type { User as NextAuthUser } from "next-auth"
 
 declare module "next-auth" {
   interface User extends NextAuthUser {
-    studentNumber: string // ここでstudentNumberを追加
+    studentNumber: string
     instructorFlag: boolean
     profileImageUrl: string | null
+    accessToken?: string
   }
+
+  // interface Session extends DefaultSession {
+  //   user: User & DefaultSession["user"]
+  //   accessToken?: string
+  // }
 }

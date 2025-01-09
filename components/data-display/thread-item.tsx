@@ -13,7 +13,7 @@ import {
   VStack,
 } from "@yamada-ui/react"
 import Link from "next/link"
-import { ThreadMenuButton } from "../forms/thread-menu-button"
+import { SimpleMenuButton } from "../forms/simple-menu-button"
 import type { getCircleById } from "@/actions/circle/fetch-circle"
 import type { fetchTopics } from "@/actions/circle/thread"
 import { parseFullDate } from "@/utils/format"
@@ -21,6 +21,7 @@ import { parseFullDate } from "@/utils/format"
 interface ThreadItemProps {
   userId: string
   isAdmin: boolean
+  isMember: boolean
   circle: Awaited<ReturnType<typeof getCircleById>>
   topic: Awaited<ReturnType<typeof fetchTopics>>[number]
   handleDelete: (topicId: string, type: TopicType) => Promise<void>
@@ -29,6 +30,7 @@ interface ThreadItemProps {
 export const ThreadItem: FC<ThreadItemProps> = ({
   userId,
   isAdmin,
+  isMember,
   circle,
   topic,
   handleDelete,
@@ -70,10 +72,10 @@ export const ThreadItem: FC<ThreadItemProps> = ({
           </HStack>
           <HStack w="full" justifyContent="end">
             <Text fontSize="sm" color="gray.500">
-              {parseFullDate(topic.createdAt)}
+              {parseFullDate(topic.updatedAt)}
             </Text>
-            {isAdmin || topic.userId === userId ? (
-              <ThreadMenuButton
+            {isAdmin || (topic.userId === userId && isMember) ? (
+              <SimpleMenuButton
                 editLink={`/circles/${circle?.id}/${topic.type}/${topic.id}/edit`}
                 handleDelete={() => handleDelete(topic.id, topic.type)}
               />

@@ -37,15 +37,20 @@ const config: NextAuthConfig = {
         return false
       }
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id // 必須データのみトークンに保存
+      }
+      if (account) {
+        token.accessToken = account.access_token
       }
       return token
     },
     async session({ session, token }) {
-      if (token?.id && typeof token.id === "string") {
+      if (token.id && typeof token.id === "string") {
         session.user.id = token.id as string
+        session.user.email = token.email as string
+        session.user.accessToken = token.accessToken as string
       }
       return session
     },
