@@ -137,7 +137,7 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
                     {date.toLocaleDateString("ja-JP", {
                       month: "numeric",
                       day: "numeric",
-                      weekday: "short", // 曜日を追加
+                      weekday: "short", // 曜日追加
                     })}
                   </Box>
                   <VStack h="sm" overflowY="auto">
