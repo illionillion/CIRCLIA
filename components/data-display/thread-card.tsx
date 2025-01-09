@@ -23,7 +23,7 @@ import {
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
-import { ThreadMenuButton } from "../forms/thread-menu-button"
+import { SimpleMenuButton } from "../forms/simple-menu-button"
 import { PostCommentAction } from "@/actions/circle/thread-comment"
 import type { getThreadById } from "@/data/thread"
 import type { CommentFormInput } from "@/schema/topic"
@@ -99,7 +99,7 @@ export const ThreadCard: FC<ThreadCardProps> = ({
               </VStack>
               <HStack>
                 {isAdmin || (currentThread.userId === userId && isMember) ? (
-                  <ThreadMenuButton
+                  <SimpleMenuButton
                     editLink={`/circles/${circleId}/${currentThread.type}/${currentThread.id}/edit`}
                     handleDelete={() => {
                       handleDelete(currentThread.id, currentThread.type)

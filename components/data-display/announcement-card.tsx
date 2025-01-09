@@ -13,7 +13,7 @@ import {
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { ThreadMenuButton } from "../forms/thread-menu-button"
+import { SimpleMenuButton } from "../forms/simple-menu-button"
 import type { getAnnouncementById } from "@/data/announcement"
 import { parseFullDate } from "@/utils/format"
 
@@ -65,7 +65,7 @@ export const AnnouncementCard: FC<AnnouncementCardProps> = ({
               </HStack>
               {isAdmin ||
               (currentAnnouncement.userId === userId && isMember) ? (
-                <ThreadMenuButton
+                <SimpleMenuButton
                   editLink={`/circles/${circleId}/${currentAnnouncement.type}/${currentAnnouncement.id}/edit`}
                   handleDelete={() => {
                     handleDelete(

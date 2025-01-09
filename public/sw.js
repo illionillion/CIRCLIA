@@ -7,7 +7,7 @@ self.addEventListener("push", (event) => {
   const defaultData = {
     title: "CIRCLIA",
     body: "新しい通知があります。",
-    icon: "/icon.png",
+    icon: "/images/icon.png",
     url: "/notifications", // デフォルト遷移先
   }
 
