@@ -1,5 +1,3 @@
-//calendar/page.tsxからuse clientの分離
-
 "use client"
 
 import { Calendar } from "@yamada-ui/calendar"
@@ -13,6 +11,7 @@ import {
   ListItem,
   Text,
   useSafeLayoutEffect,
+  Button,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useState } from "react"
@@ -42,7 +41,15 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
 
   return (
     <Container p={4}>
-      <Heading mb={4}>カレンダー</Heading>
+      <Heading>カレンダー</Heading>
+      <VStack alignItems="start">
+        <Button
+          onClick={() => onChangeMonth(new Date())}
+          colorScheme="riverBlue"
+        >
+          今日
+        </Button>
+      </VStack>
       <Calendar
         month={currentMonth}
         onChangeMonth={onChangeMonth}

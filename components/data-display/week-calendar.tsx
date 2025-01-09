@@ -53,6 +53,11 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
     })
   }
 
+  // 今日の週へ移動
+  const goToToday = () => {
+    setCurrentDate(new Date())
+  }
+
   // データ取得
   const fetchData = async () => {
     const data = await getWeeklyActivitiesActioins(userId, currentDate)
@@ -87,7 +92,15 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
               次の週
             </Button>
           </HStack>
-          <Text>{currentDate.getFullYear()}</Text>
+          <HStack>
+            <Text>{currentDate.getFullYear()}</Text>
+            <Button
+              colorScheme="riverBlue"
+              onClick={goToToday}
+            >
+              今日
+            </Button>
+          </HStack>
         </HStack>
       </CardHeader>
       <CardBody>
