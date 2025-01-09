@@ -33,7 +33,7 @@ const Edit = async ({ params }: Props) => {
   if (!circle) {
     notFound()
   }
-  const isAdmin = circle?.members?.some(
+  const isAdmin = circle.members.some(
     (member) =>
       member.id === session?.user?.id && [0, 1].includes(member.role.id),
   )

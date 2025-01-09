@@ -1,8 +1,10 @@
 "use server"
+import { getCircleById } from "./fetch-circle"
 import { auth } from "@/auth"
 import {
   addMemberToCircle,
   findActiveMember,
+  getCircleOwner,
   isUserAdmin,
   markMemberAsInactive,
   removeMemberFromCircle,
@@ -14,7 +16,9 @@ import {
   fetchPendingMembershipRequests,
   rejectMembershipRequest,
 } from "@/data/membership"
+import { createNotification } from "@/data/notification"
 
+// メンバーシップリクエスト処理関数
 export const handleMembershipRequest = async (
   userId: string,
   circleId: string,
@@ -31,7 +35,8 @@ export const handleMembershipRequest = async (
         message: "権限がありません。",
       }
     }
-    // 代表が退会申請を送れないようにチェックを追加
+
+    // 代表が退会申請を送れないようにチェック
     if (requestType === "withdrawal") {
       const currentUser = await findActiveMember(userId, circleId)
       if (currentUser && currentUser.roleId === 0) {
@@ -43,6 +48,7 @@ export const handleMembershipRequest = async (
       }
     }
 
+    // 同じリクエストが既に存在するか確認
     const existingRequest = await checkExistingMembershipRequest(
       userId,
       circleId,
@@ -53,7 +59,20 @@ export const handleMembershipRequest = async (
       return { success: false, message: "すでに保留中の申請があります。" }
     }
 
+    // リクエストを作成
     await createMembershipRequest(userId, circleId, requestType)
+
+    // サークル情報とオーナー情報を取得
+    const ownerUsers = await getCircleOwner(circleId)
+    const circle = await getCircleById(circleId)
+
+    await createNotification(
+      "CIRCLE_INVITE",
+      `${circle?.name}への${requestType === "join" ? "入会" : "退会"}申請`,
+      `${circle?.name}に${session.user.name}さんからの${requestType === "join" ? "入会" : "退会"}申請が届いています。`,
+      ownerUsers.map((user) => user.userId),
+      circle?.id,
+    )
 
     return { success: true, message: "申請が成功しました。" }
   } catch (error) {
@@ -162,7 +181,7 @@ export const handleMembershipRequestAction = async (
     if (!isAdmin) {
       return { success: false, message: "サークルの管理者ではありません。" }
     }
-
+    const circle = await getCircleById(circleId)
     // 承認または拒否処理
     if (action === "approve") {
       // 承認と共に対象となるユーザーID（申請者のID）を取得
@@ -174,6 +193,13 @@ export const handleMembershipRequestAction = async (
       // リクエストタイプに応じて入会/退会処理を行う
       if (requestType === "join") {
         await addMemberToCircle(targetUserId, circleId, 2) // 対象ユーザーをメンバーに追加
+        await createNotification(
+          "CIRCLE_INVITE",
+          `${circle?.name}への入会完了`,
+          `${circle?.name}への入会が完了しました。`,
+          [targetUserId],
+          circle?.id,
+        )
         return {
           success: true,
           message: "入会申請を承認しました。メンバーに追加しました。",

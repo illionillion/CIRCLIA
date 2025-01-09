@@ -39,8 +39,10 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
   }, [currentMonth])
 
   return (
-    <Container p={4}>
-      <Heading mb={4} fontSize="2xl">カレンダー</Heading>
+    <Container maxW="9xl" m="auto" p={4}>
+      <Heading mb={4} fontSize="2xl">
+        カレンダー
+      </Heading>
       <Calendar
         month={currentMonth}
         onChangeMonth={onChangeMonth}
@@ -53,7 +55,7 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
           pointerEvents: "none",
           icon: { display: "none" },
           fontWeight: "bold",
-          fontSize: "2xl", 
+          fontSize: "2xl",
         }}
         tableProps={{
           tableLayout: "fixed",
@@ -61,7 +63,12 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
           border: "1px solid",
           borderColor: "border",
           fontSize: "lg", // テーブル全体の文字サイズを大きく
-          th: { border: "1px solid", borderColor: "border", fontWeight: "bold", fontSize: "lg" }, // ヘッダーセル
+          th: {
+            border: "1px solid",
+            borderColor: "border",
+            fontWeight: "bold",
+            fontSize: "lg",
+          }, // ヘッダーセル
           td: {
             border: "1px solid",
             borderColor: "border",
@@ -71,7 +78,7 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
             textAlign: "center",
             verticalAlign: "top",
             fontWeight: "bold",
-            fontSize: "lg", 
+            fontSize: "lg",
           },
         }}
         dayProps={{
@@ -87,7 +94,7 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
           _hover: {
             bg: "transparent",
           },
-          component: ({ date, isSelected }) => {
+          component: ({ date }) => {
             const isToday =
               date.getFullYear() === new Date().getFullYear() &&
               date.getMonth() === new Date().getMonth() &&
@@ -106,24 +113,25 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
             return (
               <VStack alignItems="center" w="100%" h="100%" overflow="hidden">
                 <Center w="100%">
-                  
                   {isToday ? (
                     <Center
-                    w="100%"
-                    h="100%"
-                    bg={isToday ? "riverBlue.200" : "transparent"}
-                    fontSize="l" 
-                    fontWeight="bold"
-                    color={isSaturday ? "blue.500" : "inherit"} // 土曜日を青色にする
+                      w="100%"
+                      h="100%"
+                      bg={isToday ? "riverBlue.200" : "transparent"}
+                      fontSize="l"
+                      fontWeight="bold"
+                      color={isSaturday ? "blue.500" : "inherit"} // 土曜日を青色にする
                     >
                       {date.getDate()}
                     </Center>
                   ) : (
-                    <Text 
-                    fontSize="l" 
-                    fontWeight="bold"
-                    color={isSaturday ? "blue.500" : "inherit"} // 土曜日を青色にする
-                    > {/* 通常日付 */}
+                    <Text
+                      fontSize="l"
+                      fontWeight="bold"
+                      color={isSaturday ? "blue.500" : "inherit"} // 土曜日を青色にする
+                    >
+                      {" "}
+                      {/* 通常日付 */}
                       {date.getDate()}
                     </Text>
                   )}
@@ -157,8 +165,8 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
                   ))}
                   {hiddenEventCount > 0 && (
                     <Text
-                      fontSize="sm" 
-                      color= "gray.500"
+                      fontSize="sm"
+                      color="gray.500"
                       textAlign="right"
                       mt={0.4}
                       fontWeight="bold"

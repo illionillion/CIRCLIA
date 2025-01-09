@@ -1,5 +1,3 @@
-//signin/page.tsxからuse clientの分離
-
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -17,6 +15,7 @@ import {
 import { signIn } from "next-auth/react"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
+import { MicrosoftIcon } from "../media-and-icons/microsoft-icon"
 import { signin } from "@/actions/auth/signin"
 import { SigninSchema } from "@/schema/auth"
 import type { SigninForm } from "@/schema/auth"
@@ -44,7 +43,13 @@ export const LoginForm = () => {
 
   return (
     <Container m="auto" maxW="4xl" w="full" h="100dvh" as={Center}>
-      <VStack as="form" onSubmit={handleSubmit(onSubmit)}>
+      <VStack
+        as="form"
+        onSubmit={handleSubmit(onSubmit)}
+        borderRadius="lg"
+        boxShadow="0px 4px 20px rgba(0, 0, 0, 0.15)"
+        p="md"
+      >
         <Center>
           <Heading
             fontSize="7xl"
@@ -84,8 +89,7 @@ export const LoginForm = () => {
             type="submit"
             colorScheme="primary"
             width="90%"
-            isLoading={isLoading}
-            mt={6}
+            loading={isLoading}
             bgGradient="linear(to-r, teal.400, blue.500)"
             _hover={{
               bgGradient: "linear(to-r, teal.600, blue.700)",
@@ -93,7 +97,7 @@ export const LoginForm = () => {
             }}
             color="white"
             boxShadow="0px 4px 15px rgba(0, 0, 0, 0.2)"
-            isRounded
+            fullRounded
             transition="all 0.3s ease"
           >
             サインイン
@@ -101,6 +105,17 @@ export const LoginForm = () => {
           <Button
             colorScheme="purple"
             onClick={() => signIn("microsoft-entra-id")}
+            width="90%"
+            bgGradient="linear(to-r, purple.400, pink.500)"
+            _hover={{
+              bgGradient: "linear(to-r, purple.600, pink.700)",
+              transform: "scale(1.05)",
+            }}
+            color="white"
+            boxShadow="0px 4px 15px rgba(0, 0, 0, 0.2)"
+            fullRounded
+            transition="all 0.3s ease"
+            startIcon={<MicrosoftIcon />}
           >
             Microsoftアカウントでサインイン
           </Button>
