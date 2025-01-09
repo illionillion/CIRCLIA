@@ -12,6 +12,7 @@ import {
   Text,
   useSafeLayoutEffect,
   Button,
+  HStack,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useState } from "react"
@@ -40,16 +41,16 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
   }, [currentMonth])
 
   return (
-    <Container maxW="9xl" m="auto" p={4}>
-      <Heading>カレンダー</Heading>
-      <VStack alignItems="start">
+    <Container maxW="9xl" m="auto" p={4} gap={0}>
+      <HStack alignItems="start" gap="lg">
+        <Heading>カレンダー</Heading>
         <Button
           onClick={() => onChangeMonth(new Date())}
           colorScheme="riverBlue"
         >
           今日
         </Button>
-      </VStack>
+      </HStack>
       <Calendar
         month={currentMonth}
         onChangeMonth={onChangeMonth}
