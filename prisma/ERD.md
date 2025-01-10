@@ -57,6 +57,7 @@ CIRCLE_THREAD CIRCLE_THREAD
     DateTime deletedAt "❓"
     String imagePath "❓"
     String activityDay "❓"
+    Float embedding
     }
 
 
