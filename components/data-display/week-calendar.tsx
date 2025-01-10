@@ -95,19 +95,17 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
             カレンダー
           </Heading>
           <HStack>
-            <Button colorScheme="riverBlue" onClick={PreviousWeek}>
-              前の週
-            </Button>
-            <Button colorScheme="riverBlue" onClick={NextWeek}>
-              次の週
-            </Button>
-          </HStack>
-          <HStack>
-            <Text>{currentDate.getFullYear()}</Text>
             <Button colorScheme="riverBlue" onClick={goToToday}>
               今日
             </Button>
+            <Button colorScheme="riverBlue" onClick={PreviousWeek}>
+              &lt;
+            </Button>
+            <Button colorScheme="riverBlue" onClick={NextWeek}>
+              &gt;
+            </Button>
           </HStack>
+          <Text>{currentDate.getFullYear()}</Text>
         </HStack>
       </CardHeader>
       <CardBody>

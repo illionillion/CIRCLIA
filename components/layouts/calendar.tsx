@@ -47,6 +47,7 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
         <Button
           onClick={() => onChangeMonth(new Date())}
           colorScheme="riverBlue"
+          mt={2}
         >
           今日
         </Button>
