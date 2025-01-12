@@ -18,7 +18,8 @@
     "migrate:deploy": "prisma migrate deploy",
     "generate": "prisma generate",
     "seed": "prisma db seed",
-    "studio": "prisma studio"
+    "studio": "prisma studio",
+    "embedding": "tsx --env-file=.env ./scripts/fetch-embedding.ts"
   },
   "keywords": [],
   "author": "",
