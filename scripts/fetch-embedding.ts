@@ -59,6 +59,9 @@ async function fetchEmbeddings(batchSize: number = 5) {
     ),
   )
 
+  // KeywordEmbeddingからデータを取得
+  const embeddings = await db.keywordEmbedding.findMany()
+
   // JSONファイルへの書き出し
   writeFileSync(
     path.join(process.cwd(), "prisma", "seeds", "cache-circle-embeddings.json"),
@@ -67,6 +70,23 @@ async function fetchEmbeddings(batchSize: number = 5) {
       updatedCircles.map((circle) => ({
         circleId: circle.id,
         embedding: circle.embedding,
+      })),
+      null,
+      2,
+    ),
+  )
+  // JSONファイルへの書き出し
+  writeFileSync(
+    path.join(
+      process.cwd(),
+      "prisma",
+      "seeds",
+      "cache-keyword-embeddings.json",
+    ),
+    JSON.stringify(
+      embeddings.map((item) => ({
+        keyword: item.keyword,
+        embedding: item.embedding,
       })),
       null,
       2,

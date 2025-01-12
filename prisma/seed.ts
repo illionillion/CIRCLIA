@@ -6,6 +6,7 @@ import { circleInstructors } from "./seeds/circle-instructors"
 import { circleMemberRole } from "./seeds/circle-member-role"
 import { circleMembers } from "./seeds/circle-members"
 import { circleTags } from "./seeds/circle-tags"
+import { keywordEmbedding } from "./seeds/keyword-embedding"
 import { user } from "./seeds/user"
 import { db } from "@/utils/db"
 
@@ -22,6 +23,7 @@ async function main() {
           circleActivities(),
           circleActivityParticipants(),
           ...updateCircleEmbeddingsFromJSON(),
+          keywordEmbedding(),
         ])
       : await db.$transaction([circleMemberRole()])
 
