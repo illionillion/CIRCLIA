@@ -87,6 +87,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
   const handleSearch = async () => {
     if (mode === 0) {
       setCurrentQuery(query)
+      setData({ links: [], nodes: [] })
       return
     }
 
