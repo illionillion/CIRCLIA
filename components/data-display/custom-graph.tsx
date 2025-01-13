@@ -43,11 +43,11 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
 
   useSafeLayoutEffect(() => {
     data.nodes.forEach((node) => {
-      const image = new Image()
-      image.src =
-        node.imagePath ||
-        "https://user0514.cdnw.net/shared/img/thumb/21830aIMGL99841974_TP_V.jpg"
-      imageRef.current.set(node.id, image)
+      if (node.imagePath) {
+        const image = new Image()
+        image.src = node.imagePath
+        imageRef.current.set(node.id, image)
+      }
     })
   }, [])
 
@@ -105,78 +105,94 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
           const label = node.label || ""
           const fontSize = 12 / globalScale
           ctx.font = `${fontSize}px Sans-Serif`
-          // ラベルの文字幅を計算
           const textWidth = ctx.measureText(label).width
           const textHeight =
             ctx.measureText(label).actualBoundingBoxAscent +
             ctx.measureText(label).actualBoundingBoxDescent
-          const cardWidth = Math.max(60, textWidth + 20) // 最小幅を60pxに設定、余白20px
+          const cardWidth = Math.max(60, textWidth + 20)
           const image = imageRef.current.get(node.id)
-          // カードの高さを画像のアスペクト比を保ちながら調整
           let cardHeight = 0
+
           if (image) {
-            const imageAspectRatio = image.width / image.height // 画像のアスペクト比
-            cardHeight = cardWidth / imageAspectRatio // 横幅に合わせた高さに設定
+            const imageAspectRatio = image.width / image.height
+            cardHeight = cardWidth / imageAspectRatio
+          } else {
+            cardHeight = cardWidth * (2 / 3)
           }
-          // ラベルと説明をカードに含める
-          const totalCardHeight = cardHeight + textHeight + fontSize * 2 // 画像 + ラベル + 説明部分
+
+          const totalCardHeight = cardHeight + textHeight + fontSize * 2
+
           if (node.label === query) {
-            ctx.shadowColor = "rgba(0, 0, 0, 0.3)" // 影の色
-            ctx.shadowBlur = 10 // 影のぼかし
+            ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
+            ctx.shadowBlur = 10
             ctx.shadowOffsetX = 0
-            ctx.shadowOffsetY = 2 // 影のY軸方向のオフセット
-            // キーワードノードの描画
-            const radius = Math.max(20, textWidth / 2 + 10) // 円の半径をテキストの横幅に合わせる
+            ctx.shadowOffsetY = 2
+            const radius = Math.max(20, textWidth / 2 + 10)
             ctx.beginPath()
             ctx.arc(node.x || 0, node.y || 0, radius, 0, 2 * Math.PI, false)
-            ctx.fillStyle = "rgba(0, 255, 0, 0.8)" // 円の色
+            ctx.fillStyle = "rgba(0, 255, 0, 0.8)"
             ctx.fill()
             ctx.fillStyle = "black"
             ctx.textAlign = "center"
             ctx.textBaseline = "middle"
             ctx.fillText(label, node.x || 0, node.y || 0)
-            // バックグラウンドの寸法を円に合わせて設定
-            node.__bckgDimensions = [radius * 2, radius * 2] // 円の直径
-            // 影の設定をリセット
+            node.__bckgDimensions = [radius * 2, radius * 2]
             ctx.shadowColor = "transparent"
             ctx.shadowBlur = 0
             ctx.shadowOffsetX = 0
             ctx.shadowOffsetY = 0
-          } else if (image) {
-            // 影をカード部分にだけ適用
-            ctx.shadowColor = "rgba(0, 0, 0, 0.3)" // 影の色
-            ctx.shadowBlur = 10 // 影のぼかし
+          } else {
+            ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
+            ctx.shadowBlur = 10
             ctx.shadowOffsetX = 0
-            ctx.shadowOffsetY = 5 // 影のY軸方向のオフセット
-            // 左にも右にも影を当てたい
-            // サークルノードの描画 (背景を白に設定)
-            ctx.fillStyle = "white" // 背景を白に設定
+            ctx.shadowOffsetY = 5
+
+            ctx.fillStyle = image ? "white" : "lightgray" // 画像がない場合に薄いグレーを使用
             ctx.fillRect(
               (node.x || 0) - cardWidth / 2,
               (node.y || 0) - totalCardHeight / 2,
               cardWidth,
               totalCardHeight,
             )
-            // 影の設定をクリア
-            ctx.shadowColor = "transparent" // 影をリセット
+
+            ctx.shadowColor = "transparent"
             ctx.shadowBlur = 0
             ctx.shadowOffsetX = 0
             ctx.shadowOffsetY = 0
-            // 画像をカード内に収める（画像の上部をカードの上部に合わせる）
-            ctx.drawImage(
-              image,
-              (node.x || 0) - cardWidth / 2,
-              (node.y || 0) - totalCardHeight / 2,
-              cardWidth,
-              cardHeight,
-            )
-            // サークル名（ラベル）を画像の下に描画
+
+            if (image) {
+              ctx.drawImage(
+                image,
+                (node.x || 0) - cardWidth / 2,
+                (node.y || 0) - totalCardHeight / 2,
+                cardWidth,
+                cardHeight,
+              )
+            } else {
+              const labelBackgroundY =
+                (node.y || 0) + cardHeight / 2 - textHeight / 2 - fontSize
+              ctx.fillStyle = "white"
+              ctx.shadowColor = "rgba(0, 0, 0, 0.2)"
+              ctx.shadowBlur = 6
+              ctx.shadowOffsetY = 5
+              ctx.fillRect(
+                (node.x || 0) - cardWidth / 2,
+                labelBackgroundY,
+                cardWidth,
+                textHeight + fontSize * 2,
+              )
+              ctx.shadowColor = "transparent"
+              ctx.shadowBlur = 0
+              ctx.shadowOffsetX = 0
+              ctx.shadowOffsetY = 0
+              ctx.shadowOffsetY = 0
+            }
+
             ctx.fillStyle = "black"
             ctx.textAlign = "center"
             ctx.textBaseline = "middle"
             ctx.fillText(label, node.x || 0, (node.y || 0) + cardHeight / 2)
-            // バックグラウンドの寸法を再設定
-            node.__bckgDimensions = [cardWidth, totalCardHeight] // 高さをラベルと説明まで含めて設定
+            node.__bckgDimensions = [cardWidth, totalCardHeight]
           }
         }}
         nodePointerAreaPaint={(node: Node, color, ctx) => {
