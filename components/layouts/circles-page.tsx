@@ -125,7 +125,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
         ref={scrollRef}
         w="full"
         maxW="9xl"
-        h="fit-content"
+        h={mode === 0 ? "fit-content" : "full"}
         gap={0}
         m="auto"
       >
