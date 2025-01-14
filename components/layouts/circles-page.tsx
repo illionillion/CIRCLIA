@@ -164,6 +164,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
                   w="5xs"
                   h="7xs"
                   colorScheme="riverBlue"
+                  loading={loading}
                   onClick={handleSearch}
                 >
                   検索
