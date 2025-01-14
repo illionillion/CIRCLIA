@@ -55,17 +55,22 @@ function generateTree(
     })
   })
 
+  // 追加するサークルを保持するためのSet
+  const addedNodes = new Set(topSuggestions.map((suggestion) => suggestion.id))
+
   // 残りのサジェストを子ノードとして追加
   similarities.slice(3).forEach((suggestion) => {
+    // 既に存在するサークルかをチェック
+    if (addedNodes.has(suggestion.id)) return
+
     nodes.push({
       id: suggestion.id,
-      // label: suggestion.name,
       label: `${suggestion.name}: (value: ${suggestion.similarity.toFixed(2)})`,
       name: suggestion.name,
       imagePath: suggestion.imagePath || undefined,
     })
 
-    // 最も類似度の高いルートノードに接続
+    // 最も類似度の高い親ノードを選択
     const closestRoot = topSuggestions.reduce((prev, current) =>
       cosineSimilarity(suggestion.embedding, current.embedding) >
       cosineSimilarity(suggestion.embedding, prev.embedding)
@@ -73,6 +78,7 @@ function generateTree(
         : prev,
     )
 
+    // 最も類似度の高い親ノードと新しいサークルを繋げる
     links.push({
       source: closestRoot.id,
       target: suggestion.id,
@@ -81,6 +87,35 @@ function generateTree(
           2,
         ),
       ),
+    })
+
+    // 新しく追加したサークルをaddedNodesに追加
+    addedNodes.add(suggestion.id)
+
+    // 追加のサークルをさらに評価して追加する
+    const additionalSuggestions = similarities.filter(
+      (s) =>
+        !addedNodes.has(s.id) &&
+        cosineSimilarity(suggestion.embedding, s.embedding) > 0.8, // 閾値を設定（例: 0.8）
+    )
+
+    additionalSuggestions.slice(0, 3).forEach((additional) => {
+      nodes.push({
+        id: additional.id,
+        label: `${additional.name}: (value: ${additional.similarity.toFixed(2)})`,
+        name: additional.name,
+        imagePath: additional.imagePath || undefined,
+      })
+      links.push({
+        source: suggestion.id,
+        target: additional.id,
+        value: Number(
+          cosineSimilarity(additional.embedding, suggestion.embedding).toFixed(
+            2,
+          ),
+        ),
+      })
+      addedNodes.add(additional.id)
     })
   })
 
