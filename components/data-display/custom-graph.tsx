@@ -146,15 +146,16 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
         linkDirectionalArrowColor={(link: Link) =>
           link.value > 0.7 ? "red" : "blue"
         }
-        nodeCanvasObject={(node: Node, ctx, globalScale) => {
+        nodeCanvasObject={(node: Node, ctx) => {
+          const scale = zoomLevel
           const label = node.label || ""
-          const fontSize = 12 / globalScale
+          const fontSize = 12 / scale
           ctx.font = `${fontSize}px Sans-Serif`
           const textWidth = ctx.measureText(label).width
           const textHeight =
             ctx.measureText(label).actualBoundingBoxAscent +
             ctx.measureText(label).actualBoundingBoxDescent
-          const cardWidth = Math.max(60, textWidth + 20)
+          const cardWidth = Math.max(60 / scale, textWidth + 20 / scale)
           const image = imageRef.current.get(node.id)
           let cardHeight = 0
 
@@ -172,7 +173,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
             ctx.shadowBlur = 10
             ctx.shadowOffsetX = 0
             ctx.shadowOffsetY = 2
-            const radius = Math.max(20, textWidth / 2 + 10)
+            const radius = Math.max(20 / scale, textWidth / 2 + 10 / scale)
             ctx.beginPath()
             ctx.arc(node.x || 0, node.y || 0, radius, 0, 2 * Math.PI, false)
             ctx.fillStyle = "#5cc0db"
