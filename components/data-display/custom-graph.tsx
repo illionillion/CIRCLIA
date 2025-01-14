@@ -1,7 +1,7 @@
 "use client"
 
 import type { FC } from "@yamada-ui/react"
-import { useSafeLayoutEffect, ui } from "@yamada-ui/react"
+import { useSafeLayoutEffect, ui, useBoolean } from "@yamada-ui/react"
 import { useRef, useState } from "react"
 import { ForceGraph2D } from "react-force-graph"
 import type { getSuggestions } from "@/actions/suggestion"
@@ -40,6 +40,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
   const imageRef = useRef(new Map<string, HTMLImageElement>())
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
+  const [isDragging, setIsDragging] = useBoolean(false)
 
   useSafeLayoutEffect(() => {
     data.nodes.forEach((node) => {
@@ -83,7 +84,49 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
 
     window.addEventListener("resize", updateDimensions)
     updateDimensions() // 初回にサイズを設定
-    return () => window.removeEventListener("resize", updateDimensions)
+
+    let isMouseDown = false
+    const handleMouseDown = () => {
+      // console.log("handleMouseDown");
+      isMouseDown = true
+    }
+    const handleMouseUp = () => {
+      // console.log("handleMouseUp");
+      isMouseDown = false
+      setIsDragging.off()
+    }
+    const handleMouseMove = () => {
+      // console.log("handleMouseMove");
+      if (isMouseDown) {
+        console.log("moving")
+        setIsDragging.on()
+      }
+    }
+
+    const canvas = containerRef.current?.querySelector("canvas")
+
+    if (canvas) {
+      // 動かない
+      canvas.addEventListener("mousedown", handleMouseDown)
+      canvas.addEventListener("mouseup", handleMouseUp)
+      canvas.addEventListener("pointerdown", handleMouseDown)
+      canvas.addEventListener("pointerup", handleMouseUp)
+      // これだけ動く
+      canvas.addEventListener("mousemove", handleMouseMove)
+      canvas.addEventListener("pointermove", handleMouseMove)
+    }
+
+    return () => {
+      if (canvas) {
+        canvas.removeEventListener("mousedown", handleMouseDown)
+        canvas.removeEventListener("mouseup", handleMouseUp)
+        canvas.removeEventListener("mousemove", handleMouseMove)
+        canvas.removeEventListener("pointerdown", handleMouseDown)
+        canvas.removeEventListener("pointerup", handleMouseUp)
+        canvas.removeEventListener("pointermove", handleMouseMove)
+      }
+      window.removeEventListener("resize", updateDimensions)
+    }
   }, [])
 
   return (
@@ -207,7 +250,9 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
           }
         }}
         onNodeClick={(node) => {
-          if (node.id === "query") {
+          console.log(isDragging)
+
+          if (node.id === "query" || isDragging) {
             return
           }
           // ノードをクリックした際の遷移処理
