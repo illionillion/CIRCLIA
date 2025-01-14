@@ -122,7 +122,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
 
           const totalCardHeight = cardHeight + textHeight + fontSize * 2
 
-          if (node.label === query) {
+          if (node.name === query) {
             ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
             ctx.shadowBlur = 10
             ctx.shadowOffsetX = 0
@@ -130,9 +130,9 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
             const radius = Math.max(20, textWidth / 2 + 10)
             ctx.beginPath()
             ctx.arc(node.x || 0, node.y || 0, radius, 0, 2 * Math.PI, false)
-            ctx.fillStyle = "rgba(0, 255, 0, 0.8)"
+            ctx.fillStyle = "#5cc0db"
             ctx.fill()
-            ctx.fillStyle = "black"
+            ctx.fillStyle = "white"
             ctx.textAlign = "center"
             ctx.textBaseline = "middle"
             ctx.fillText(label, node.x || 0, node.y || 0)

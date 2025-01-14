@@ -45,7 +45,7 @@ function generateTree(
   topSuggestions.forEach((suggestion) => {
     nodes.push({
       id: suggestion.id,
-      label: suggestion.name,
+      label: `${suggestion.name}: (value: ${suggestion.similarity.toFixed(2)})`,
       name: suggestion.name,
     })
     links.push({
@@ -59,7 +59,8 @@ function generateTree(
   similarities.slice(3).forEach((suggestion) => {
     nodes.push({
       id: suggestion.id,
-      label: suggestion.name,
+      // label: suggestion.name,
+      label: `${suggestion.name}: (value: ${suggestion.similarity.toFixed(2)})`,
       name: suggestion.name,
       imagePath: suggestion.imagePath || undefined,
     })

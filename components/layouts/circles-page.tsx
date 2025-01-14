@@ -159,7 +159,13 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
                 onChange={(e) => setQuery(e.currentTarget.value)}
               />
               <InputRightElement w="5xs" pr="xs" clickable>
-                <Button size="md" w="5xs" h="7xs" onClick={handleSearch}>
+                <Button
+                  size="md"
+                  w="5xs"
+                  h="7xs"
+                  colorScheme="riverBlue"
+                  onClick={handleSearch}
+                >
                   検索
                 </Button>
               </InputRightElement>
