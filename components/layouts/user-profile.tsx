@@ -16,6 +16,7 @@ import {
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useSession } from "next-auth/react"
+import rehypeSanitize from "rehype-sanitize"
 import type {
   getCirclesByInstructorId,
   getCirclesByUserId,
@@ -85,6 +86,7 @@ export const UserProfile: FC<UserProfileProps> = ({
               source={user.profileText}
               style={{ width: "100%", background: whiteToken }}
               wrapperElement={{ "data-color-mode": "light" }}
+              rehypePlugins={[rehypeSanitize]}
             />
           </CardBody>
         </Card>
