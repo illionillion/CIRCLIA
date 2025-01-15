@@ -182,6 +182,15 @@ CIRCLE_THREAD CIRCLE_THREAD
     DateTime updatedAt
     }
 
+
+  "KeywordEmbedding" {
+    String id "🗝️"
+    String keyword
+    Float embedding
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
     "User" o{--}o "Account" : "accounts"
     "User" o{--}o "CircleMember" : "CircleMember"
     "User" o{--}o "CircleInstructor" : "CircleInstructor"

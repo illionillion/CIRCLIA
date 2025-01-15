@@ -18,7 +18,8 @@
     "migrate:deploy": "prisma migrate deploy",
     "generate": "prisma generate",
     "seed": "prisma db seed",
-    "studio": "prisma studio"
+    "studio": "prisma studio",
+    "embedding": "tsx --env-file=.env ./scripts/fetch-embedding.ts"
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,7 @@
     "@vercel/speed-insights": "^1.1.0",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.5",
+    "lottie-web": "^5.12.2",
     "luxon": "^3.5.0",
     "match-sorter": "^8.0.0",
     "next": "14.2.21",
@@ -38,6 +40,7 @@
     "prisma": "^5.22.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-force-graph": "^1.45.4",
     "react-hook-form": "^7.53.1",
     "rehype-sanitize": "^6.0.0",
     "web-push": "^3.6.7",
