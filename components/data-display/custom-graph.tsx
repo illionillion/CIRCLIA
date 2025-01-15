@@ -42,6 +42,16 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useBoolean(false)
   const [zoomLevel, setZoomLevel] = useState(1) // ズームレベルを追跡
+  const zoomLevelRef = useRef(1)
+
+  // onZoomハンドラ内ではuseRefの値を更新する
+  const handleZoom = (event: { k: number }) => {
+    zoomLevelRef.current = event.k
+  }
+
+  useSafeLayoutEffect(() => {
+    setZoomLevel(zoomLevelRef.current)
+  }, [zoomLevelRef.current])
 
   useSafeLayoutEffect(() => {
     data.nodes.forEach((node) => {
@@ -134,7 +144,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
     <ui.div w="full" h="full" ref={containerRef}>
       <ForceGraph2D
         ref={graphRef as any}
-        onZoom={(event) => setZoomLevel(event.k)}
+        onZoom={handleZoom}
         width={dimensions.width}
         height={dimensions.height}
         graphData={data}
