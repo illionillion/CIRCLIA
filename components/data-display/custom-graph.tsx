@@ -168,7 +168,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
 
           const totalCardHeight = cardHeight + textHeight + fontSize * 2
 
-          if (node.name === query) {
+          if (node.id === "query") {
             ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
             ctx.shadowBlur = 10
             ctx.shadowOffsetX = 0
