@@ -41,7 +41,6 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useBoolean(false)
-  const [zoomLevel, setZoomLevel] = useState(1) // ズームレベルを追跡
   const zoomLevelRef = useRef(1)
 
   // onZoomハンドラ内ではuseRefの値を更新する
@@ -50,11 +49,9 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
   }
 
   useSafeLayoutEffect(() => {
-    setZoomLevel(zoomLevelRef.current)
-  }, [zoomLevelRef.current])
-
-  useSafeLayoutEffect(() => {
     data.nodes.forEach((node) => {
+      console.log(node)
+
       if (node.imagePath) {
         const image = new Image()
         image.src = node.imagePath
@@ -81,7 +78,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
         return 200
       })
     }
-  }, [data, query, zoomLevel])
+  }, [data, query, zoomLevelRef.current])
 
   useSafeLayoutEffect(() => {
     const updateDimensions = () => {
@@ -152,7 +149,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
         nodeAutoColorBy="id"
         linkWidth={(link: Link) => link.value * 10}
         nodeCanvasObject={(node: Node, ctx) => {
-          const scale = zoomLevel
+          const scale = zoomLevelRef.current
           const label = node.label || ""
           const fontSize = 12 / scale
           ctx.font = `${fontSize}px Sans-Serif`
