@@ -141,11 +141,6 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
         nodeLabel={(node: Node) => node.label || ""}
         nodeAutoColorBy="id"
         linkWidth={(link: Link) => link.value * 10}
-        linkDirectionalArrowLength={6}
-        linkDirectionalArrowRelPos={1}
-        linkDirectionalArrowColor={(link: Link) =>
-          link.value > 0.7 ? "red" : "blue"
-        }
         nodeCanvasObject={(node: Node, ctx) => {
           const scale = zoomLevel
           const label = node.label || ""
