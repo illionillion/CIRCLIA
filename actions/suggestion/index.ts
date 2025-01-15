@@ -11,6 +11,10 @@ function cosineSimilarity(vec1: number[], vec2: number[]): number {
   return dotProduct / (magnitude1 * magnitude2)
 }
 
+const formatNumberToTwoDecimalPlaces = (num: number) => {
+  return Math.floor(num * 100) / 100 // 小数第2位まで切り捨て
+}
+
 const getCirclesEmbeddings = async () =>
   db.circle.findMany({
     where: {
@@ -32,12 +36,14 @@ function generateTree(
   const links: { source: string; target: string; value: number }[] = []
 
   // クエリと各サジェストの類似度を計算
-  const similarities = suggestionsData.map((suggestion) => ({
-    ...suggestion,
-    similarity: cosineSimilarity(queryEmbedding, suggestion.embedding),
-  }))
+  const similarities = suggestionsData
+    .map((suggestion) => ({
+      ...suggestion,
+      similarity: cosineSimilarity(queryEmbedding, suggestion.embedding),
+    }))
+    .filter((suggestion) => suggestion.similarity >= 0.75)
 
-  // 類似度でソート
+  // 類似が高い順でソート
   similarities.sort((a, b) => b.similarity - a.similarity)
 
   // 上位3つをルートノードとして追加
@@ -45,13 +51,13 @@ function generateTree(
   topSuggestions.forEach((suggestion) => {
     nodes.push({
       id: suggestion.id,
-      label: `${suggestion.name}: (value: ${suggestion.similarity.toFixed(2)})`,
+      label: suggestion.name,
       name: suggestion.name,
     })
     links.push({
       source: "query",
       target: suggestion.id,
-      value: Number(suggestion.similarity.toFixed(2)),
+      value: formatNumberToTwoDecimalPlaces(suggestion.similarity),
     })
   })
 
@@ -63,13 +69,6 @@ function generateTree(
     // 既に存在するサークルかをチェック
     if (addedNodes.has(suggestion.id)) return
 
-    nodes.push({
-      id: suggestion.id,
-      label: `${suggestion.name}: (value: ${suggestion.similarity.toFixed(2)})`,
-      name: suggestion.name,
-      imagePath: suggestion.imagePath || undefined,
-    })
-
     // 最も類似度の高い親ノードを選択
     const closestRoot = topSuggestions.reduce((prev, current) =>
       cosineSimilarity(suggestion.embedding, current.embedding) >
@@ -78,14 +77,28 @@ function generateTree(
         : prev,
     )
 
+    const similarityToClosestRoot = cosineSimilarity(
+      suggestion.embedding,
+      closestRoot.embedding,
+    )
+
+    // console.log(`${closestRoot.name}と${suggestion.name}: ${similarityToClosestRoot}`);
+    // 類似度が0.9未満の場合は追加しない
+    if (similarityToClosestRoot < 0.9) return
+
+    nodes.push({
+      id: suggestion.id,
+      label: suggestion.name,
+      name: suggestion.name,
+      imagePath: suggestion.imagePath || undefined,
+    })
+
     // 最も類似度の高い親ノードと新しいサークルを繋げる
     links.push({
       source: closestRoot.id,
       target: suggestion.id,
-      value: Number(
-        cosineSimilarity(suggestion.embedding, closestRoot.embedding).toFixed(
-          2,
-        ),
+      value: formatNumberToTwoDecimalPlaces(
+        cosineSimilarity(suggestion.embedding, closestRoot.embedding),
       ),
     })
 
@@ -96,23 +109,21 @@ function generateTree(
     const additionalSuggestions = similarities.filter(
       (s) =>
         !addedNodes.has(s.id) &&
-        cosineSimilarity(suggestion.embedding, s.embedding) > 0.8, // 閾値を設定（例: 0.8）
+        cosineSimilarity(suggestion.embedding, s.embedding) > 0.9, // 閾値を設定（例: 0.8）
     )
 
     additionalSuggestions.slice(0, 3).forEach((additional) => {
       nodes.push({
         id: additional.id,
-        label: `${additional.name}: (value: ${additional.similarity.toFixed(2)})`,
+        label: additional.name,
         name: additional.name,
         imagePath: additional.imagePath || undefined,
       })
       links.push({
         source: suggestion.id,
         target: additional.id,
-        value: Number(
-          cosineSimilarity(additional.embedding, suggestion.embedding).toFixed(
-            2,
-          ),
+        value: formatNumberToTwoDecimalPlaces(
+          cosineSimilarity(additional.embedding, suggestion.embedding),
         ),
       })
       addedNodes.add(additional.id)
