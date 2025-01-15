@@ -133,6 +133,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
         <VStack
           position="sticky"
           p="md"
+          pb={mode === 0 ? "md" : "0"}
           top={0}
           backgroundImage="/images/white_marble.png"
           backgroundColor="white"
