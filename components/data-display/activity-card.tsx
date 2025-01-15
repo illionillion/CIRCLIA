@@ -103,7 +103,7 @@ export const ActivityCard: FC<ActivityCardProps> = ({
                   bg="white"
                   variant="outline"
                   key={participant.id}
-                  transition={"0.5s"}
+                  transition="0.5s"
                   _hover={{ transform: "scale(1.02)", transition: "0.5s" }}
                 >
                   <CardBody as={LinkBox}>

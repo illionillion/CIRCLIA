@@ -27,7 +27,7 @@ export const CircleCard = memo(
         h="fit-content"
         as={Card}
         background="white"
-        transition={"0.5s"}
+        transition="0.5s"
         _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
       >
         <LinkBox>
