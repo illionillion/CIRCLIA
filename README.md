@@ -17,11 +17,21 @@ NODE_OPTIONS="--max-http-header-size=1280000" # 必要ならもっとサイズ�
 AUTH_MICROSOFT_ENTRA_ID_ID=""
 AUTH_MICROSOFT_ENTRA_ID_SECRET=""
 AUTH_MICROSOFT_ENTRA_ID_ISSUER=""
+VAPID_PUBLIC_KEY=""
+VAPID_PRIVATE_KEY=""
+NEXT_PUBLIC_VAPID_PUBLIC_KEY="" # VAPID_PUBLIC_KEYと同じものを登録する
+OPENAI_API_KEY="" # OpenAIのAPIキー
 ```
 
 `AUTH_MICROSOFT_ENTRA_ID_ID`・`AUTH_MICROSOFT_ENTRA_ID_SECRET`・`AUTH_MICROSOFT_ENTRA_ID_ISSUER`は[ここ](https://entra.microsoft.com/)から作成
 
 手順は[ここ](https://authjs.dev/getting-started/providers/microsoft-entra-id)
+
+`VAPID_PUBLIC_KEY`・`VAPID_PRIVATE_KEY`・`NEXT_PUBLIC_VAPID_PUBLIC_KEY`は以下を実行して出力されたものを貼り付ける
+
+```sh
+pnpm web-push generate-vapid-keys
+```
 
 2. コンテナ（データベース）の起動とマイグレーション
 

@@ -152,4 +152,7 @@ jobs:
       - name: Run Build
         env:
           DATABASE_URL: postgres://testuser:testpass@localhost:5432/testdb
-        run: pnpm run build
+          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          OPENAI_API_KEY: "sk-1234567890"
+        run: pnpm build

@@ -13,18 +13,19 @@ generator erd {
 }
 
 model User {
-    id             String   @id @default(uuid()) // Primary key
-    studentNumber  String // Student number as a string
-    name           String // User's name
-    email          String   @unique // Email, set as unique
-    password       String? // Hashed password (for credentials login)
-    createdAt      DateTime @default(now()) // Creation timestamp
-    updatedAt      DateTime @updatedAt // Updated timestamp
+    id              String   @id @default(uuid()) // Primary key
+    studentNumber   String // Student number as a string
+    name            String // User's name
+    email           String   @unique // Email, set as unique
+    password        String? // Hashed password (for credentials login)
+    createdAt       DateTime @default(now()) // Creation timestamp
+    updatedAt       DateTime @updatedAt // Updated timestamp
     profileImageUrl String?
-    image          String? // Optional: Icon image URL or base64 string
-    profileText    String? // Optional: Markdown profile text
-    instructorFlag Boolean  @default(false) // Indicates if the user is an instructor
-    emailVerified  Boolean? @default(false)
+    image           String? // Optional: Icon image URL or base64 string
+    profileText     String? // Optional: Markdown profile text
+    instructorFlag  Boolean  @default(false) // Indicates if the user is an instructor
+    emailVerified   Boolean? @default(false)
+    subscription   Json?    // サブスクリプション情報を保存
 
     accounts            Account[] // One-to-many relationship with Account (for OAuth)
     CircleMember        CircleMember[]
@@ -35,7 +36,9 @@ model User {
     ActivityParticipant ActivityParticipant[]
     topics              Topic[] // User created Topics
     comments            Comment[] // User created Comments
-    album            Album[] // User created Comments
+    album               Album[] // User created Comments
+    NotificationState   NotificationState[] // ユーザーが受け取る通知の状態
+    subscriptions  Subscriptions[] // webpushのサブスクリプション情報
 
     @@index([email]) // Optional: Index on email
 }
@@ -70,13 +73,14 @@ model Circle {
     deletedAt         DateTime? // Optional: Deletion timestamp for soft deletes
     imagePath         String? // Optional: Circle image URL or base64 string
     activityDay       String? // 活動日
+    embedding         Float[] // エンべディング情報を保存する列
     CircleMember      CircleMember[]
     CircleInstructor  CircleInstructor[] // New relation for instructors
     CircleTag         CircleTag[]
     MembershipRequest MembershipRequest[]
     Activity          Activity[]
-    Album            Album[] // User created Comments
-    topic Topic[]
+    Album             Album[] // User created Comments
+    topic             Topic[]
 
     @@index([name]) // Optional: Index on circle name for fast lookup
 }
@@ -191,8 +195,8 @@ model Topic {
 
     // リレーション
     comments Comment[] @relation("TopicComments")
-    user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    circle Circle @relation(fields: [circleId], references: [id], onDelete: Cascade)
+    user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+    circle   Circle    @relation(fields: [circleId], references: [id], onDelete: Cascade)
 
     @@index([circleId]) // circleIdでインデックスを作成
 }
@@ -217,30 +221,82 @@ enum TopicType {
 }
 
 model Album {
-  id          String        @id @default(uuid()) // プライマリキー
-  title       String         // アルバムのタイトル
-  description String         // アルバムの説明
-  circleId    String         // 外部キー (Circle テーブル)
-  createdBy   String         // 外部キー (User テーブル、アルバム作成者)
-  createdAt   DateTime      @default(now()) // 作成日時
-  updatedAt   DateTime      @updatedAt      // 更新日時
-  deletedAt DateTime? // 論理削除用カラム
-  images      AlbumImage[]   // 画像とのリレーション
+    id          String       @id @default(uuid()) // プライマリキー
+    title       String // アルバムのタイトル
+    description String // アルバムの説明
+    circleId    String // 外部キー (Circle テーブル)
+    createdBy   String // 外部キー (User テーブル、アルバム作成者)
+    createdAt   DateTime     @default(now()) // 作成日時
+    updatedAt   DateTime     @updatedAt // 更新日時
+    deletedAt   DateTime? // 論理削除用カラム
+    images      AlbumImage[] // 画像とのリレーション
 
-  // リレーション
-  circle Circle @relation(fields: [circleId], references: [id], onDelete: Cascade)
-  creator User  @relation(fields: [createdBy], references: [id], onDelete: Cascade)
+    // リレーション
+    circle  Circle @relation(fields: [circleId], references: [id], onDelete: Cascade)
+    creator User   @relation(fields: [createdBy], references: [id], onDelete: Cascade)
 
-  @@index([circleId]) // サークル内での検索を高速化
+    @@index([circleId]) // サークル内での検索を高速化
 }
 
 model AlbumImage {
-  id        String   @id @default(uuid()) // プライマリキー
-  imageUrl  String   // 画像の保存先URL
-  albumId   String   // 外部キー (Album テーブル)
-  createdAt DateTime @default(now()) // 作成日時
-  deletedAt DateTime?
+    id        String    @id @default(uuid()) // プライマリキー
+    imageUrl  String // 画像の保存先URL
+    albumId   String // 外部キー (Album テーブル)
+    createdAt DateTime  @default(now()) // 作成日時
+    deletedAt DateTime?
 
-  // リレーション
-  album Album @relation(fields: [albumId], references: [id], onDelete: Cascade)
+    // リレーション
+    album Album @relation(fields: [albumId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+    id              String           @id @default(uuid())
+    type            NotificationType
+    title           String
+    content         String?
+    circleId        String? // 通知がサークルに関連している場合
+    relatedEntityId String? // 通知に関連するエンティティ (例: 投稿やイベントなど)
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
+
+    // リレーション
+    NotificationState NotificationState[] // 複数のユーザーの通知状態と関連付け
+
+    @@index([circleId]) // circleId での検索を効率化
+    @@index([relatedEntityId]) // relatedEntityId での検索を効率化
+}
+
+enum NotificationType {
+    GENERAL          // 一般的な通知
+    CIRCLE_INVITE    // サークル招待
+    CIRCLE_ANNOUNCEMENT // サークル内お知らせ
+    CIRCLE_THREAD    // サークル内スレッド
+}
+
+model NotificationState {
+    id             String    @id @default(uuid())
+    userId         String // 通知を受け取るユーザー
+    notificationId String // 対象の通知
+    readAt         DateTime? // 既読日時、未読の場合はNULL
+    isDeleted      Boolean   @default(false) // 論理削除フラグ
+    createdAt      DateTime  @default(now())
+    updatedAt      DateTime  @updatedAt
+
+    // リレーション
+    user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+    notification Notification @relation(fields: [notificationId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, notificationId]) // ユーザーと通知の組み合わせはユニーク
+    @@index([notificationId]) // notificationIdで検索を効率化
+    @@index([userId]) // userIdで検索を効率化
+}
+
+model Subscriptions {
+  id            String   @id @default(uuid())
+  userId        String
+  subscription  Json     // PushSubscriptionオブジェクト全体を保存
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

@@ -1,7 +1,9 @@
 "use server"
 
+import { getCircleById } from "./fetch-circle"
 import { auth } from "@/auth"
 import { getMemberByCircleId, isUserAdmin } from "@/data/circle"
+import { createNotification } from "@/data/notification"
 import {
   createThread,
   deleteThread,
@@ -40,9 +42,20 @@ export const submitThread = async (
         error: parsedData.error.errors.map((e) => e.message).join(", "),
       }
     }
+    const circle = await getCircleById(circleId)
 
     // Prismaで新規スレッド作成
     const result = await createThread(parsedData.data, userId, circleId)
+    await createNotification(
+      "CIRCLE_THREAD",
+      `${circle?.name}スレッド - ${parsedData.data.title}`,
+      `${parsedData.data.title}`,
+      members
+        ? members.map((member) => member.id).filter((id) => id !== userId)
+        : [],
+      circleId,
+      result.id,
+    )
     return { success: true, data: result }
   } catch (error) {
     console.error("スレッドの作成に失敗しました:", error)

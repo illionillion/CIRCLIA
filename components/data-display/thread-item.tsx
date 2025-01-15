@@ -13,7 +13,7 @@ import {
   VStack,
 } from "@yamada-ui/react"
 import Link from "next/link"
-import { ThreadMenuButton } from "../forms/thread-menu-button"
+import { SimpleMenuButton } from "../forms/simple-menu-button"
 import type { getCircleById } from "@/actions/circle/fetch-circle"
 import type { fetchTopics } from "@/actions/circle/thread"
 import { parseFullDate } from "@/utils/format"
@@ -81,7 +81,7 @@ export const ThreadItem: FC<ThreadItemProps> = ({
               {parseFullDate(topic.updatedAt)}
             </Text>
             {isAdmin || (topic.userId === userId && isMember) ? (
-              <ThreadMenuButton
+              <SimpleMenuButton
                 editLink={`/circles/${circle?.id}/${topic.type}/${topic.id}/edit`}
                 handleDelete={() => handleDelete(topic.id, topic.type)}
               />

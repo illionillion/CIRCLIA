@@ -15,6 +15,7 @@ import {
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { ActivityMenuButton } from "../forms/activity-menu-button"
+import { GoogleCalendarButton } from "../forms/google-calendar-button"
 import type { getCircleById } from "@/actions/circle/fetch-circle"
 import type { getActivityById } from "@/data/activity"
 import { displayTime } from "@/utils/format"
@@ -131,6 +132,9 @@ export const ActivityCard: FC<ActivityCardProps> = ({
               ))}
             </Grid>
           </VStack>
+          <HStack>
+            <GoogleCalendarButton activity={currentActivity} />
+          </HStack>
         </VStack>
       </CardBody>
     </Card>

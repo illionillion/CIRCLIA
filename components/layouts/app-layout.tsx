@@ -12,6 +12,7 @@ import {
   Heading,
   HStack,
   IconButton,
+  Indicator,
   Menu,
   MenuButton,
   MenuItem,
@@ -26,6 +27,7 @@ import { usePathname } from "next/navigation"
 import { signOut } from "next-auth/react"
 import type { FC, ReactNode } from "react"
 import type { getUserById } from "@/actions/user/user"
+import { useNotifications } from "@/provider/notification-provider"
 
 export const AppLayout: FC<{
   children?: ReactNode
@@ -34,6 +36,8 @@ export const AppLayout: FC<{
   const pathname = usePathname()
   const hRem = useToken("spaces", "12")
   const pbRem = useToken("sizes", "15")
+  const { unreadCount } = useNotifications()
+
   useSafeLayoutEffect(() => {
     if (!user && pathname !== "/signin") {
       signOut({ redirectTo: "/signin" })
@@ -90,18 +94,27 @@ export const AppLayout: FC<{
               title="プロフィール"
               _hover={{ transform: "scale(1.4)" }}
             />
-            <IconButton
-              w="50px"
-              h="50px"
-              justifyContent="center"
-              alignItems="center"
-              as={Link}
-              variant="ghost"
-              href="/notifications"
-              icon={<BellIcon fontSize="2xl" />}
-              title="通知"
-              _hover={{ transform: "scale(1.3)" }}
-            />
+            <Indicator
+              label={unreadCount}
+              showZero={false}
+              offset={4}
+              ping
+              pingScale={1.4}
+              withBorder
+              size="sm"
+            >
+              <IconButton
+                w="50px"
+                h="50px"
+                justifyContent="center"
+                alignItems="center"
+                as={Link}
+                variant="ghost"
+                href="/notifications"
+                icon={<BellIcon fontSize="2xl" />}
+                title="通知"
+              />
+            </Indicator>
             <IconButton
               w="50px"
               h="50px"
@@ -172,18 +185,27 @@ export const AppLayout: FC<{
         backdropFilter="auto"
         backdropSaturate="180%"
       >
-        <IconButton
-          w="50px"
-          h="50px"
-          justifyContent="center"
-          alignItems="center"
-          as={Link}
-          variant="ghost"
-          href="/notifications"
-          icon={<BellIcon fontSize="2xl" />}
-          title="通知"
-          _hover={{ transform: "scale(1.3)" }}
-        />
+        <Indicator
+          label={unreadCount}
+          showZero={false}
+          offset={4}
+          ping
+          pingScale={1.4}
+          withBorder
+          size="sm"
+        >
+          <IconButton
+            w="50px"
+            h="50px"
+            justifyContent="center"
+            alignItems="center"
+            as={Link}
+            variant="ghost"
+            href="/notifications"
+            icon={<BellIcon fontSize="2xl" />}
+            title="通知"
+          />
+        </Indicator>
         <IconButton
           w="50px"
           h="50px"
