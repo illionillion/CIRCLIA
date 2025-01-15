@@ -30,6 +30,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
+import rehypeSanitize from "rehype-sanitize"
 import { updateUserAction, type getUserById } from "@/actions/user/user"
 import {
   BackUserProfileSchema,
@@ -37,7 +38,6 @@ import {
   UserIconSchema,
 } from "@/schema/user"
 import type { FrontUserProfileForm } from "@/schema/user"
-// import MDEditor from '@uiw/react-md-editor';
 
 interface ProfileForm {
   user: Awaited<ReturnType<typeof getUserById>>
@@ -225,6 +225,7 @@ export const ProfileForm: FC<ProfileForm> = ({ user }) => {
                   wrapperElement: {
                     "data-color-mode": "light",
                   },
+                  rehypePlugins: [rehypeSanitize],
                 }}
               />
             )}

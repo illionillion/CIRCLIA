@@ -45,8 +45,10 @@ export const CircleList: FC<CircleListProps> = ({ circles, instructor }) => {
         setColumns(1)
         setPerPage(3)
         break
-
       default:
+        // 例外時は2xlと同じに
+        setColumns(3)
+        setPerPage(3)
         break
     }
   }, [])
