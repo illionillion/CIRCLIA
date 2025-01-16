@@ -101,6 +101,7 @@ export const AppLayout: FC<{
               pingScale={1.4}
               withBorder
               size="sm"
+              colorScheme="riverBlue"
             >
               <IconButton
                 w="50px"
