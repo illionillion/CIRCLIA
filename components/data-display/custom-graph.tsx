@@ -41,10 +41,17 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
   const containerRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useBoolean(false)
-  const [zoomLevel, setZoomLevel] = useState(1) // ズームレベルを追跡
+  const zoomLevelRef = useRef(1)
+
+  // onZoomハンドラ内ではuseRefの値を更新する
+  const handleZoom = (event: { k: number }) => {
+    zoomLevelRef.current = event.k
+  }
 
   useSafeLayoutEffect(() => {
     data.nodes.forEach((node) => {
+      console.log(node)
+
       if (node.imagePath) {
         const image = new Image()
         image.src = node.imagePath
@@ -71,7 +78,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
         return 200
       })
     }
-  }, [data, query, zoomLevel])
+  }, [data, query, zoomLevelRef.current])
 
   useSafeLayoutEffect(() => {
     const updateDimensions = () => {
@@ -134,20 +141,15 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
     <ui.div w="full" h="full" ref={containerRef}>
       <ForceGraph2D
         ref={graphRef as any}
-        onZoom={(event) => setZoomLevel(event.k)}
+        onZoom={handleZoom}
         width={dimensions.width}
         height={dimensions.height}
         graphData={data}
         nodeLabel={(node: Node) => node.label || ""}
         nodeAutoColorBy="id"
         linkWidth={(link: Link) => link.value * 10}
-        linkDirectionalArrowLength={6}
-        linkDirectionalArrowRelPos={1}
-        linkDirectionalArrowColor={(link: Link) =>
-          link.value > 0.7 ? "red" : "blue"
-        }
         nodeCanvasObject={(node: Node, ctx) => {
-          const scale = zoomLevel
+          const scale = zoomLevelRef.current
           const label = node.label || ""
           const fontSize = 12 / scale
           ctx.font = `${fontSize}px Sans-Serif`
@@ -168,7 +170,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
 
           const totalCardHeight = cardHeight + textHeight + fontSize * 2
 
-          if (node.name === query) {
+          if (node.id === "query") {
             ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
             ctx.shadowBlur = 10
             ctx.shadowOffsetX = 0

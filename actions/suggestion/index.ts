@@ -53,6 +53,7 @@ function generateTree(
       id: suggestion.id,
       label: suggestion.name,
       name: suggestion.name,
+      imagePath: suggestion.imagePath || undefined,
     })
     links.push({
       source: "query",
