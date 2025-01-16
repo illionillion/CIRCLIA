@@ -27,7 +27,6 @@ import dynamic from "next/dynamic"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
 import { useMemo, useRef, useState } from "react"
-import RobotAnimation from "../data-display/robot-animation"
 import type { getCircles } from "@/actions/circle/fetch-circle"
 import { getSuggestions } from "@/actions/suggestion"
 import { CircleCard } from "@/components/data-display/circle-card"
@@ -35,6 +34,19 @@ import { CircleCard } from "@/components/data-display/circle-card"
 interface CirclesPageProps {
   circles: Awaited<ReturnType<typeof getCircles>>
 }
+
+const CustomGraph = dynamic(
+  () =>
+    import("@/components/data-display/custom-graph").then((mod) => mod.default),
+  {
+    ssr: false,
+    loading: () => (
+      <Center w="full" h="full">
+        <Loading />
+      </Center>
+    ),
+  },
+)
 
 export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
   const [query, setQuery] = useState("")
@@ -48,20 +60,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
     links: [],
   })
   const [loading, { on: start, off: end }] = useBoolean(false)
-  const CustomGraph = dynamic(
-    () =>
-      import("@/components/data-display/custom-graph").then(
-        (mod) => mod.default,
-      ),
-    {
-      ssr: false,
-      loading: () => (
-        <Center w="full" h="full">
-          {loading ? <RobotAnimation /> : <Loading />}
-        </Center>
-      ),
-    },
-  )
+
   const searchParams = useSearchParams()
   const mode = (() => {
     const modeIndex = parseInt(searchParams.get("mode") || "")
@@ -239,7 +238,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
             ))}
           </Grid>
         ) : (
-          <CustomGraph data={data} query={currentQuery} />
+          <CustomGraph data={data} query={currentQuery} loading={loading} />
         )}
       </VStack>
       <IconButton
