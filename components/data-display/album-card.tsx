@@ -71,7 +71,7 @@ export const AlbumCard: FC<AlbumCard> = ({
               left={0}
               right={0}
               variant="solid"
-              colorScheme="primary"
+              colorScheme="riverBlue"
             >
               ダウンロード
             </Button>
