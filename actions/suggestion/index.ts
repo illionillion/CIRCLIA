@@ -26,6 +26,7 @@ function generateTree(
   query: string,
   queryEmbedding: number[],
   suggestionsData: Awaited<ReturnType<typeof getCirclesEmbeddings>>,
+  threshold: number = 0.9,
 ) {
   const nodes: {
     id: string
@@ -85,7 +86,7 @@ function generateTree(
 
     // console.log(`${closestRoot.name}と${suggestion.name}: ${similarityToClosestRoot}`);
     // 類似度が0.9未満の場合は追加しない
-    if (similarityToClosestRoot < 0.9) return
+    if (similarityToClosestRoot < threshold) return
 
     nodes.push({
       id: suggestion.id,
@@ -110,7 +111,7 @@ function generateTree(
     const additionalSuggestions = similarities.filter(
       (s) =>
         !addedNodes.has(s.id) &&
-        cosineSimilarity(suggestion.embedding, s.embedding) > 0.9, // 閾値を設定（例: 0.8）
+        cosineSimilarity(suggestion.embedding, s.embedding) > threshold, // 閾値を設定（例: 0.8）
     )
 
     additionalSuggestions.slice(0, 3).forEach((additional) => {
@@ -134,7 +135,7 @@ function generateTree(
   return { nodes, links }
 }
 
-export async function getSuggestions(query: string) {
+export async function getSuggestions(query: string, threshold?: number) {
   try {
     // KeywordEmbeddingテーブルに同じキーワードがあるならそれのembeddingを使い、ないなら生成しテーブルにキャッシュ
     const isExist = await db.keywordEmbedding.findUnique({
@@ -159,7 +160,12 @@ export async function getSuggestions(query: string) {
     const circlesEmbeddings = await getCirclesEmbeddings()
 
     // 最初の親ノードはダミー値で呼び出す
-    const network = generateTree(query, queryEmbedding, circlesEmbeddings)
+    const network = generateTree(
+      query,
+      queryEmbedding,
+      circlesEmbeddings,
+      threshold,
+    )
 
     return network
   } catch (error) {

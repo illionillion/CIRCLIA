@@ -14,9 +14,11 @@ import {
   InputLeftElement,
   InputRightElement,
   Loading,
+  NumberInput,
   Tab,
   TabList,
   Tabs,
+  Tooltip,
   useBoolean,
   VStack,
 } from "@yamada-ui/react"
@@ -37,6 +39,7 @@ interface CirclesPageProps {
 export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
   const [query, setQuery] = useState("")
   const [currentQuery, setCurrentQuery] = useState("")
+  const [threshold, setThreshold] = useState("0.9")
   const cacheRef = useRef(
     new Map<string, Awaited<ReturnType<typeof getSuggestions>>>(),
   )
@@ -70,6 +73,12 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
     return 0
   })()
 
+  const onChangeThreshold = (valueAsString: string) => {
+    console.log(valueAsString)
+
+    setThreshold(valueAsString)
+  }
+
   const filteredCircles = useMemo(
     () =>
       currentQuery
@@ -92,15 +101,16 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
     }
 
     const cache = cacheRef.current
-    if (!query) return
+    if (!query || isNaN(parseFloat(threshold))) return
     start()
-    console.log("query", query)
-    const result = cache.has(query)
-      ? cache.get(query)
-      : await getSuggestions(query)
+    const key = `${query}-${threshold}`
+    console.log("key", key)
+    const result = cache.has(key)
+      ? cache.get(key)
+      : await getSuggestions(query, parseFloat(threshold))
     console.log(result)
     if (result) {
-      cache.set(query, result)
+      cache.set(key, result)
       setCurrentQuery(query)
       setData(result)
     }
@@ -172,6 +182,20 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
                 </Button>
               </InputRightElement>
             </InputGroup>
+            {mode !== 0 && (
+              <Tooltip label="サークル間の類似度のしきい値を設定できます（0.7〜0.9推奨）">
+                <NumberInput
+                  w="5xs"
+                  placeholder="類似度のしきい値"
+                  precision={2}
+                  step={0.01}
+                  min={0.5}
+                  max={1}
+                  value={threshold}
+                  onChange={onChangeThreshold}
+                />
+              </Tooltip>
+            )}
           </HStack>
           <Box position="relative">
             <Tabs index={mode}>
