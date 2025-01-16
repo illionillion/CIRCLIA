@@ -30,7 +30,8 @@ export const GoogleCalendarButton: FC<GoogleCalendarButtonProps> = ({
       target="_blank"
       startIcon={<CalendarPlusIcon />}
       href={calendarLink}
-      variant="ghost"
+      variant="solid"
+      colorScheme="riverBlue"
     >
       Googleカレンダー
     </Button>
