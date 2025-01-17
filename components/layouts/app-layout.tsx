@@ -113,6 +113,7 @@ export const AppLayout: FC<{
                 href="/notifications"
                 icon={<BellIcon fontSize="2xl" />}
                 title="通知"
+                _hover={{ transform: "scale(1.3)" }}
               />
             </Indicator>
             <IconButton
