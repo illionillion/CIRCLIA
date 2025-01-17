@@ -58,7 +58,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
         imageRef.current.set(node.id, image)
       }
     })
-  }, [])
+  }, [data])
 
   useSafeLayoutEffect(() => {
     if (graphRef.current) {

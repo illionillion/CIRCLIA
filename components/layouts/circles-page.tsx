@@ -42,7 +42,7 @@ const CustomGraph = dynamic(
     ssr: false,
     loading: () => (
       <Center w="full" h="full">
-        <Loading />
+        <Loading fontSize="xl" />
       </Center>
     ),
   },
@@ -73,8 +73,6 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
   })()
 
   const onChangeThreshold = (valueAsString: string) => {
-    console.log(valueAsString)
-
     setThreshold(valueAsString)
   }
 
