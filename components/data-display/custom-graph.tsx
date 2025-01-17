@@ -1,9 +1,10 @@
 "use client"
 
 import type { FC } from "@yamada-ui/react"
-import { useSafeLayoutEffect, ui, useBoolean } from "@yamada-ui/react"
+import { useSafeLayoutEffect, useBoolean, Center } from "@yamada-ui/react"
 import { useRef, useState } from "react"
 import { ForceGraph2D } from "react-force-graph"
+import RobotAnimation from "./robot-animation"
 import type { getSuggestions } from "@/actions/suggestion"
 
 interface ForceGraphMethods {
@@ -33,9 +34,10 @@ interface Link {
 interface CustomGraphProps {
   query: string
   data: Awaited<ReturnType<typeof getSuggestions>>
+  loading?: boolean
 }
 
-const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
+const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
   const graphRef = useRef<ForceGraphMethods | null>(null) // 型を追加
   const imageRef = useRef(new Map<string, HTMLImageElement>())
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
@@ -138,133 +140,137 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
   }, [])
 
   return (
-    <ui.div w="full" h="full" ref={containerRef}>
-      <ForceGraph2D
-        ref={graphRef as any}
-        onZoom={handleZoom}
-        width={dimensions.width}
-        height={dimensions.height}
-        graphData={data}
-        nodeLabel={(node: Node) => node.label || ""}
-        nodeAutoColorBy="id"
-        linkWidth={(link: Link) => link.value * 10}
-        nodeCanvasObject={(node: Node, ctx) => {
-          const scale = zoomLevelRef.current
-          const label = node.label || ""
-          const fontSize = 12 / scale
-          ctx.font = `${fontSize}px Sans-Serif`
-          const textWidth = ctx.measureText(label).width
-          const textHeight =
-            ctx.measureText(label).actualBoundingBoxAscent +
-            ctx.measureText(label).actualBoundingBoxDescent
-          const cardWidth = Math.max(60 / scale, textWidth + 20 / scale)
-          const image = imageRef.current.get(node.id)
-          let cardHeight = 0
-
-          if (image) {
-            const imageAspectRatio = image.width / image.height
-            cardHeight = cardWidth / imageAspectRatio
-          } else {
-            cardHeight = cardWidth * (2 / 3)
-          }
-
-          const totalCardHeight = cardHeight + textHeight + fontSize * 2
-
-          if (node.id === "query") {
-            ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
-            ctx.shadowBlur = 10
-            ctx.shadowOffsetX = 0
-            ctx.shadowOffsetY = 2
-            const radius = Math.max(20 / scale, textWidth / 2 + 10 / scale)
-            ctx.beginPath()
-            ctx.arc(node.x || 0, node.y || 0, radius, 0, 2 * Math.PI, false)
-            ctx.fillStyle = "#5cc0db"
-            ctx.fill()
-            ctx.fillStyle = "white"
-            ctx.textAlign = "center"
-            ctx.textBaseline = "middle"
-            ctx.fillText(label, node.x || 0, node.y || 0)
-            node.__bckgDimensions = [radius * 2, radius * 2]
-            ctx.shadowColor = "transparent"
-            ctx.shadowBlur = 0
-            ctx.shadowOffsetX = 0
-            ctx.shadowOffsetY = 0
-          } else {
-            ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
-            ctx.shadowBlur = 10
-            ctx.shadowOffsetX = 0
-            ctx.shadowOffsetY = 5
-
-            ctx.fillStyle = image ? "white" : "lightgray" // 画像がない場合に薄いグレーを使用
-            ctx.fillRect(
-              (node.x || 0) - cardWidth / 2,
-              (node.y || 0) - totalCardHeight / 2,
-              cardWidth,
-              totalCardHeight,
-            )
-
-            ctx.shadowColor = "transparent"
-            ctx.shadowBlur = 0
-            ctx.shadowOffsetX = 0
-            ctx.shadowOffsetY = 0
+    <Center w="full" h="full" ref={containerRef}>
+      {loading ? (
+        <RobotAnimation />
+      ) : (
+        <ForceGraph2D
+          ref={graphRef as any}
+          onZoom={handleZoom}
+          width={dimensions.width}
+          height={dimensions.height}
+          graphData={data}
+          nodeLabel={(node: Node) => node.label || ""}
+          nodeAutoColorBy="id"
+          linkWidth={(link: Link) => link.value * 10}
+          nodeCanvasObject={(node: Node, ctx) => {
+            const scale = zoomLevelRef.current
+            const label = node.label || ""
+            const fontSize = 12 / scale
+            ctx.font = `${fontSize}px Sans-Serif`
+            const textWidth = ctx.measureText(label).width
+            const textHeight =
+              ctx.measureText(label).actualBoundingBoxAscent +
+              ctx.measureText(label).actualBoundingBoxDescent
+            const cardWidth = Math.max(60 / scale, textWidth + 20 / scale)
+            const image = imageRef.current.get(node.id)
+            let cardHeight = 0
 
             if (image) {
-              ctx.drawImage(
-                image,
-                (node.x || 0) - cardWidth / 2,
-                (node.y || 0) - totalCardHeight / 2,
-                cardWidth,
-                cardHeight,
-              )
+              const imageAspectRatio = image.width / image.height
+              cardHeight = cardWidth / imageAspectRatio
             } else {
-              const labelBackgroundY =
-                (node.y || 0) + cardHeight / 2 - textHeight / 2 - fontSize
+              cardHeight = cardWidth * (2 / 3)
+            }
+
+            const totalCardHeight = cardHeight + textHeight + fontSize * 2
+
+            if (node.id === "query") {
+              ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
+              ctx.shadowBlur = 10
+              ctx.shadowOffsetX = 0
+              ctx.shadowOffsetY = 2
+              const radius = Math.max(20 / scale, textWidth / 2 + 10 / scale)
+              ctx.beginPath()
+              ctx.arc(node.x || 0, node.y || 0, radius, 0, 2 * Math.PI, false)
+              ctx.fillStyle = "#5cc0db"
+              ctx.fill()
               ctx.fillStyle = "white"
-              ctx.shadowColor = "rgba(0, 0, 0, 0.2)"
-              ctx.shadowBlur = 6
-              ctx.shadowOffsetY = 5
-              ctx.fillRect(
-                (node.x || 0) - cardWidth / 2,
-                labelBackgroundY,
-                cardWidth,
-                textHeight + fontSize * 2,
-              )
+              ctx.textAlign = "center"
+              ctx.textBaseline = "middle"
+              ctx.fillText(label, node.x || 0, node.y || 0)
+              node.__bckgDimensions = [radius * 2, radius * 2]
               ctx.shadowColor = "transparent"
               ctx.shadowBlur = 0
               ctx.shadowOffsetX = 0
               ctx.shadowOffsetY = 0
+            } else {
+              ctx.shadowColor = "rgba(0, 0, 0, 0.3)"
+              ctx.shadowBlur = 10
+              ctx.shadowOffsetX = 0
+              ctx.shadowOffsetY = 5
+
+              ctx.fillStyle = image ? "white" : "lightgray" // 画像がない場合に薄いグレーを使用
+              ctx.fillRect(
+                (node.x || 0) - cardWidth / 2,
+                (node.y || 0) - totalCardHeight / 2,
+                cardWidth,
+                totalCardHeight,
+              )
+
+              ctx.shadowColor = "transparent"
+              ctx.shadowBlur = 0
+              ctx.shadowOffsetX = 0
               ctx.shadowOffsetY = 0
+
+              if (image) {
+                ctx.drawImage(
+                  image,
+                  (node.x || 0) - cardWidth / 2,
+                  (node.y || 0) - totalCardHeight / 2,
+                  cardWidth,
+                  cardHeight,
+                )
+              } else {
+                const labelBackgroundY =
+                  (node.y || 0) + cardHeight / 2 - textHeight / 2 - fontSize
+                ctx.fillStyle = "white"
+                ctx.shadowColor = "rgba(0, 0, 0, 0.2)"
+                ctx.shadowBlur = 6
+                ctx.shadowOffsetY = 5
+                ctx.fillRect(
+                  (node.x || 0) - cardWidth / 2,
+                  labelBackgroundY,
+                  cardWidth,
+                  textHeight + fontSize * 2,
+                )
+                ctx.shadowColor = "transparent"
+                ctx.shadowBlur = 0
+                ctx.shadowOffsetX = 0
+                ctx.shadowOffsetY = 0
+                ctx.shadowOffsetY = 0
+              }
+
+              ctx.fillStyle = "black"
+              ctx.textAlign = "center"
+              ctx.textBaseline = "middle"
+              ctx.fillText(label, node.x || 0, (node.y || 0) + cardHeight / 2)
+              node.__bckgDimensions = [cardWidth, totalCardHeight]
             }
+          }}
+          nodePointerAreaPaint={(node: Node, color, ctx) => {
+            const bckgDimensions = node.__bckgDimensions
+            if (bckgDimensions) {
+              ctx.fillStyle = color
+              ctx.fillRect(
+                (node.x || 0) - bckgDimensions[0] / 2,
+                (node.y || 0) - bckgDimensions[1] / 2,
+                ...bckgDimensions,
+              )
+            }
+          }}
+          onNodeClick={(node) => {
+            console.log(isDragging)
 
-            ctx.fillStyle = "black"
-            ctx.textAlign = "center"
-            ctx.textBaseline = "middle"
-            ctx.fillText(label, node.x || 0, (node.y || 0) + cardHeight / 2)
-            node.__bckgDimensions = [cardWidth, totalCardHeight]
-          }
-        }}
-        nodePointerAreaPaint={(node: Node, color, ctx) => {
-          const bckgDimensions = node.__bckgDimensions
-          if (bckgDimensions) {
-            ctx.fillStyle = color
-            ctx.fillRect(
-              (node.x || 0) - bckgDimensions[0] / 2,
-              (node.y || 0) - bckgDimensions[1] / 2,
-              ...bckgDimensions,
-            )
-          }
-        }}
-        onNodeClick={(node) => {
-          console.log(isDragging)
-
-          if (node.id === "query" || isDragging) {
-            return
-          }
-          // ノードをクリックした際の遷移処理
-          window.open(`/circles/${node.id}/`, "_blank")
-        }}
-      />
-    </ui.div>
+            if (node.id === "query" || isDragging) {
+              return
+            }
+            // ノードをクリックした際の遷移処理
+            window.open(`/circles/${node.id}/`, "_blank")
+          }}
+        />
+      )}
+    </Center>
   )
 }
 
