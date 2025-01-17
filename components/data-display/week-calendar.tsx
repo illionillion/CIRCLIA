@@ -2,12 +2,14 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
   GridItem,
   Heading,
   HStack,
+  IconButton,
   ScrollArea,
   Tag,
   Text,
@@ -19,6 +21,7 @@ import { useState } from "react"
 import { getWeeklyActivitiesActioins } from "@/actions/circle/fetch-activity"
 import type { getWeeklyActivities } from "@/data/activity"
 import { parseMonthDate, getDayColor, generateWeekDates } from "@/utils/format"
+import { ChevronLeftIcon, ChevronRightIcon } from "@yamada-ui/lucide"
 
 interface WeekCalendarProps {
   userId: string
@@ -95,19 +98,21 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
             カレンダー
           </Heading>
           <HStack>
+            {/* 今日の週に戻るボタン */}
             <Button colorScheme="riverBlue" onClick={goToToday}>
               今日
             </Button>
-            <Button colorScheme="riverBlue" onClick={PreviousWeek}>
-              &lt;
-            </Button>
-            <Button colorScheme="riverBlue" onClick={NextWeek}>
-              &gt;
-            </Button>
+            {/* 前後週の切り替えボタン */}
+            <ButtonGroup>
+              <IconButton icon={<ChevronLeftIcon fontSize="2xl" />}  borderTopRightRadius={0} borderBottomRightRadius={0} colorScheme="riverBlue" onClick={PreviousWeek} />
+              <IconButton icon={<ChevronRightIcon fontSize="2xl" />}  borderTopLeftRadius={0} borderBottomLeftRadius={0} colorScheme="riverBlue" onClick={NextWeek} />
+            </ButtonGroup>
           </HStack>
+          {/* 現在の年を表示 */}
           <Text>{currentDate.getFullYear()}</Text>
         </HStack>
       </CardHeader>
+
       <CardBody>
         <ScrollArea w="full" h="full" mb="md" as={Card}>
           <HStack w="full" h="full" gap={0}>
