@@ -178,10 +178,6 @@ export const AppLayout: FC<{
           : {
               h: "15",
             })}
-        // h={hProps}
-        // pb={os === "ios" ? "7" : undefined}
-        // h={"20"}
-        // pb={"7"}
         borderTopWidth={1}
         justifyContent="space-between"
         position="fixed"
