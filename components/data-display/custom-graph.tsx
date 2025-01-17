@@ -1,7 +1,13 @@
 "use client"
 
 import type { FC } from "@yamada-ui/react"
-import { useSafeLayoutEffect, useBoolean, Center } from "@yamada-ui/react"
+import {
+  useSafeLayoutEffect,
+  useBoolean,
+  Center,
+  Text,
+  Card,
+} from "@yamada-ui/react"
 import { useRef, useState } from "react"
 import { ForceGraph2D } from "react-force-graph"
 import RobotAnimation from "./robot-animation"
@@ -142,8 +148,12 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
           rounded="full"
           boxSize="md"
           bg="blackAlpha.100"
+          flexDir="column"
+          pointerEvents="none"
+          as={Card}
         >
           <RobotAnimation />
+          <Text mt="-lg">生成中です・・・</Text>
         </Center>
       )}
       <ForceGraph2D
