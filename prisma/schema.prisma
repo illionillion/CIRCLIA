@@ -300,3 +300,13 @@ model Subscriptions {
 
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
+
+model KeywordEmbedding {
+  id        String    @id @default(uuid())
+  keyword   String    @unique
+  embedding Float[]   // エンべディングベクトルを格納する配列
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([keyword])
+}
