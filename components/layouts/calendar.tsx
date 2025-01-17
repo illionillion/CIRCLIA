@@ -11,6 +11,7 @@ import {
   ListItem,
   Text,
   useSafeLayoutEffect,
+  useToken,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useState } from "react"
@@ -34,13 +35,16 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
     if (data) setCurrentEvents(data)
   }
 
+  const mt = useToken("spaces", "xs")
+
   useSafeLayoutEffect(() => {
     fetchData()
   }, [currentMonth])
 
   return (
+    <Center height="100vh">
     <Container maxW="9xl" m="auto" p={4}>
-      <Heading mb={4} fontSize="2xl">
+      <Heading mb={4} fontSize="2xl"> 
         カレンダー
       </Heading>
       <Calendar
@@ -63,6 +67,7 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
           border: "1px solid",
           borderColor: "border",
           fontSize: "lg", // テーブル全体の文字サイズを大きく
+          bg: "white",
           th: {
             border: "1px solid",
             borderColor: "border",
@@ -88,13 +93,13 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
           _active: {},
           _selected: {
             bg: "transparent",
-            border: "3px solid",
+            border: "1px solid",
             borderColor: "black",
           },
           _hover: {
             bg: "transparent",
           },
-          component: ({ date }) => {
+          component: ({ date, isSelected }) => {
             const isToday =
               date.getFullYear() === new Date().getFullYear() &&
               date.getMonth() === new Date().getMonth() &&
@@ -115,12 +120,18 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
                 <Center w="100%">
                   {isToday ? (
                     <Center
-                      w="100%"
-                      h="100%"
-                      bg={isToday ? "riverBlue.200" : "transparent"}
-                      fontSize="l"
-                      fontWeight="bold"
-                      color={isSaturday ? "blue.500" : "inherit"} // 土曜日を青色にする
+                      rounded={"full"}
+                      w="10"
+                      mt={isSelected ? `calc(${mt} - 1px)` : "xs"}
+                      bg="black"
+                      color="white"
+
+                      // w="100%"
+                      // h="100%"
+                      // bg={isToday ? "riverBlue.200" : "transparent"}
+                      // fontSize="l"
+                      // fontWeight="bold"
+                      // color={isSaturday ? "blue.500" : "inherit"} // 土曜日を青色にする
                     >
                       {date.getDate()}
                     </Center>
@@ -128,6 +139,7 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
                     <Text
                       fontSize="l"
                       fontWeight="bold"
+                      mt="xs"
                       color={isSaturday ? "blue.500" : "inherit"} // 土曜日を青色にする
                     >
                       {" "}
@@ -181,5 +193,6 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
         }}
       />
     </Container>
+    </Center>
   )
 }
