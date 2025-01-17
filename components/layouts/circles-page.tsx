@@ -103,11 +103,9 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
     if (!query || isNaN(parseFloat(threshold))) return
     start()
     const key = `${query}-${threshold}`
-    console.log("key", key)
     const result = cache.has(key)
       ? cache.get(key)
       : await getSuggestions(query, parseFloat(threshold))
-    console.log(result)
     if (result) {
       cache.set(key, result)
       setCurrentQuery(query)
@@ -182,9 +180,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
               </InputRightElement>
             </InputGroup>
             {mode !== 0 && (
-              <Tooltip
-                label="サークル間の類似度の基準を設定できます（おすすめは0.7～0.9）"
-              >
+              <Tooltip label="サークル間の類似度の基準を設定できます（おすすめは0.7～0.9）">
                 <NumberInput
                   w="5xs"
                   placeholder="類似度のしきい値"
