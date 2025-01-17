@@ -57,6 +57,7 @@ CIRCLE_THREAD CIRCLE_THREAD
     DateTime deletedAt "❓"
     String imagePath "❓"
     String activityDay "❓"
+    Float embedding
     }
 
 
@@ -177,6 +178,15 @@ CIRCLE_THREAD CIRCLE_THREAD
   "Subscriptions" {
     String id "🗝️"
     Json subscription
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
+  "KeywordEmbedding" {
+    String id "🗝️"
+    String keyword
+    Float embedding
     DateTime createdAt
     DateTime updatedAt
     }
