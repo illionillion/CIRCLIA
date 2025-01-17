@@ -170,8 +170,18 @@ export const AppLayout: FC<{
       <HStack
         w="full"
         p="sm"
-        h={os === "ios" ? "20" : "15"}
-        pb={os === "ios" ? "7" : undefined}
+        {...(os === "ios"
+          ? {
+              h: "20",
+              pb: "7",
+            }
+          : {
+              h: "15",
+            })}
+        // h={hProps}
+        // pb={os === "ios" ? "7" : undefined}
+        // h={"20"}
+        // pb={"7"}
         borderTopWidth={1}
         justifyContent="space-between"
         position="fixed"
