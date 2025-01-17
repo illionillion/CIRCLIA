@@ -21,6 +21,7 @@ import {
   useSafeLayoutEffect,
   useToken,
   VStack,
+  useOS,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -37,6 +38,7 @@ export const AppLayout: FC<{
   const hRem = useToken("spaces", "12")
   const pbRem = useToken("sizes", "15")
   const { unreadCount } = useNotifications()
+  const os = useOS()
 
   useSafeLayoutEffect(() => {
     if (!user && pathname !== "/signin") {
@@ -167,9 +169,9 @@ export const AppLayout: FC<{
       </HStack>
       <HStack
         w="full"
-        h="20"
         p="sm"
-        pb="7"
+        h={os === "ios" ? "20" : "15"}
+        pb={os === "ios" ? "7" : undefined}
         borderTopWidth={1}
         justifyContent="space-between"
         position="fixed"
