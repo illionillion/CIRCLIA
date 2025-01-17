@@ -167,8 +167,9 @@ export const AppLayout: FC<{
       </HStack>
       <HStack
         w="full"
-        h="15"
+        h="20"
         p="sm"
+        pb="7"
         borderTopWidth={1}
         justifyContent="space-between"
         position="fixed"
