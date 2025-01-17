@@ -21,6 +21,7 @@ import {
   useSafeLayoutEffect,
   useToken,
   VStack,
+  useOS,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -37,6 +38,7 @@ export const AppLayout: FC<{
   const hRem = useToken("spaces", "12")
   const pbRem = useToken("sizes", "15")
   const { unreadCount } = useNotifications()
+  const os = useOS()
 
   useSafeLayoutEffect(() => {
     if (!user && pathname !== "/signin") {
@@ -101,6 +103,7 @@ export const AppLayout: FC<{
               pingScale={1.4}
               withBorder
               size="sm"
+              colorScheme="riverBlue"
             >
               <IconButton
                 w="50px"
@@ -166,8 +169,15 @@ export const AppLayout: FC<{
       </HStack>
       <HStack
         w="full"
-        h="15"
         p="sm"
+        {...(os === "ios"
+          ? {
+              h: "20",
+              pb: "7",
+            }
+          : {
+              h: "15",
+            })}
         borderTopWidth={1}
         justifyContent="space-between"
         position="fixed"
@@ -188,6 +198,7 @@ export const AppLayout: FC<{
           pingScale={1.4}
           withBorder
           size="sm"
+          colorScheme="riverBlue"
         >
           <IconButton
             w="50px"

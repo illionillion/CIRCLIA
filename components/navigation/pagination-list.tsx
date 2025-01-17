@@ -35,6 +35,7 @@ export const PaginationList = <T,>({
           total={totalPages}
           onChange={setPage}
           justifyContent="center"
+          colorScheme="riverBlue"
         />
       )}
     </VStack>

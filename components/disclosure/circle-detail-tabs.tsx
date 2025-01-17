@@ -75,7 +75,7 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
         </Tab>
         <Tab flexShrink={0} as={Link} href={`/circles/${circle?.id}/members`}>
           <Indicator
-            colorScheme="danger"
+            colorScheme="riverBlue"
             size="sm"
             placement="right"
             offset={-1.5}
