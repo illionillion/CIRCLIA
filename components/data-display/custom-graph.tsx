@@ -52,7 +52,6 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
 
   useSafeLayoutEffect(() => {
     data.nodes.forEach((node) => {
-      console.log(node.imagePath)
       if (node.imagePath) {
         const image = new Image()
         image.src = node.imagePath
