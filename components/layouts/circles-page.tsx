@@ -182,7 +182,9 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
               </InputRightElement>
             </InputGroup>
             {mode !== 0 && (
-              <Tooltip label="サークル間の類似度のしきい値を設定できます（0.7〜0.9推奨）">
+              <Tooltip
+                label="サークル間の類似度の基準を設定できます（おすすめは0.7～0.9）"
+              >
                 <NumberInput
                   w="5xs"
                   placeholder="類似度のしきい値"
