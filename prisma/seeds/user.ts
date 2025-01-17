@@ -1,6 +1,29 @@
 import { db } from "@/utils/db"
 import { hashPassword } from "@/utils/password"
 
+const profileText = `
+# 自己紹介
+
+- *山田太郎*です。
+- **趣味は読書です。**
+- ~~ラーメンが好き~~
+- 学籍番号は\`234201 \`
+
+
+1. hello
+2. world
+
+\`\`\`json
+{
+    "message": "よろしく！！"
+}
+\`\`\`
+
+> 引用以下
+
+[GitHub](https://github.com/illionillion)
+`
+
 export const user = () =>
   db.user.createMany({
     data: [
@@ -10,6 +33,7 @@ export const user = () =>
         name: "山田太郎",
         email: "yamada@email.com",
         password: hashPassword("password"),
+        profileText,
       },
       {
         id: "user2-uuid",

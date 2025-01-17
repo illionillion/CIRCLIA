@@ -1,4 +1,5 @@
 "use client"
+import { ChevronLeftIcon, ChevronRightIcon } from "@yamada-ui/lucide"
 import {
   Box,
   Button,
@@ -21,18 +22,26 @@ import { useState } from "react"
 import { getWeeklyActivitiesActioins } from "@/actions/circle/fetch-activity"
 import type { getWeeklyActivities } from "@/data/activity"
 import { parseMonthDate, getDayColor, generateWeekDates } from "@/utils/format"
-import { ChevronLeftIcon, ChevronRightIcon } from "@yamada-ui/lucide"
 
 interface WeekCalendarProps {
   userId: string
   calendarData: Awaited<ReturnType<typeof getWeeklyActivities>>
 }
 
+// 今週の月曜日を計算する
+const getMonday = (date: Date): Date => {
+  const day = date.getDay()
+  const diff = day === 0 ? -6 : 1 - day // 日曜日は-6
+  const monday = new Date(date)
+  monday.setDate(date.getDate() + diff)
+  return monday
+}
+
 export const WeekCalendar: React.FC<WeekCalendarProps> = ({
   userId,
   calendarData: initialData,
 }) => {
-  const [currentDate, setCurrentDate] = useState<Date>(new Date())
+  const [currentDate, setCurrentDate] = useState<Date>(getMonday(new Date()))
   const [calendarData, setCalendarData] =
     useState<Awaited<ReturnType<typeof getWeeklyActivities>>>(initialData)
 
@@ -46,7 +55,8 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
 
   // データ取得
   const fetchData = async () => {
-    const data = await getWeeklyActivitiesActioins(userId, currentDate)
+    const monday = getMonday(currentDate)
+    const data = await getWeeklyActivitiesActioins(userId, monday)
     if (data) {
       setCalendarData((prevData) => {
         const mergedData = { ...prevData }
@@ -67,20 +77,20 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
   }, [currentDate])
 
   // 前の週へ移動する関数
-  const PreviousWeek = () => {
+  const previousWeek = () => {
     setCurrentDate((prev) => {
       const newDate = new Date(prev)
       newDate.setDate(prev.getDate() - 7)
-      return newDate
+      return getMonday(newDate) // 移動後の月曜日にリセット
     })
   }
 
   // 次の週へ移動する関数
-  const NextWeek = () => {
+  const nextWeek = () => {
     setCurrentDate((prev) => {
       const newDate = new Date(prev)
       newDate.setDate(prev.getDate() + 7)
-      return newDate
+      return getMonday(newDate) // 移動後の月曜日にリセット
     })
   }
 
@@ -104,8 +114,20 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
             </Button>
             {/* 前後週の切り替えボタン */}
             <ButtonGroup>
-              <IconButton icon={<ChevronLeftIcon fontSize="2xl" />}  borderTopRightRadius={0} borderBottomRightRadius={0} colorScheme="riverBlue" onClick={PreviousWeek} />
-              <IconButton icon={<ChevronRightIcon fontSize="2xl" />}  borderTopLeftRadius={0} borderBottomLeftRadius={0} colorScheme="riverBlue" onClick={NextWeek} />
+              <IconButton
+                icon={<ChevronLeftIcon fontSize="2xl" />}
+                borderTopRightRadius={0}
+                borderBottomRightRadius={0}
+                colorScheme="riverBlue"
+                onClick={previousWeek}
+              />
+              <IconButton
+                icon={<ChevronRightIcon fontSize="2xl" />}
+                borderTopLeftRadius={0}
+                borderBottomLeftRadius={0}
+                colorScheme="riverBlue"
+                onClick={nextWeek}
+              />
             </ButtonGroup>
           </HStack>
           {/* 現在の年を表示 */}
@@ -140,7 +162,7 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
                     {date.toLocaleDateString("ja-JP", {
                       month: "numeric",
                       day: "numeric",
-                      weekday: "short", // 曜日を追加
+                      weekday: "short", // 曜日追加
                     })}
                   </Box>
                   <VStack h="sm" overflowY="auto">

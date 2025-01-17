@@ -73,6 +73,7 @@ model Circle {
     deletedAt         DateTime? // Optional: Deletion timestamp for soft deletes
     imagePath         String? // Optional: Circle image URL or base64 string
     activityDay       String? // 活動日
+    embedding         Float[] // エンべディング情報を保存する列
     CircleMember      CircleMember[]
     CircleInstructor  CircleInstructor[] // New relation for instructors
     CircleTag         CircleTag[]
@@ -298,4 +299,14 @@ model Subscriptions {
   updatedAt     DateTime @updatedAt
 
   user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model KeywordEmbedding {
+  id        String    @id @default(uuid())
+  keyword   String    @unique
+  embedding Float[]   // エンべディングベクトルを格納する配列
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([keyword])
 }
