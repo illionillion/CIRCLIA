@@ -11,7 +11,12 @@ interface WelcomeCardProps {
 export const WelcomeCard: FC<WelcomeCardProps> = ({ area, from, to }) => {
   const { onPointerDown, ripples, onClear } = useRipple()
   return (
-    <GridItem area={area} onPointerDown={onPointerDown}>
+    <GridItem
+      area={area}
+      onPointerDown={onPointerDown}
+      w="full"
+      h={{ base: "full", md: "sm" }}
+    >
       <Flip
         w="full"
         h="full"
