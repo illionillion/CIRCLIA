@@ -16,7 +16,7 @@ export const generateMetadata = ({ params }: Props) =>
   MetadataSet(params.circle_id || "", params.tab_key || "")
 
 // 固定されたタブキーのリスト
-const list = ["activities", "album", "notifications", "members"]
+const list = ["welcome", "activities", "album", "notifications", "members"]
 
 export const dynamicParams = false
 export const dynamic = "force-dynamic"

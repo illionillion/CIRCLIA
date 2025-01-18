@@ -14,14 +14,16 @@ export const parseMonthDate = (date: Date) =>
 
 export const handlingTab = (key: string) => {
   switch (key) {
-    case "activities":
+    case "welcome":
       return 0
-    case "album":
+    case "activities":
       return 1
-    case "notifications":
+    case "album":
       return 2
-    case "members":
+    case "notifications":
       return 3
+    case "members":
+      return 4
     default:
       return 0
   }

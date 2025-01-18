@@ -14,6 +14,7 @@ import { CircleActivitydays } from "../data-display/circle-activitydays"
 import { CircleAlbums } from "../data-display/circle-albums"
 import { CircleMembers } from "../data-display/circle-members"
 import { CircleThreads } from "../data-display/circle-threads"
+import { CircleWelcome } from "../data-display/circle-welcome"
 import type { getCircleById } from "@/actions/circle/fetch-circle"
 import { type getMembershipRequests } from "@/actions/circle/membership-request"
 import type { getActivityById } from "@/data/activity"
@@ -54,8 +55,23 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
   const { data } = membershipRequests
 
   return (
-    <Tabs index={tabIndex} w="full" maxW="9xl" h="full" m="auto">
+    <Tabs
+      index={isMember ? tabIndex : tabIndex - 1}
+      w="full"
+      maxW="9xl"
+      h="full"
+      m="auto"
+    >
       <TabList overflowX="auto" overflowY="hidden">
+        {/* 
+          メンバーの時に表示
+          メンバー以外はカードが設定されている時に表示
+        */}
+        {isMember && (
+          <Tab flexShrink={0} as={Link} href={`/circles/${circle?.id}/welcome`}>
+            Welcome
+          </Tab>
+        )}
         <Tab
           flexShrink={0}
           as={Link}
@@ -87,6 +103,11 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
         </Tab>
       </TabList>
       <TabPanels h="full">
+        {isMember && (
+          <TabPanel h="full">
+            <CircleWelcome />
+          </TabPanel>
+        )}
         <TabPanel h="full">
           <CircleActivitydays
             userId={userId}
@@ -116,7 +137,6 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
             currentAnnouncement={currentAnnouncement}
           />
         </TabPanel>
-
         <TabPanel h="full">
           <CircleMembers
             userId={userId}
