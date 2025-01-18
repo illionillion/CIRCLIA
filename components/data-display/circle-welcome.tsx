@@ -34,6 +34,8 @@ export const CircleWelcome: FC = () => {
 
   return (
     <Grid
+      m="auto"
+      maxW="7xl"
       w="full"
       h="full"
       gridTemplateAreas={{
