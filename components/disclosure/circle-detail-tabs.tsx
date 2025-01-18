@@ -105,7 +105,7 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
       <TabPanels h="full">
         {isMember && (
           <TabPanel h="full">
-            <CircleWelcome />
+            <CircleWelcome isAdmin={isAdmin} />
           </TabPanel>
         )}
         <TabPanel h="full">

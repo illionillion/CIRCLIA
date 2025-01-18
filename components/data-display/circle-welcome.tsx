@@ -1,21 +1,38 @@
-import { SquarePenIcon } from "@yamada-ui/lucide"
+import {
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  SquarePenIcon,
+} from "@yamada-ui/lucide"
 import type { FC } from "@yamada-ui/react"
 import {
   Box,
   Button,
+  ButtonGroup,
   CardBody,
   CardHeader,
   Grid,
   Heading,
+  IconButton,
   Image,
+  Modal,
+  ModalBody,
+  ModalFooter,
+  ModalHeader,
   Text,
+  useDisclosure,
   useSafeLayoutEffect,
   VStack,
 } from "@yamada-ui/react"
 import { useRef, useState } from "react"
 import { WelcomeCard } from "./welcome-card"
 
-export const CircleWelcome: FC = () => {
+interface CircleWelcomeProps {
+  isAdmin?: boolean
+}
+
+export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
+  const { open, onOpen, onClose } = useDisclosure()
+
   const [imageH, setImageH] = useState<number | null>(null)
   const imageParentRef = useRef<HTMLDivElement>(null)
 
@@ -37,14 +54,37 @@ export const CircleWelcome: FC = () => {
 
   return (
     <VStack w="full" h="full">
-      <Button
-        startIcon={<SquarePenIcon />}
-        ml="auto"
-        mt={{ base: "-16", md: "0" }}
-        colorScheme="riverBlue"
-      >
-        編集
-      </Button>
+      <Modal open={open} onClose={onClose} size="2xl" withCloseButton={false}>
+        <ModalHeader justifyContent="space-between">
+          <Text>カード1</Text>
+          <ButtonGroup attached>
+            <IconButton icon={<ChevronLeftIcon />} colorScheme="riverBlue" />
+            <IconButton icon={<ChevronRightIcon />} colorScheme="riverBlue" />
+          </ButtonGroup>
+        </ModalHeader>
+        <ModalBody>
+          <Text>編集画面</Text>
+        </ModalBody>
+        <ModalFooter>
+          <ButtonGroup attached>
+            <Button colorScheme="riverBlue" onClick={onClose}>
+              キャンセル
+            </Button>
+            <Button colorScheme="riverBlue">更新</Button>
+          </ButtonGroup>
+        </ModalFooter>
+      </Modal>
+      {isAdmin && (
+        <Button
+          startIcon={<SquarePenIcon />}
+          ml="auto"
+          mt={{ base: "-16", md: "0" }}
+          colorScheme="riverBlue"
+          onClick={onOpen}
+        >
+          編集
+        </Button>
+      )}
       <Grid
         m="auto"
         maxW="7xl"
