@@ -56,7 +56,7 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
 
   return (
     <Tabs
-      index={isMember ? tabIndex : tabIndex - 1}
+      index={isMember || tabIndex === 0 ? tabIndex : tabIndex - 1}
       w="full"
       maxW="9xl"
       h="full"
