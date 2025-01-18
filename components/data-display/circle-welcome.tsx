@@ -62,6 +62,8 @@ export const CircleWelcome: FC = () => {
             <CardBody>
               <Box w="full" h="full" ref={imageParentRef}>
                 <Image
+                  userSelect="none"
+                  pointerEvents="none"
                   src="https://user0514.cdnw.net/shared/img/thumb/21830aIMGL99841974_TP_V.jpg"
                   w="full"
                   h={imageH || "xs"}
@@ -92,6 +94,8 @@ export const CircleWelcome: FC = () => {
         from={
           <>
             <Image
+              userSelect="none"
+              pointerEvents="none"
               src="/images/welcome-recruiting.png"
               w="full"
               h="full"
@@ -120,6 +124,8 @@ export const CircleWelcome: FC = () => {
         from={
           <>
             <Image
+              userSelect="none"
+              pointerEvents="none"
               src="/images/one-day-activities.png"
               w="full"
               h="full"
