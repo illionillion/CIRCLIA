@@ -95,14 +95,48 @@ export const CircleWelcome: FC = () => {
               src="/images/welcome-recruiting.png"
               w="full"
               h="full"
-              objectFit="cover"
+              objectFit="contain"
               alt="card 2 image"
             />
           </>
         }
-        to={<>two 裏</>}
+        to={
+          <>
+            <CardHeader>
+              <Heading as="h3" fontSize="lg">
+                メンバー募集！！
+              </Heading>
+            </CardHeader>
+            <CardBody>
+              <Text>👌かけもちOK！</Text>
+              <Text>👌文系の方でも大歓迎</Text>
+              <Text>👌活動は週一回程度</Text>
+            </CardBody>
+          </>
+        }
       />
-      <WelcomeCard area="three" from={<>three</>} to={<>three 裏</>} />
+      <WelcomeCard
+        area="three"
+        from={
+          <>
+            <Image
+              src="/images/one-day-activities.png"
+              w="full"
+              h="full"
+              objectFit="cover"
+              alt="card 3 image"
+            />
+          </>
+        }
+        to={
+          <>
+            <CardBody>
+              <Text>活動費 月1000円</Text>
+              <Text>男女比 9:1</Text>
+            </CardBody>
+          </>
+        }
+      />
     </Grid>
   )
 }
