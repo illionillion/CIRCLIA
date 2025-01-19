@@ -71,9 +71,10 @@ export const AlbumCard: FC<AlbumCard> = ({
               left={0}
               right={0}
               variant="solid"
-              colorScheme="primary"
+              colorScheme="riverBlue"
               transition="0.5s"
               _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
+
             >
               ダウンロード
             </Button>

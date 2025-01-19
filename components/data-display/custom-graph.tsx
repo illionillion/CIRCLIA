@@ -1,9 +1,10 @@
 "use client"
 
 import type { FC } from "@yamada-ui/react"
-import { useSafeLayoutEffect, ui, useBoolean } from "@yamada-ui/react"
+import { useSafeLayoutEffect, useBoolean, Center } from "@yamada-ui/react"
 import { useRef, useState } from "react"
 import { ForceGraph2D } from "react-force-graph"
+import RobotAnimation from "./robot-animation"
 import type { getSuggestions } from "@/actions/suggestion"
 
 interface ForceGraphMethods {
@@ -33,9 +34,10 @@ interface Link {
 interface CustomGraphProps {
   query: string
   data: Awaited<ReturnType<typeof getSuggestions>>
+  loading?: boolean
 }
 
-const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
+const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
   const graphRef = useRef<ForceGraphMethods | null>(null) // 型を追加
   const imageRef = useRef(new Map<string, HTMLImageElement>())
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 })
@@ -50,15 +52,13 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
 
   useSafeLayoutEffect(() => {
     data.nodes.forEach((node) => {
-      console.log(node)
-
       if (node.imagePath) {
         const image = new Image()
         image.src = node.imagePath
         imageRef.current.set(node.id, image)
       }
     })
-  }, [])
+  }, [data])
 
   useSafeLayoutEffect(() => {
     if (graphRef.current) {
@@ -95,18 +95,14 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
 
     let isMouseDown = false
     const handleMouseDown = () => {
-      // console.log("handleMouseDown");
       isMouseDown = true
     }
     const handleMouseUp = () => {
-      // console.log("handleMouseUp");
       isMouseDown = false
       setIsDragging.off()
     }
     const handleMouseMove = () => {
-      // console.log("handleMouseMove");
       if (isMouseDown) {
-        console.log("moving")
         setIsDragging.on()
       }
     }
@@ -138,7 +134,18 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
   }, [])
 
   return (
-    <ui.div w="full" h="full" ref={containerRef}>
+    <Center w="full" h="full" ref={containerRef} position="relative">
+      {loading && (
+        <Center
+          position="absolute"
+          zIndex="beerus"
+          rounded="full"
+          boxSize="md"
+          bg="blackAlpha.100"
+        >
+          <RobotAnimation />
+        </Center>
+      )}
       <ForceGraph2D
         ref={graphRef as any}
         onZoom={handleZoom}
@@ -255,8 +262,6 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
           }
         }}
         onNodeClick={(node) => {
-          console.log(isDragging)
-
           if (node.id === "query" || isDragging) {
             return
           }
@@ -264,7 +269,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data }) => {
           window.open(`/circles/${node.id}/`, "_blank")
         }}
       />
-    </ui.div>
+    </Center>
   )
 }
 
