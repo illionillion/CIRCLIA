@@ -32,9 +32,18 @@ interface CircleWelcomeProps {
 
 export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
   const { open, onOpen, onClose } = useDisclosure()
+  const [currentCard, setCurrentCard] = useState<number>(0)
 
   const [imageH, setImageH] = useState<number | null>(null)
   const imageParentRef = useRef<HTMLDivElement>(null)
+
+  const handlePrevCard = () => {
+    setCurrentCard((prev) => prev - 1)
+  }
+
+  const handleNextCard = () => {
+    setCurrentCard((prev) => prev + 1)
+  }
 
   useSafeLayoutEffect(() => {
     const onResize = () => {
@@ -56,10 +65,18 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
     <VStack w="full" h="full">
       <Modal open={open} onClose={onClose} size="2xl" withCloseButton={false}>
         <ModalHeader justifyContent="space-between">
-          <Text>カード1</Text>
+          <Text>カード{currentCard + 1}</Text>
           <ButtonGroup attached>
-            <IconButton icon={<ChevronLeftIcon />} colorScheme="riverBlue" />
-            <IconButton icon={<ChevronRightIcon />} colorScheme="riverBlue" />
+            <IconButton
+              icon={<ChevronLeftIcon />}
+              colorScheme="riverBlue"
+              onClick={handlePrevCard}
+            />
+            <IconButton
+              icon={<ChevronRightIcon />}
+              colorScheme="riverBlue"
+              onClick={handleNextCard}
+            />
           </ButtonGroup>
         </ModalHeader>
         <ModalBody>
