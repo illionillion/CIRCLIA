@@ -1,10 +1,17 @@
 "use client"
 
 import type { FC } from "@yamada-ui/react"
-import { useSafeLayoutEffect, useBoolean, Center } from "@yamada-ui/react"
+import {
+  useSafeLayoutEffect,
+  useBoolean,
+  Center,
+  Text,
+  Card,
+} from "@yamada-ui/react"
 import { useRef, useState } from "react"
 import { ForceGraph2D } from "react-force-graph"
-import RobotAnimation from "./robot-animation"
+import NetWorkAnimation from "../media-and-icons/network-animation"
+import RobotAnimation from "../media-and-icons/robot-animation"
 import type { getSuggestions } from "@/actions/suggestion"
 
 interface ForceGraphMethods {
@@ -142,8 +149,27 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
           rounded="full"
           boxSize="md"
           bg="blackAlpha.100"
+          flexDir="column"
+          pointerEvents="none"
+          as={Card}
         >
           <RobotAnimation />
+          <Text mt="-lg">生成中です・・・</Text>
+        </Center>
+      )}
+      {data.nodes.length === 0 && !loading && (
+        <Center
+          position="absolute"
+          zIndex="beerus"
+          rounded="full"
+          boxSize="md"
+          bg="blackAlpha.100"
+          flexDir="column"
+          pointerEvents="none"
+          as={Card}
+        >
+          <NetWorkAnimation />
+          <Text>AIを使って類似度で検索しよう</Text>
         </Center>
       )}
       <ForceGraph2D
