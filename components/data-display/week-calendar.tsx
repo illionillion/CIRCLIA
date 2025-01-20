@@ -137,16 +137,16 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
                 >
                   <Box
                     rounded={isToday ? "full" : undefined} // 今日の場合に丸くする
-                    w="74" 
-                    h="auto" 
+                    w="74"
+                    h="auto"
                     bg={isToday ? "black" : undefined} // 今日の場合に黒背景
-                    color={isToday ? "white" : getDayColor(date.getDay())} 
+                    color={isToday ? "white" : getDayColor(date.getDay())}
                     fontWeight="normal"
                     fontSize="md"
-                    textAlign="left" 
-                    p="2" 
-                    display="flex" 
-                    alignItems="center" 
+                    textAlign="left"
+                    p="2"
+                    display="flex"
+                    alignItems="center"
                   >
                     {date.toLocaleDateString("ja-JP", {
                       month: "numeric",
@@ -154,7 +154,6 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
                       weekday: "short",
                     })}
                   </Box>
-
 
                   <VStack h="sm" overflowY="auto">
                     {(calendarData[dayKey]?.activities || []).map(
