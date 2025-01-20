@@ -112,7 +112,7 @@ export const AlbumForm: FC<AlbumFormProps> = ({ circleId, mode, album }) => {
           control={control}
           render={({ field: { onChange, value = [], ref, ...rest } }) => (
             <>
-              <Label isRequired>画像を選択</Label>
+              <Label required>画像を選択</Label>
               <VStack display={{ base: "none", md: "flex" }}>
                 <FileButton
                   {...{ ref, ...rest }}
@@ -193,7 +193,7 @@ export const AlbumForm: FC<AlbumFormProps> = ({ circleId, mode, album }) => {
         />
       </FormControl>
       <FormControl invalid={!!errors.title}>
-        <Label isRequired>タイトル</Label>
+        <Label required>タイトル</Label>
         <Input
           type="text"
           placeholder="例)何でもない日の幸せ"

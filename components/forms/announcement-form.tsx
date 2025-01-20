@@ -102,7 +102,7 @@ export const AnnouncementForm: FC<AnnouncementFormProps> = ({
           maxW="2xl"
           invalid={!!errors.title}
         >
-          <Label flexGrow={1} isRequired>
+          <Label flexGrow={1} required>
             タイトル
           </Label>
           <VStack w="auto">
@@ -129,7 +129,7 @@ export const AnnouncementForm: FC<AnnouncementFormProps> = ({
           maxW="2xl"
           invalid={!!errors.content}
         >
-          <Label flexGrow={1} isRequired>
+          <Label flexGrow={1} required>
             内容
           </Label>
           <VStack w="auto">

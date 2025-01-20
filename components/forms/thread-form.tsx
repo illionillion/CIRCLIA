@@ -91,7 +91,7 @@ export const ThreadForm: FC<ThreadFormProps> = ({
           maxW="2xl"
           invalid={!!errors.title}
         >
-          <Label flexGrow={1} isRequired>
+          <Label flexGrow={1} required>
             タイトル
           </Label>
           <VStack w="auto">

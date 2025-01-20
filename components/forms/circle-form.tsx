@@ -329,7 +329,7 @@ export const CircleForm: FC<CircleFormProps> = ({
             maxW="2xl"
             invalid={!!errors.name}
           >
-            <Label flexGrow={1} isRequired>
+            <Label flexGrow={1} required>
               サークル名
             </Label>
             <VStack w="auto">
@@ -356,7 +356,7 @@ export const CircleForm: FC<CircleFormProps> = ({
             maxW="2xl"
             invalid={!!errors.description}
           >
-            <Label flexGrow={1} isRequired>
+            <Label flexGrow={1} required>
               説明
             </Label>
             <VStack w="auto">
@@ -388,7 +388,7 @@ export const CircleForm: FC<CircleFormProps> = ({
               control={control}
               render={({ field }) => (
                 <>
-                  <Label flexGrow={1} isRequired>
+                  <Label flexGrow={1} required>
                     講師
                   </Label>
                   <VStack w="auto">
@@ -441,7 +441,7 @@ export const CircleForm: FC<CircleFormProps> = ({
             maxW="2xl"
             invalid={!!errors.location}
           >
-            <Label flexGrow={1} isRequired>
+            <Label flexGrow={1} required>
               活動場所
             </Label>
             <VStack w="auto">
@@ -468,7 +468,7 @@ export const CircleForm: FC<CircleFormProps> = ({
             maxW="2xl"
             invalid={!!errors.activityDay}
           >
-            <Label flexGrow={1} isRequired>
+            <Label flexGrow={1} required>
               活動日
             </Label>
             <VStack w="auto">

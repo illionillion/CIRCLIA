@@ -119,7 +119,7 @@ export const ActivityForm: FC<ActivityFormProps> = ({
           maxW="2xl"
           invalid={!!errors.title}
         >
-          <Label flexGrow={1} isRequired>
+          <Label flexGrow={1} required>
             見出し
           </Label>
           <VStack w="auto">
@@ -176,7 +176,7 @@ export const ActivityForm: FC<ActivityFormProps> = ({
             control={control}
             render={({ field }) => (
               <>
-                <Label flexGrow={1} isRequired>
+                <Label flexGrow={1} required>
                   日付
                 </Label>
                 <VStack w="auto">
@@ -230,7 +230,7 @@ export const ActivityForm: FC<ActivityFormProps> = ({
           maxW="2xl"
           invalid={!!errors.startTime}
         >
-          <Label flexGrow={1} isRequired>
+          <Label flexGrow={1} required>
             開始時間
           </Label>
           <VStack w="auto">
