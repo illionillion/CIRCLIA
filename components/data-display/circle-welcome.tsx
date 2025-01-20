@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod"
 import {
   CameraIcon,
   ChevronLeftIcon,
@@ -28,15 +29,54 @@ import {
   Textarea,
   Tooltip,
   useDisclosure,
+  useNotice,
   useSafeLayoutEffect,
   VStack,
+  FileButton,
 } from "@yamada-ui/react"
 import { useRef, useState } from "react"
+import { useForm, Controller } from "react-hook-form"
+import { z } from "zod"
 import { WelcomeCard } from "./welcome-card"
+import { getBase64Image } from "@/utils/file"
 
 interface CircleWelcomeProps {
   isAdmin?: boolean
 }
+
+// カードのスキーマを定義
+const WelcomeCardSchema = z.object({
+  frontTitle: z.string(),
+  backTitle: z.string(),
+  backDescription: z.string(),
+}) //.brand("welcomeCard")
+
+const FrontWelcomeCardSchema = WelcomeCardSchema.extend({
+  frontImage: z
+    .custom<FileList>()
+    .optional() // 画像ファイルはオプション
+    .refine(
+      (file) =>
+        typeof file === "string" ||
+        !file ||
+        file.length === 0 ||
+        (file.length > 0 && file[0].type.startsWith("image/")),
+      {
+        message: "画像ファイルを選択してください",
+      },
+    )
+    .transform(async (file) => {
+      if (typeof file === "string" || !file || file.length === 0) {
+        return null // 画像がない場合はnullを返す
+      }
+      const selectedFile = file[0]
+      return await getBase64Image(selectedFile)
+    }),
+})
+
+type WelcomeCard = z.infer<typeof WelcomeCardSchema>
+
+type FrontWelcomeCard = z.infer<typeof FrontWelcomeCardSchema>
 
 export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
   const { open, onOpen, onClose } = useDisclosure()
@@ -44,6 +84,60 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
 
   const [imageH, setImageH] = useState<number | null>(null)
   const imageParentRef = useRef<HTMLDivElement>(null)
+
+  const notice = useNotice()
+
+  const [cards, setCards] = useState<FrontWelcomeCard[]>([
+    {
+      frontTitle: "",
+      frontImage: "",
+      backTitle: "",
+      backDescription: "",
+    },
+    {
+      frontTitle: "",
+      frontImage: "",
+      backTitle: "",
+      backDescription: "",
+    },
+    {
+      frontTitle: "",
+      frontImage: "",
+      backTitle: "",
+      backDescription: "",
+    },
+  ])
+
+  const { register, handleSubmit, reset, watch, control } =
+    useForm<FrontWelcomeCard>({
+      resolver: zodResolver(FrontWelcomeCardSchema),
+      defaultValues: cards[currentCard],
+    })
+
+  // フォームの値の変更を監視
+  const formValues = watch()
+
+  // フォームの値が変更されるたびにcardsの状態を更新
+  useSafeLayoutEffect(() => {
+    setCards((prev) => {
+      const newCards = [...prev]
+      newCards[currentCard] = formValues
+      return newCards
+    })
+  }, [formValues, currentCard])
+
+  // onSubmitを簡略化（状態の更新は不要）
+  const onSubmit = (data: FrontWelcomeCard) => {
+    console.log(data)
+    // 送信の処理のみを行う
+    notice({
+      title: `カード${currentCard + 1}を更新しました`,
+      status: "success",
+      placement: "bottom",
+    })
+  }
+
+  const [imagePreview, setImagePreview] = useState<string>("")
 
   const handlePrevCard = () => {
     if (currentCard > 0) setCurrentCard((prev) => prev - 1)
@@ -68,6 +162,36 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
       window.removeEventListener("resize", onResize)
     }
   }, [])
+
+  // モーダルが開くときと、カード切り替え時のみ実行されるように修正
+  useSafeLayoutEffect(() => {
+    console.log(cards[currentCard])
+    reset(cards[currentCard])
+    // カードの画像が存在する場合はプレビューを設定
+    if (typeof cards[currentCard].frontImage === "string") {
+      setImagePreview(cards[currentCard].frontImage)
+    } else {
+      setImagePreview("")
+    }
+  }, [currentCard]) // cardsとresetを依存配列から削除
+
+  // watchでimagePathを監視
+  const imagePath = watch("frontImage") as unknown as FileList | null
+
+  // 画像選択時にプレビューを更新
+  useSafeLayoutEffect(() => {
+    if (typeof imagePath === "string") return
+    if (imagePath && imagePath.length > 0) {
+      const file = imagePath[0]
+      setImagePreview(URL.createObjectURL(file))
+    } else {
+      setImagePreview("")
+    }
+    // クリーンアップ関数でURLを解放
+    return () => {
+      if (imagePreview) URL.revokeObjectURL(imagePreview)
+    }
+  }, [imagePath])
 
   return (
     <VStack w="full" h="full">
@@ -115,17 +239,42 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
               <Text fontSize="md">表面</Text>
               <Card minH={{ base: "sm", md: "2xs" }}>
                 <CardHeader>
-                  <Input placeholder="何をするサークル？" />
+                  <Input
+                    placeholder="何をするサークル？"
+                    {...register("frontTitle")}
+                  />
                 </CardHeader>
                 <CardBody>
-                  <Center w="full" h="full" flexGrow={1}>
-                    <IconButton
-                      w="16"
-                      h="16"
-                      bg="gray.100"
-                      icon={<CameraIcon fontSize="5xl" color="gray" />}
-                      fullRounded
-                      variant="outline"
+                  <Center
+                    w="full"
+                    h="full"
+                    flexGrow={1}
+                    {...(imagePreview
+                      ? {
+                          backgroundImage: imagePreview,
+                          backgroundSize: "cover",
+                          backgroundPosition: "center",
+                        }
+                      : {
+                          backgroundColor: "gray.100",
+                        })}
+                  >
+                    <Controller
+                      name="frontImage"
+                      control={control}
+                      render={({ field: { ref, name, onBlur, onChange } }) => (
+                        <FileButton
+                          {...{ ref, name, onBlur }}
+                          w="16"
+                          h="16"
+                          as={IconButton}
+                          accept="image/*"
+                          onChange={onChange}
+                          icon={<CameraIcon fontSize="5xl" color="gray" />}
+                          fullRounded
+                          variant="outline"
+                        />
+                      )}
                     />
                   </Center>
                 </CardBody>
@@ -135,7 +284,10 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
               <Text fontSize="md">裏面</Text>
               <Card minH={{ base: "sm", md: "2xs" }}>
                 <CardHeader>
-                  <Input placeholder="サークルのメンバーは？" />
+                  <Input
+                    placeholder="サークルのメンバーは？"
+                    {...register("backTitle")}
+                  />
                 </CardHeader>
                 <CardBody>
                   <Textarea
@@ -143,6 +295,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
                     h="full"
                     flexGrow={1}
                     placeholder="サークルの詳しい説明"
+                    {...register("backDescription")}
                   />
                 </CardBody>
               </Card>
@@ -154,7 +307,9 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
             <Button colorScheme="riverBlue" onClick={onClose}>
               キャンセル
             </Button>
-            <Button colorScheme="riverBlue">更新</Button>
+            <Button colorScheme="riverBlue" onClick={handleSubmit(onSubmit)}>
+              更新
+            </Button>
           </ButtonGroup>
         </ModalFooter>
       </Modal>
