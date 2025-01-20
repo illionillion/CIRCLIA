@@ -142,7 +142,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
         <VStack
           position="sticky"
           p="md"
-          pb={mode === 0 ? "md" : "0"}
+          pb={0}
           top={0}
           backgroundImage="/images/white_marble.png"
           backgroundColor="white"
@@ -212,6 +212,8 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
               as={Link}
               href="/circles/create"
               colorScheme="riverBlue"
+              transition="0.5s"
+              _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
               position="absolute"
               right={0}
               top="-1"
@@ -222,8 +224,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
         </VStack>
         {mode === 0 ? (
           <Grid
-            pb="md"
-            px="md"
+            p="md"
             gridTemplateColumns={{
               base: "repeat(4, 1fr)",
               lg: "repeat(3, 1fr)",
@@ -248,6 +249,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
         right="8"
         icon={<ChevronUpIcon />}
         onClick={handleScroll}
+        _hover={{ transform: "scale(1.1)" }}
       />
     </>
   )

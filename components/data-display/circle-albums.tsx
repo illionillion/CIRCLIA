@@ -87,6 +87,8 @@ export const CircleAlbums: FC<CircleAlbums> = ({
             href={`/circles/${circleId}/album/create`}
             startIcon={<PlusIcon fontSize="2xl" />}
             colorScheme="riverBlue"
+            transition="0.5s"
+            _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
           >
             作成
           </Button>
@@ -120,7 +122,14 @@ export const CircleAlbums: FC<CircleAlbums> = ({
           gap="md"
         >
           {albums.map((album) => (
-            <GridItem key={album.id} as={Card} flexDir="column" bg="white">
+            <GridItem
+              key={album.id}
+              as={Card}
+              flexDir="column"
+              bg="white"
+              transition="0.5s"
+              _hover={{ transform: "scale(1.05)", transition: "0.5s" }}
+            >
               <LinkBox>
                 <Carousel
                   h="xs"

@@ -97,7 +97,14 @@ export const MemberCard: FC<MemberCard> = ({
   }
 
   return (
-    <GridItem w="full" rounded="md" as={Card} bg="white">
+    <GridItem
+      w="full"
+      rounded="md"
+      as={Card}
+      bg="white"
+      transition="0.5s"
+      _hover={{ transform: "scale(1.02)", transition: "0.5s" }}
+    >
       <CardBody as={LinkBox}>
         <HStack
           as={Center}
