@@ -246,6 +246,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
         right="8"
         icon={<ChevronUpIcon />}
         onClick={handleScroll}
+        _hover={{ transform: "scale(1.1)" }}
       />
     </>
   )
