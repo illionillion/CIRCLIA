@@ -1,6 +1,8 @@
 import {
+  CameraIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  CircleHelpIcon,
   SquarePenIcon,
 } from "@yamada-ui/lucide"
 import type { FC } from "@yamada-ui/react"
@@ -8,17 +10,23 @@ import {
   Box,
   Button,
   ButtonGroup,
+  Card,
   CardBody,
   CardHeader,
+  Center,
   Grid,
   Heading,
+  HStack,
   IconButton,
   Image,
+  Input,
   Modal,
   ModalBody,
   ModalFooter,
   ModalHeader,
   Text,
+  Textarea,
+  Tooltip,
   useDisclosure,
   useSafeLayoutEffect,
   VStack,
@@ -38,11 +46,11 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
   const imageParentRef = useRef<HTMLDivElement>(null)
 
   const handlePrevCard = () => {
-    setCurrentCard((prev) => prev - 1)
+    if (currentCard > 0) setCurrentCard((prev) => prev - 1)
   }
 
   const handleNextCard = () => {
-    setCurrentCard((prev) => prev + 1)
+    if (currentCard < 2) setCurrentCard((prev) => prev + 1)
   }
 
   useSafeLayoutEffect(() => {
@@ -63,24 +71,83 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
 
   return (
     <VStack w="full" h="full">
-      <Modal open={open} onClose={onClose} size="2xl" withCloseButton={false}>
+      <Modal
+        open={open}
+        onClose={onClose}
+        size="4xl"
+        scrollBehavior="inside"
+        withCloseButton={false}
+      >
         <ModalHeader justifyContent="space-between">
-          <Text>カード{currentCard + 1}</Text>
-          <ButtonGroup attached>
-            <IconButton
-              icon={<ChevronLeftIcon />}
-              colorScheme="riverBlue"
-              onClick={handlePrevCard}
-            />
-            <IconButton
-              icon={<ChevronRightIcon />}
-              colorScheme="riverBlue"
-              onClick={handleNextCard}
-            />
-          </ButtonGroup>
+          <Text>カード{currentCard + 1}/3</Text>
+          <HStack>
+            <Tooltip
+              label="カードを3つ全て入力するとウェルカムページで反映されます。"
+              placement="bottom"
+            >
+              <Center>
+                <CircleHelpIcon />
+              </Center>
+            </Tooltip>
+            <ButtonGroup attached>
+              <IconButton
+                icon={<ChevronLeftIcon />}
+                colorScheme="riverBlue"
+                onClick={handlePrevCard}
+              />
+              <IconButton
+                icon={<ChevronRightIcon />}
+                colorScheme="riverBlue"
+                onClick={handleNextCard}
+              />
+            </ButtonGroup>
+          </HStack>
         </ModalHeader>
         <ModalBody>
-          <Text>編集画面</Text>
+          <HStack
+            w="full"
+            h="full"
+            alignItems="flex-start"
+            mb="xs"
+            flexDir={{ base: "row", md: "column" }}
+          >
+            <VStack w="full" h="full" gap="md">
+              <Text fontSize="md">表面</Text>
+              <Card minH={{ base: "sm", md: "2xs" }}>
+                <CardHeader>
+                  <Input placeholder="何をするサークル？" />
+                </CardHeader>
+                <CardBody>
+                  <Center w="full" h="full" flexGrow={1}>
+                    <IconButton
+                      w="16"
+                      h="16"
+                      bg="gray.100"
+                      icon={<CameraIcon fontSize="5xl" color="gray" />}
+                      fullRounded
+                      variant="outline"
+                    />
+                  </Center>
+                </CardBody>
+              </Card>
+            </VStack>
+            <VStack w="full" h="full" gap="md">
+              <Text fontSize="md">裏面</Text>
+              <Card minH={{ base: "sm", md: "2xs" }}>
+                <CardHeader>
+                  <Input placeholder="サークルのメンバーは？" />
+                </CardHeader>
+                <CardBody>
+                  <Textarea
+                    w="full"
+                    h="full"
+                    flexGrow={1}
+                    placeholder="サークルの詳しい説明"
+                  />
+                </CardBody>
+              </Card>
+            </VStack>
+          </HStack>
         </ModalBody>
         <ModalFooter>
           <ButtonGroup attached>
