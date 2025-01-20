@@ -89,7 +89,7 @@ export const ThreadForm: FC<ThreadFormProps> = ({
           flexDirection={{ base: "row", md: "column" }}
           gap={{ base: "2xl", md: "md" }}
           maxW="2xl"
-          isInvalid={!!errors.title}
+          invalid={!!errors.title}
         >
           <Label flexGrow={1} isRequired>
             タイトル
@@ -116,7 +116,7 @@ export const ThreadForm: FC<ThreadFormProps> = ({
           flexDirection={{ base: "row", md: "column" }}
           gap={{ base: "2xl", md: "md" }}
           maxW="2xl"
-          isInvalid={!!errors.content}
+          invalid={!!errors.content}
         >
           <Label flexGrow={1}>説明</Label>
           <VStack w="auto">

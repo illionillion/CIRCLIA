@@ -117,7 +117,7 @@ export const ActivityForm: FC<ActivityFormProps> = ({
           flexDirection={{ base: "row", md: "column" }}
           gap={{ base: "2xl", md: "md" }}
           maxW="2xl"
-          isInvalid={!!errors.title}
+          invalid={!!errors.title}
         >
           <Label flexGrow={1} isRequired>
             見出し
@@ -144,7 +144,7 @@ export const ActivityForm: FC<ActivityFormProps> = ({
           flexDirection={{ base: "row", md: "column" }}
           gap={{ base: "2xl", md: "md" }}
           maxW="2xl"
-          isInvalid={!!errors.description}
+          invalid={!!errors.description}
         >
           <Label flexGrow={1}>内容</Label>
           <VStack w="auto">
@@ -169,7 +169,7 @@ export const ActivityForm: FC<ActivityFormProps> = ({
           flexDirection={{ base: "row", md: "column" }}
           gap={{ base: "2xl", md: "md" }}
           maxW="2xl"
-          isInvalid={!!errors.date}
+          invalid={!!errors.date}
         >
           <Controller
             name="date"
@@ -228,7 +228,7 @@ export const ActivityForm: FC<ActivityFormProps> = ({
           flexDirection={{ base: "row", md: "column" }}
           gap={{ base: "2xl", md: "md" }}
           maxW="2xl"
-          isInvalid={!!errors.startTime}
+          invalid={!!errors.startTime}
         >
           <Label flexGrow={1} isRequired>
             開始時間
@@ -255,7 +255,7 @@ export const ActivityForm: FC<ActivityFormProps> = ({
           flexDirection={{ base: "row", md: "column" }}
           gap={{ base: "2xl", md: "md" }}
           maxW="2xl"
-          isInvalid={!!errors.endTime}
+          invalid={!!errors.endTime}
         >
           <Label flexGrow={1}>終了時間</Label>
           <VStack w="auto">
@@ -280,7 +280,7 @@ export const ActivityForm: FC<ActivityFormProps> = ({
           flexDirection={{ base: "row", md: "column" }}
           gap={{ base: "2xl", md: "md" }}
           maxW="2xl"
-          isInvalid={!!errors.location}
+          invalid={!!errors.location}
         >
           <Label flexGrow={1}>場所</Label>
           <VStack w="auto">
@@ -305,7 +305,7 @@ export const ActivityForm: FC<ActivityFormProps> = ({
           flexDirection={{ base: "row", md: "column" }}
           gap={{ base: "2xl", md: "md" }}
           maxW="2xl"
-          isInvalid={!!errors.notes}
+          invalid={!!errors.notes}
         >
           <Label flexGrow={1}>備考</Label>
           <VStack w="auto">

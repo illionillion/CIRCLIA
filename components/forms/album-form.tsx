@@ -106,7 +106,7 @@ export const AlbumForm: FC<AlbumFormProps> = ({ circleId, mode, album }) => {
       p="md"
     >
       <Heading>アルバム作成</Heading>
-      <FormControl isInvalid={!!errors.images}>
+      <FormControl invalid={!!errors.images}>
         <Controller
           name="images"
           control={control}
@@ -192,7 +192,7 @@ export const AlbumForm: FC<AlbumFormProps> = ({ circleId, mode, album }) => {
           )}
         />
       </FormControl>
-      <FormControl isInvalid={!!errors.title}>
+      <FormControl invalid={!!errors.title}>
         <Label isRequired>タイトル</Label>
         <Input
           type="text"
@@ -203,7 +203,7 @@ export const AlbumForm: FC<AlbumFormProps> = ({ circleId, mode, album }) => {
           <ErrorMessage mt={0}>{errors.title.message}</ErrorMessage>
         )}
       </FormControl>
-      <FormControl isInvalid={!!errors.description}>
+      <FormControl invalid={!!errors.description}>
         <Label>内容</Label>
         <Textarea
           placeholder="例)特別なことは何もないけれど、みんなで過ごす日常が一番の宝物です。&#13;&#10;ちょっとした会話、何気ない笑顔が心に残ります。"

@@ -271,7 +271,7 @@ export const CircleForm: FC<CircleFormProps> = ({
             })}
       >
         <FormControl
-          isInvalid={!!errors.imagePath}
+          invalid={!!errors.imagePath}
           errorMessage={errors.imagePath ? errors.imagePath.message : undefined}
         >
           <Controller
@@ -327,7 +327,7 @@ export const CircleForm: FC<CircleFormProps> = ({
             flexDirection={{ base: "row", md: "column" }}
             gap={{ base: "2xl", md: "md" }}
             maxW="2xl"
-            isInvalid={!!errors.name}
+            invalid={!!errors.name}
           >
             <Label flexGrow={1} isRequired>
               サークル名
@@ -354,7 +354,7 @@ export const CircleForm: FC<CircleFormProps> = ({
             flexDirection={{ base: "row", md: "column" }}
             gap={{ base: "2xl", md: "md" }}
             maxW="2xl"
-            isInvalid={!!errors.description}
+            invalid={!!errors.description}
           >
             <Label flexGrow={1} isRequired>
               説明
@@ -381,7 +381,7 @@ export const CircleForm: FC<CircleFormProps> = ({
             flexDirection={{ base: "row", md: "column" }}
             gap={{ base: "2xl", md: "md" }}
             maxW="2xl"
-            isInvalid={!!errors.instructors}
+            invalid={!!errors.instructors}
           >
             <Controller
               name="instructors"
@@ -439,7 +439,7 @@ export const CircleForm: FC<CircleFormProps> = ({
             flexDirection={{ base: "row", md: "column" }}
             gap={{ base: "2xl", md: "md" }}
             maxW="2xl"
-            isInvalid={!!errors.location}
+            invalid={!!errors.location}
           >
             <Label flexGrow={1} isRequired>
               活動場所
@@ -466,7 +466,7 @@ export const CircleForm: FC<CircleFormProps> = ({
             flexDirection={{ base: "row", md: "column" }}
             gap={{ base: "2xl", md: "md" }}
             maxW="2xl"
-            isInvalid={!!errors.activityDay}
+            invalid={!!errors.activityDay}
           >
             <Label flexGrow={1} isRequired>
               活動日
