@@ -115,6 +115,8 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
           <HStack w="full" h="full" gap={0}>
             {weekDates.map((date, index) => {
               const dayKey = parseMonthDate(date)
+              const isToday = dayKey === parseMonthDate(new Date())
+
               return (
                 <VStack
                   key={dayKey}
@@ -126,20 +128,26 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
                   bg="white"
                 >
                   <Box
-                    fontWeight={
-                      dayKey === parseMonthDate(new Date()) ? "bold" : "normal"
-                    }
-                    fontSize={
-                      dayKey === parseMonthDate(new Date()) ? "lg" : "md"
-                    }
-                    color={getDayColor(date.getDay())}
+                    rounded={isToday ? "full" : undefined} // 今日の場合に丸くする
+                    w="74" 
+                    h="auto" 
+                    bg={isToday ? "black" : undefined} // 今日の場合に黒背景
+                    color={isToday ? "white" : getDayColor(date.getDay())} 
+                    fontWeight="normal"
+                    fontSize="md"
+                    textAlign="left" 
+                    p="2" 
+                    display="flex" 
+                    alignItems="center" 
                   >
                     {date.toLocaleDateString("ja-JP", {
                       month: "numeric",
                       day: "numeric",
-                      weekday: "short", // 曜日追加
+                      weekday: "short",
                     })}
                   </Box>
+
+
                   <VStack h="sm" overflowY="auto">
                     {(calendarData[dayKey]?.activities || []).map(
                       (activity, i) => (
