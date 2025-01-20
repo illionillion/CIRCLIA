@@ -100,10 +100,10 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
             カレンダー
           </Heading>
           <HStack>
-            <Button colorScheme="riverBlue" onClick={previousWeek}>
+            <Button colorScheme="riverBlue" onClick={previousWeek} _hover={{ transform: "scale(1.1)" }}>
               前の週
             </Button>
-            <Button colorScheme="riverBlue" onClick={nextWeek}>
+            <Button colorScheme="riverBlue" onClick={nextWeek} _hover={{ transform: "scale(1.1)" }}>
               次の週
             </Button>
           </HStack>
@@ -147,6 +147,11 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
                           key={i}
                           as={Link}
                           href={`/circles/${activity.circle.id}/activities/${activity.id}`}
+                          transition="0.5s"
+                          _hover={{
+                            transform: "scale(1.05)",
+                            transition: "0.5s",
+                          }}
                         >
                           {activity.title}
                         </Tag>
