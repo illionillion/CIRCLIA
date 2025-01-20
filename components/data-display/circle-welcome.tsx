@@ -107,6 +107,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
       backDescription: "",
     },
   ])
+  const [draftCards, setDraftCards] = useState<FrontWelcomeCard[]>(cards)
 
   const { register, handleSubmit, reset, watch, control } =
     useForm<FrontWelcomeCard>({
@@ -114,21 +115,15 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
       defaultValues: cards[currentCard],
     })
 
-  // フォームの値の変更を監視
-  const formValues = watch()
-
-  // フォームの値が変更されるたびにcardsの状態を更新
-  useSafeLayoutEffect(() => {
-    setCards((prev) => {
-      const newCards = [...prev]
-      newCards[currentCard] = formValues
-      return newCards
-    })
-  }, [formValues, currentCard])
+  const watchCards = watch()
 
   // onSubmitを簡略化（状態の更新は不要）
   const onSubmit = (data: FrontWelcomeCard) => {
-    console.log(data)
+    setCards((prev) => {
+      const newCards = [...prev]
+      newCards[currentCard] = data
+      return newCards
+    })
     // 送信の処理のみを行う
     notice({
       title: `カード${currentCard + 1}を更新しました`,
@@ -140,36 +135,33 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
   const [imagePreview, setImagePreview] = useState<string>("")
 
   const handlePrevCard = () => {
-    if (currentCard > 0) setCurrentCard((prev) => prev - 1)
+    if (currentCard > 0) {
+      setCurrentCard((prev) => prev - 1)
+      setDraftCards((prev) => {
+        const newCards = [...prev]
+        newCards[currentCard] = watchCards
+        return newCards
+      })
+    }
   }
 
   const handleNextCard = () => {
-    if (currentCard < 2) setCurrentCard((prev) => prev + 1)
+    if (currentCard < 2) {
+      setCurrentCard((prev) => prev + 1)
+      setDraftCards((prev) => {
+        const newCards = [...prev]
+        newCards[currentCard] = watchCards
+        return newCards
+      })
+    }
   }
-
-  useSafeLayoutEffect(() => {
-    const onResize = () => {
-      const parent = imageParentRef.current
-      if (parent) {
-        setImageH(parent.offsetHeight)
-      }
-    }
-
-    window.addEventListener("resize", onResize)
-    onResize()
-
-    return () => {
-      window.removeEventListener("resize", onResize)
-    }
-  }, [])
 
   // モーダルが開くときと、カード切り替え時のみ実行されるように修正
   useSafeLayoutEffect(() => {
-    console.log(cards[currentCard])
-    reset(cards[currentCard])
+    reset(draftCards[currentCard])
     // カードの画像が存在する場合はプレビューを設定
-    if (typeof cards[currentCard].frontImage === "string") {
-      setImagePreview(cards[currentCard].frontImage)
+    if (typeof draftCards[currentCard].frontImage === "string") {
+      setImagePreview(draftCards[currentCard].frontImage)
     } else {
       setImagePreview("")
     }
@@ -192,6 +184,22 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
       if (imagePreview) URL.revokeObjectURL(imagePreview)
     }
   }, [imagePath])
+
+  useSafeLayoutEffect(() => {
+    const onResize = () => {
+      const parent = imageParentRef.current
+      if (parent) {
+        setImageH(parent.offsetHeight)
+      }
+    }
+
+    window.addEventListener("resize", onResize)
+    onResize()
+
+    return () => {
+      window.removeEventListener("resize", onResize)
+    }
+  }, [])
 
   return (
     <VStack w="full" h="full">
