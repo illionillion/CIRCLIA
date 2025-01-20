@@ -69,6 +69,8 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
             m="auto"
             onClick={handleMarkAsRead}
             loading={isPending}
+            transition="0.5s"
+            _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
           >
             既読
           </Button>

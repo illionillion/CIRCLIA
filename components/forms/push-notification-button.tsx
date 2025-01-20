@@ -151,6 +151,8 @@ export const EnablePushNotificationButton: FC<{ userId: string }> = ({
           ? unsubscribePushNotification
           : requestPushNotificationPermission
       }
+      transition="0.5s"
+      _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
       loading={isLoading}
       disabled={isLoading} // ローディング中は無効化
     >

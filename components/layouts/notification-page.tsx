@@ -31,7 +31,12 @@ export const NotificationPage: FC<NotificationPageProps> = ({ userId }) => {
         </Heading>
         <HStack flexWrap="wrap" justifyContent="end">
           <EnablePushNotificationButton userId={userId} />
-          <Button colorScheme="riverBlue" onClick={handleClick}>
+          <Button
+            colorScheme="riverBlue"
+            onClick={handleClick}
+            transition="0.5s"
+            _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
+          >
             全て既読
           </Button>
         </HStack>
