@@ -34,7 +34,7 @@ import {
   VStack,
   FileButton,
 } from "@yamada-ui/react"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { useForm, Controller } from "react-hook-form"
 import { z } from "zod"
 import { WelcomeCard } from "./welcome-card"
@@ -81,9 +81,6 @@ type FrontWelcomeCard = z.infer<typeof FrontWelcomeCardSchema>
 export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
   const { open, onOpen, onClose } = useDisclosure()
   const [currentCard, setCurrentCard] = useState<number>(0)
-
-  const [imageH, setImageH] = useState<number | null>(null)
-  const imageParentRef = useRef<HTMLDivElement>(null)
 
   const notice = useNotice()
 
@@ -185,21 +182,86 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
     }
   }, [imagePath])
 
-  useSafeLayoutEffect(() => {
-    const onResize = () => {
-      const parent = imageParentRef.current
-      if (parent) {
-        setImageH(parent.offsetHeight)
+  const renderCardContent = (index: number) => {
+    const card = cards[index]
+
+    // fromコンテンツの生成
+    const fromContent = (() => {
+      // カードデータが完全に空の場合はデフォルト表示を返す
+      if (!card.frontTitle && !card.frontImage) {
+        return null
       }
-    }
 
-    window.addEventListener("resize", onResize)
-    onResize()
+      // 画像のみがある場合
+      if (!card.frontTitle && card.frontImage) {
+        return (
+          <Image
+            flexGrow={1}
+            userSelect="none"
+            pointerEvents="none"
+            src={card.frontImage}
+            w="full"
+            h="xs"
+            objectFit="cover"
+            alt={`card ${index + 1} image`}
+          />
+        )
+      }
 
-    return () => {
-      window.removeEventListener("resize", onResize)
-    }
-  }, [])
+      // タイトルと画像がある場合
+      return (
+        <>
+          <CardHeader>
+            <Heading as="h3" fontSize="lg">
+              {card.frontTitle}
+            </Heading>
+          </CardHeader>
+          {card.frontImage && (
+            <CardBody>
+              <Box w="full" h="full" flexGrow={1}>
+                <Image
+                  userSelect="none"
+                  pointerEvents="none"
+                  src={card.frontImage}
+                  w="full"
+                  h="full"
+                  objectFit="contain"
+                  alt={`card ${index + 1} image`}
+                />
+              </Box>
+            </CardBody>
+          )}
+        </>
+      )
+    })()
+
+    // toコンテンツの生成
+    const toContent = (() => {
+      // カードデータが完全に空の場合はデフォルト表示を返す
+      if (!card.backTitle && !card.backDescription) {
+        return null
+      }
+
+      return (
+        <>
+          {card.backTitle && (
+            <CardHeader>
+              <Heading as="h3" fontSize="lg">
+                {card.backTitle}
+              </Heading>
+            </CardHeader>
+          )}
+          {card.backDescription && (
+            <CardBody>
+              <Text>{card.backDescription}</Text>
+            </CardBody>
+          )}
+        </>
+      )
+    })()
+
+    return { from: fromContent, to: toContent }
+  }
 
   return (
     <VStack w="full" h="full">
@@ -339,61 +401,66 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
         h="full"
         gridTemplateAreas={{
           base: `
-              "one one one two two"
-              "one one one two two"
-              "one one one three three"
-              `,
+            "one one one two two"
+            "one one one two two"
+            "one one one three three"
+          `,
           md: `
-              "one"
-              "two"
-              "three"
-              `,
+            "one"
+            "two"
+            "three"
+          `,
         }}
         gap="md"
       >
         <WelcomeCard
           area="one"
           from={
-            <>
-              <CardHeader>
-                <Heading as="h3" fontSize="lg">
-                  ウェルカムカードを設定しよう！
-                </Heading>
-              </CardHeader>
-              <CardBody>
-                <Box w="full" h="full" ref={imageParentRef}>
-                  <Image
-                    userSelect="none"
-                    pointerEvents="none"
-                    src="https://user0514.cdnw.net/shared/img/thumb/21830aIMGL99841974_TP_V.jpg"
-                    w="full"
-                    h={imageH || "xs"}
-                    objectFit="cover"
-                    alt="card 1 image"
-                  />
-                </Box>
-              </CardBody>
-            </>
+            renderCardContent(0).from || (
+              <>
+                <CardHeader>
+                  <Heading as="h3" fontSize="lg">
+                    ウェルカムカードを設定しよう！
+                  </Heading>
+                </CardHeader>
+                <CardBody>
+                  <Box w="full" h="full">
+                    <Image
+                      flexGrow={1}
+                      userSelect="none"
+                      pointerEvents="none"
+                      src="https://user0514.cdnw.net/shared/img/thumb/21830aIMGL99841974_TP_V.jpg"
+                      w="full"
+                      h="full"
+                      objectFit="cover"
+                      alt="card 1 image"
+                    />
+                  </Box>
+                </CardBody>
+              </>
+            )
           }
           to={
-            <>
-              <CardHeader>
-                <Heading as="h3" fontSize="lg">
-                  ウェルカムカードとは・・・？
-                </Heading>
-              </CardHeader>
-              <CardBody>
-                <Text>
-                  サークルページを初めて見た人や初めて入会した人向けに表示するウェルカムページをカスタマイズできます。
-                </Text>
-              </CardBody>
-            </>
+            renderCardContent(0).to || (
+              <>
+                <CardHeader>
+                  <Heading as="h3" fontSize="lg">
+                    ウェルカムカードとは・・・？
+                  </Heading>
+                </CardHeader>
+                <CardBody>
+                  <Text>
+                    サークルページを初めて見た人や初めて入会した人向けに表示するウェルカムページをカスタマイズできます。
+                  </Text>
+                </CardBody>
+              </>
+            )
           }
         />
         <WelcomeCard
           area="two"
           from={
-            <>
+            renderCardContent(1).from || (
               <Image
                 userSelect="none"
                 pointerEvents="none"
@@ -403,27 +470,29 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
                 objectFit="contain"
                 alt="card 2 image"
               />
-            </>
+            )
           }
           to={
-            <>
-              <CardHeader>
-                <Heading as="h3" fontSize="lg">
-                  メンバー募集！！
-                </Heading>
-              </CardHeader>
-              <CardBody>
-                <Text>👌かけもちOK！</Text>
-                <Text>👌文系の方でも大歓迎</Text>
-                <Text>👌活動は週一回程度</Text>
-              </CardBody>
-            </>
+            renderCardContent(1).to || (
+              <>
+                <CardHeader>
+                  <Heading as="h3" fontSize="lg">
+                    メンバー募集！！
+                  </Heading>
+                </CardHeader>
+                <CardBody>
+                  <Text>👌かけもちOK！</Text>
+                  <Text>👌文系の方でも大歓迎</Text>
+                  <Text>👌活動は週一回程度</Text>
+                </CardBody>
+              </>
+            )
           }
         />
         <WelcomeCard
           area="three"
           from={
-            <>
+            renderCardContent(2).from || (
               <Image
                 userSelect="none"
                 pointerEvents="none"
@@ -433,15 +502,15 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
                 objectFit="cover"
                 alt="card 3 image"
               />
-            </>
+            )
           }
           to={
-            <>
+            renderCardContent(2).to || (
               <CardBody>
                 <Text>活動費 月1000円</Text>
                 <Text>男女比 9:1</Text>
               </CardBody>
-            </>
+            )
           }
         />
       </Grid>
