@@ -28,7 +28,7 @@ export const CircleCard = memo(
         as={Card}
         background="white"
         transition="0.5s"
-        _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
+        _hover={{ transform: "scale(1.05)", transition: "0.5s" }}
       >
         <LinkBox>
           {data.imagePath ? (
