@@ -50,7 +50,12 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
   }
   const link = generateLink(notification)
   return (
-    <Card bg="white" as={LinkBox}>
+    <Card
+      bg="white"
+      as={LinkBox}
+      transition="0.5s"
+      _hover={{ transform: "scale(1.05)", transition: "0.5s" }}
+    >
       <CardBody flexDir="row">
         {notification.readAt ? undefined : (
           <Center m="auto">
