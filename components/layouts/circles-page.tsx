@@ -142,7 +142,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
         <VStack
           position="sticky"
           p="md"
-          pb={mode === 0 ? "md" : "0"}
+          pb={0}
           top={0}
           backgroundImage="/images/white_marble.png"
           backgroundColor="white"
@@ -224,8 +224,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
         </VStack>
         {mode === 0 ? (
           <Grid
-            pb="md"
-            px="md"
+            p="md"
             gridTemplateColumns={{
               base: "repeat(4, 1fr)",
               lg: "repeat(3, 1fr)",
