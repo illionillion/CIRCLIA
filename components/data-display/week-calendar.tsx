@@ -113,18 +113,14 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
               今日
             </Button>
             {/* 前後週の切り替えボタン */}
-            <ButtonGroup>
+            <ButtonGroup attached>
               <IconButton
                 icon={<ChevronLeftIcon fontSize="2xl" />}
-                borderTopRightRadius={0}
-                borderBottomRightRadius={0}
                 colorScheme="riverBlue"
                 onClick={previousWeek}
               />
               <IconButton
                 icon={<ChevronRightIcon fontSize="2xl" />}
-                borderTopLeftRadius={0}
-                borderBottomLeftRadius={0}
                 colorScheme="riverBlue"
                 onClick={nextWeek}
               />
