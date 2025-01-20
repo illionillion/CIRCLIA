@@ -74,7 +74,6 @@ export const AlbumCard: FC<AlbumCard> = ({
               colorScheme="riverBlue"
               transition="0.5s"
               _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
-
             >
               ダウンロード
             </Button>

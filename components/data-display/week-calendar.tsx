@@ -100,10 +100,18 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
             カレンダー
           </Heading>
           <HStack>
-            <Button colorScheme="riverBlue" onClick={previousWeek} _hover={{ transform: "scale(1.1)" }}>
+            <Button
+              colorScheme="riverBlue"
+              onClick={previousWeek}
+              _hover={{ transform: "scale(1.1)" }}
+            >
               前の週
             </Button>
-            <Button colorScheme="riverBlue" onClick={nextWeek} _hover={{ transform: "scale(1.1)" }}>
+            <Button
+              colorScheme="riverBlue"
+              onClick={nextWeek}
+              _hover={{ transform: "scale(1.1)" }}
+            >
               次の週
             </Button>
           </HStack>
