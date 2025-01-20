@@ -98,7 +98,11 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
     }
 
     const cache = cacheRef.current
-    if (!query || isNaN(parseFloat(threshold))) return
+    if (!query || isNaN(parseFloat(threshold))) {
+      setCurrentQuery(query)
+      setData({ links: [], nodes: [] })
+      return
+    }
     start()
     const key = `${query}-${threshold}`
     const result = cache.has(key)
