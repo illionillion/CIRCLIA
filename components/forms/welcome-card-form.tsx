@@ -5,6 +5,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   CircleHelpIcon,
+  TrashIcon,
 } from "@yamada-ui/lucide"
 import {
   Card,
@@ -27,6 +28,7 @@ import {
   Button,
   ModalFooter,
   useNotice,
+  useOS,
 } from "@yamada-ui/react"
 import type { FC } from "react"
 import { useState } from "react"
@@ -49,10 +51,11 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
   onUpdateCards,
 }) => {
   const notice = useNotice()
+  const os = useOS()
   const [draftCards, setDraftCards] = useState<FrontWelcomeCard[]>(cards)
   const [imagePreview, setImagePreview] = useState<string>("")
   const [currentCard, setCurrentCard] = useState<number>(0)
-  const { register, handleSubmit, reset, watch, control } =
+  const { register, handleSubmit, reset, watch, control, setValue } =
     useForm<FrontWelcomeCard>({
       resolver: zodResolver(FrontWelcomeCardSchema),
       defaultValues: draftCards[currentCard],
@@ -104,6 +107,16 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
         return newCards
       })
     }
+  }
+
+  const onResetImage = () => {
+    setImagePreview("")
+    setValue("frontImage", null)
+    setDraftCards((prev) => {
+      const newCards = [...prev]
+      newCards[currentCard].frontImage = null
+      return newCards
+    })
   }
 
   // モーダルが開くときと、カード切り替え時のみ実行されるように修正
@@ -204,17 +217,41 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
                     name="frontImage"
                     control={control}
                     render={({ field: { ref, name, onBlur, onChange } }) => (
-                      <FileButton
-                        {...{ ref, name, onBlur }}
-                        w="16"
-                        h="16"
-                        as={IconButton}
-                        accept="image/*"
-                        onChange={onChange}
-                        icon={<CameraIcon fontSize="5xl" color="gray" />}
-                        fullRounded
-                        variant="outline"
-                      />
+                      <HStack w="full" justifyContent="center">
+                        <Tooltip
+                          label="画像を選択"
+                          placement="bottom"
+                          disabled={os === "ios" || os === "macos"}
+                        >
+                          <FileButton
+                            {...{ ref, name, onBlur }}
+                            w="16"
+                            h="16"
+                            as={IconButton}
+                            accept="image/*"
+                            onChange={onChange}
+                            icon={<CameraIcon fontSize="5xl" color="gray" />}
+                            fullRounded
+                            variant="outline"
+                          />
+                        </Tooltip>
+
+                        <Tooltip
+                          label="画像を削除"
+                          placement="bottom"
+                          disabled={os === "ios" || os === "macos"}
+                        >
+                          <IconButton
+                            w="16"
+                            h="16"
+                            colorScheme="danger"
+                            variant="outline"
+                            onClick={onResetImage}
+                            icon={<TrashIcon fontSize="5xl" />}
+                            fullRounded
+                          />
+                        </Tooltip>
+                      </HStack>
                     )}
                   />
                 </Center>
