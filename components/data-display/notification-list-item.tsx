@@ -54,7 +54,7 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
       bg="white"
       as={LinkBox}
       transition="0.5s"
-      _hover={{ transform: "scale(1.02)", transition: "0.5s" }}
+      _hover={{ transform: "scale(1.01)", transition: "0.5s" }}
     >
       <CardBody flexDir="row">
         {notification.readAt ? undefined : (
