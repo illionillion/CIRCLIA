@@ -17,6 +17,7 @@ import { CircleThreads } from "../data-display/circle-threads"
 import { CircleWelcome } from "../data-display/circle-welcome"
 import type { getCircleById } from "@/actions/circle/fetch-circle"
 import { type getMembershipRequests } from "@/actions/circle/membership-request"
+import type { getWelcomeCard } from "@/actions/circle/welcome-card"
 import type { getActivityById } from "@/data/activity"
 import type { getAlbumById } from "@/data/album"
 import type { getAnnouncementById } from "@/data/announcement"
@@ -35,6 +36,7 @@ interface CircleDetailTabsProps {
   currentAnnouncement?: Awaited<ReturnType<typeof getAnnouncementById>>
   currentAlbum?: Awaited<ReturnType<typeof getAlbumById>>
   fetchData: () => Promise<void>
+  welcomeCards: Awaited<ReturnType<typeof getWelcomeCard>>
 }
 
 export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
@@ -49,10 +51,12 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
   currentAnnouncement,
   currentAlbum,
   fetchData,
+  welcomeCards,
 }) => {
   const userRole = circle?.members.find((member) => member.id === userId)?.role
   const tabIndex = handlingTab(tabKey || "")
   const { data } = membershipRequests
+  console.log(welcomeCards)
 
   return (
     <Tabs
