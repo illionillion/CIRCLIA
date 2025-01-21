@@ -1,3 +1,4 @@
+"use client"
 import { SquarePenIcon } from "@yamada-ui/lucide"
 import type { FC } from "@yamada-ui/react"
 import {
