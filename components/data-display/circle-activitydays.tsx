@@ -184,11 +184,15 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
                   onClick={handlePreviousMonth}
                   icon={<ChevronLeftIcon fontSize="2xl" />}
                   colorScheme="riverBlue"
+                  transition="0.5s"
+                  _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
                 />
                 <IconButton
                   onClick={handleNextMonth}
                   icon={<ChevronRightIcon fontSize="2xl" />}
                   colorScheme="riverBlue"
+                  transition="0.5s"
+                  _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
                 />
               </HStack>
             </HStack>
