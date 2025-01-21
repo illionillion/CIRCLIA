@@ -35,7 +35,7 @@ export const NotificationPage: FC<NotificationPageProps> = ({ userId }) => {
             colorScheme="riverBlue"
             onClick={handleClick}
             transition="0.5s"
-            _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
+            _hover={{ transform: "scale(1.05)", transition: "0.5s" }}
           >
             全て既読
           </Button>
