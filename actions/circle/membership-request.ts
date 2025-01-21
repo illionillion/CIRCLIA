@@ -260,6 +260,12 @@ export const removeMember = async ({
     // 3. 削除（退会）処理を実行 - 論理削除
     await markMemberAsInactive(targetMember.id)
 
+    //参加していたサークルの活動予定から削除
+    //
+    //
+    //
+    //
+
     return {
       success: true,
       message: `メンバー ${targetMember.user.name} が正常に退会しました。`,
