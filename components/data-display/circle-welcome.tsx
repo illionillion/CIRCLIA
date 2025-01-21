@@ -79,10 +79,9 @@ type FrontWelcomeCard = z.infer<typeof FrontWelcomeCardSchema>
 
 export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
   const { open, onOpen, onClose } = useDisclosure()
-  const [currentCard, setCurrentCard] = useState<number>(0)
-
   const notice = useNotice()
 
+  const [currentCard, setCurrentCard] = useState<number>(0)
   const [cards, setCards] = useState<FrontWelcomeCard[]>([
     {
       frontTitle: "",
@@ -108,21 +107,29 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
   const { register, handleSubmit, reset, watch, control } =
     useForm<FrontWelcomeCard>({
       resolver: zodResolver(FrontWelcomeCardSchema),
-      defaultValues: cards[currentCard],
+      defaultValues: draftCards[currentCard],
     })
 
   const watchCards = watch()
 
   // onSubmitを簡略化（状態の更新は不要）
-  const onSubmit = (data: FrontWelcomeCard) => {
-    setCards((prev) => {
-      const newCards = [...prev]
-      newCards[currentCard] = data
-      return newCards
-    })
-    // 送信の処理のみを行う
+  const onSubmit = async (data: FrontWelcomeCard) => {
+    const updatedCards = await Promise.all(
+      draftCards.map(async (card, index) => {
+        if (index === currentCard) return data
+        const result = await FrontWelcomeCardSchema.parseAsync(card)
+        return {
+          frontTitle: result.frontTitle || "",
+          backTitle: result.backTitle || "",
+          backDescription: result.backDescription || "",
+          frontImage: result.frontImage || null,
+        }
+      }),
+    )
+
+    setCards(updatedCards)
     notice({
-      title: `カード${currentCard + 1}を更新しました`,
+      title: `ウェルカムカードを更新しました`,
       status: "success",
       placement: "bottom",
     })
