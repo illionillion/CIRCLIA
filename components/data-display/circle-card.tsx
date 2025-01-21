@@ -21,7 +21,15 @@ export interface CircleCardProps {
 export const CircleCard = memo(
   forwardRef<CircleCardProps, "div">(({ data }, ref) => {
     return (
-      <GridItem ref={ref} w="full" h="fit-content" as={Card} background="white">
+      <GridItem
+        ref={ref}
+        w="full"
+        h="fit-content"
+        as={Card}
+        background="white"
+        transition="0.5s"
+        _hover={{ transform: "scale(1.05)", transition: "0.5s" }}
+      >
         <LinkBox>
           {data.imagePath ? (
             <Image

@@ -198,6 +198,8 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
                 href={`/circles/${circle?.id}/activities/new`}
                 startIcon={<PlusIcon fontSize="2xl" />}
                 colorScheme="riverBlue"
+                transition="0.5s"
+                _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
               >
                 追加
               </Button>
@@ -211,7 +213,13 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
             ) : activitys && activitys.length > 0 ? (
               activitys.map((activity) => (
                 <GridItem key={activity.id}>
-                  <Card variant="outline" as={LinkBox} bg="white">
+                  <Card
+                    variant="outline"
+                    as={LinkBox}
+                    bg="white"
+                    transition="0.5s"
+                    _hover={{ transform: "scale(1.02)", transition: "0.5s" }}
+                  >
                     <CardBody>
                       <HStack alignItems="start" w="full">
                         <Card
