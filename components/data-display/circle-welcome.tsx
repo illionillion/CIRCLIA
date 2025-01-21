@@ -194,7 +194,12 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
     // fromコンテンツの生成
     const fromContent = (() => {
       // カードデータが完全に空の場合はデフォルト表示を返す
-      if (!card.frontTitle && !card.frontImage) {
+      if (
+        !card.frontTitle &&
+        !card.frontImage &&
+        !card.backTitle &&
+        !card.backDescription
+      ) {
         return null
       }
 
@@ -243,7 +248,12 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
     // toコンテンツの生成
     const toContent = (() => {
       // カードデータが完全に空の場合はデフォルト表示を返す
-      if (!card.backTitle && !card.backDescription) {
+      if (
+        !card.frontTitle &&
+        !card.frontImage &&
+        !card.backTitle &&
+        !card.backDescription
+      ) {
         return null
       }
 
