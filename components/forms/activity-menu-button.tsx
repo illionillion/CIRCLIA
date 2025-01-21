@@ -54,7 +54,10 @@ export const ActivityMenuButton: FC<ActivityMenuButtonProps> = ({
           variant="ghost"
           fullRounded
         />
-        <MenuList>
+        <MenuList
+          transition="0.5s"
+          _hover={{ transform: "scale(1.02)", transition: "0.5s" }}
+        >
           <MenuItem
             as={Link}
             href={`/circles/${circle?.id}/activities/${activity.id}/edit`}

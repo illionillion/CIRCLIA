@@ -94,7 +94,7 @@ export const LoginForm = () => {
             _hover={{
               bgGradient: "linear(to-r, teal.600, blue.700)",
               transform: "scale(1.03)",
-              transition: "0.5s"
+              transition: "0.5s",
             }}
             color="white"
             boxShadow="0px 4px 15px rgba(0, 0, 0, 0.2)"
@@ -111,7 +111,7 @@ export const LoginForm = () => {
             _hover={{
               bgGradient: "linear(to-r, purple.600, pink.700)",
               transform: "scale(1.03)",
-              transition: "0.5s"
+              transition: "0.5s",
             }}
             color="white"
             boxShadow="0px 4px 15px rgba(0, 0, 0, 0.2)"
