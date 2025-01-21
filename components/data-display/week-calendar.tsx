@@ -1,13 +1,16 @@
 "use client"
+import { ChevronLeftIcon, ChevronRightIcon } from "@yamada-ui/lucide"
 import {
   Box,
   Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
   GridItem,
   Heading,
   HStack,
+  IconButton,
   ScrollArea,
   Tag,
   Text,
@@ -44,6 +47,11 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
 
   // 現在の日付から週の日付配列を生成
   const weekDates = generateWeekDates(currentDate)
+
+  // 今日の週へ移動
+  const goToToday = () => {
+    setCurrentDate(new Date())
+  }
 
   // データ取得
   const fetchData = async () => {
@@ -100,24 +108,33 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
             カレンダー
           </Heading>
           <HStack>
-            <Button
-              colorScheme="riverBlue"
-              onClick={previousWeek}
-              _hover={{ transform: "scale(1.1)" }}
-            >
-              前の週
-            </Button>
-            <Button
-              colorScheme="riverBlue"
-              onClick={nextWeek}
-              _hover={{ transform: "scale(1.1)" }}
-            >
-              次の週
-            </Button>
+            <ButtonGroup attached>
+              <IconButton
+                icon={<ChevronLeftIcon fontSize="2xl" />}
+                colorScheme="riverBlue"
+                onClick={previousWeek}
+                _hover={{ transform: "scale(1.1)" }}
+              />
+              <Button
+                colorScheme="riverBlue"
+                onClick={goToToday}
+                _hover={{ transform: "scale(1.1)" }}
+              >
+                今日
+              </Button>
+              <IconButton
+                icon={<ChevronRightIcon fontSize="2xl" />}
+                colorScheme="riverBlue"
+                onClick={nextWeek}
+                _hover={{ transform: "scale(1.1)" }}
+              />
+            </ButtonGroup>
           </HStack>
+          {/* 現在の年を表示 */}
           <Text>{currentDate.getFullYear()}</Text>
         </HStack>
       </CardHeader>
+
       <CardBody>
         <ScrollArea w="full" h="full" mb="md" as={Card}>
           <HStack w="full" h="full" gap={0}>
