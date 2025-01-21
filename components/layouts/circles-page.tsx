@@ -176,6 +176,8 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
                   colorScheme="riverBlue"
                   loading={loading}
                   onClick={handleSearch}
+                  transition="0.5s"
+                  _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
                 >
                   検索
                 </Button>
