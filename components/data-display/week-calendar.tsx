@@ -1,13 +1,16 @@
 "use client"
+import { ChevronLeftIcon, ChevronRightIcon } from "@yamada-ui/lucide"
 import {
   Box,
   Button,
+  ButtonGroup,
   Card,
   CardBody,
   CardHeader,
   GridItem,
   Heading,
   HStack,
+  IconButton,
   ScrollArea,
   Tag,
   Text,
@@ -44,6 +47,11 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
 
   // 現在の日付から週の日付配列を生成
   const weekDates = generateWeekDates(currentDate)
+
+  // 今日の週へ移動
+  const goToToday = () => {
+    setCurrentDate(new Date())
+  }
 
   // データ取得
   const fetchData = async () => {
@@ -100,16 +108,27 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
             カレンダー
           </Heading>
           <HStack>
-            <Button colorScheme="riverBlue" onClick={previousWeek} _hover={{ transform: "scale(1.1)" }}>
-              前の週
-            </Button>
-            <Button colorScheme="riverBlue" onClick={nextWeek} _hover={{ transform: "scale(1.1)" }}>
-              次の週
-            </Button>
+            <ButtonGroup attached>
+              <IconButton
+                icon={<ChevronLeftIcon fontSize="2xl" />}
+                colorScheme="riverBlue"
+                onClick={previousWeek}
+              />
+              <Button colorScheme="riverBlue" onClick={goToToday}>
+                今日
+              </Button>
+              <IconButton
+                icon={<ChevronRightIcon fontSize="2xl" />}
+                colorScheme="riverBlue"
+                onClick={nextWeek}
+              />
+            </ButtonGroup>
           </HStack>
+          {/* 現在の年を表示 */}
           <Text>{currentDate.getFullYear()}</Text>
         </HStack>
       </CardHeader>
+
       <CardBody>
         <ScrollArea w="full" h="full" mb="md" as={Card}>
           <HStack w="full" h="full" gap={0}>
@@ -129,16 +148,16 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
                 >
                   <Box
                     rounded={isToday ? "full" : undefined} // 今日の場合に丸くする
-                    w="74" 
-                    h="auto" 
+                    w="74"
+                    h="auto"
                     bg={isToday ? "black" : undefined} // 今日の場合に黒背景
-                    color={isToday ? "white" : getDayColor(date.getDay())} 
+                    color={isToday ? "white" : getDayColor(date.getDay())}
                     fontWeight="normal"
                     fontSize="md"
-                    textAlign="left" 
-                    p="2" 
-                    display="flex" 
-                    alignItems="center" 
+                    textAlign="left"
+                    p="2"
+                    display="flex"
+                    alignItems="center"
                   >
                     {date.toLocaleDateString("ja-JP", {
                       month: "numeric",
@@ -146,7 +165,6 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
                       weekday: "short",
                     })}
                   </Box>
-
 
                   <VStack h="sm" overflowY="auto">
                     {(calendarData[dayKey]?.activities || []).map(
