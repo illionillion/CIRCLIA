@@ -8,7 +8,6 @@ import {
 } from "@yamada-ui/lucide"
 import type { FC } from "@yamada-ui/react"
 import {
-  Box,
   Button,
   ButtonGroup,
   Card,
@@ -195,43 +194,42 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
       // 画像のみがある場合
       if (!card.frontTitle && card.frontImage) {
         return (
-          <Image
-            flexGrow={1}
-            userSelect="none"
-            pointerEvents="none"
-            src={card.frontImage}
-            w="full"
-            h="xs"
-            objectFit="cover"
-            alt={`card ${index + 1} image`}
-          />
+          <CardBody display="flex" h="full">
+            <Image
+              userSelect="none"
+              pointerEvents="none"
+              src={card.frontImage}
+              w="full"
+              h="full"
+              objectFit="cover"
+              alt={`card ${index + 1} image`}
+            />
+          </CardBody>
         )
       }
 
       // タイトルと画像がある場合
       return (
-        <>
+        <VStack h="full" gap={0}>
           <CardHeader>
             <Heading as="h3" fontSize="lg">
               {card.frontTitle}
             </Heading>
           </CardHeader>
           {card.frontImage && (
-            <CardBody>
-              <Box w="full" h="full" flexGrow={1}>
-                <Image
-                  userSelect="none"
-                  pointerEvents="none"
-                  src={card.frontImage}
-                  w="full"
-                  h="full"
-                  objectFit="contain"
-                  alt={`card ${index + 1} image`}
-                />
-              </Box>
+            <CardBody display="flex" flex={1} minH={0}>
+              <Image
+                userSelect="none"
+                pointerEvents="none"
+                src={card.frontImage}
+                w="full"
+                h="full"
+                objectFit="cover"
+                alt={`card ${index + 1} image`}
+              />
             </CardBody>
           )}
-        </>
+        </VStack>
       )
     })()
 
@@ -423,19 +421,16 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
                     ウェルカムカードを設定しよう！
                   </Heading>
                 </CardHeader>
-                <CardBody>
-                  <Box w="full" h="full">
-                    <Image
-                      flexGrow={1}
-                      userSelect="none"
-                      pointerEvents="none"
-                      src="https://user0514.cdnw.net/shared/img/thumb/21830aIMGL99841974_TP_V.jpg"
-                      w="full"
-                      h="full"
-                      objectFit="cover"
-                      alt="card 1 image"
-                    />
-                  </Box>
+                <CardBody display="flex" flex={1} minH={0}>
+                  <Image
+                    userSelect="none"
+                    pointerEvents="none"
+                    src="https://user0514.cdnw.net/shared/img/thumb/21830aIMGL99841974_TP_V.jpg"
+                    w="full"
+                    h="full"
+                    objectFit="cover"
+                    alt="card 1 image"
+                  />
                 </CardBody>
               </>
             )
