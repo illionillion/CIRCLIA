@@ -43,6 +43,15 @@ interface ProfileForm {
   user: Awaited<ReturnType<typeof getUserById>>
 }
 
+const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
+  ssr: false,
+  loading: () => (
+    <Center w="full" h="full">
+      <Loading />
+    </Center>
+  ),
+})
+
 export const ProfileForm: FC<ProfileForm> = ({ user }) => {
   const [imagePreview, setImagePreview] = useState<string>(
     user?.profileImageUrl || "",
@@ -64,14 +73,6 @@ export const ProfileForm: FC<ProfileForm> = ({ user }) => {
   const { snack, snacks } = useSnacks()
   const router = useRouter()
   const os = useOS()
-  const MDEditor = dynamic(() => import("@uiw/react-md-editor"), {
-    ssr: false,
-    loading: () => (
-      <Center w="full" h="full">
-        <Loading />
-      </Center>
-    ),
-  })
   const onSubmit = async (data: FrontUserProfileForm) => {
     start()
     if (watch("profileImageUrl") && !data.profileImageUrl) {
@@ -129,7 +130,7 @@ export const ProfileForm: FC<ProfileForm> = ({ user }) => {
       onSubmit={handleSubmit(onSubmit)}
       gap="md"
       w="full"
-      maxW="3xl"
+      maxW="6xl"
       h="fit-content"
       m="auto"
       p="md"
