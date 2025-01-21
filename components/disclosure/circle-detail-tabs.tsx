@@ -57,6 +57,13 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
   const tabIndex = handlingTab(tabKey || "")
   const { data } = membershipRequests
   console.log(welcomeCards)
+  // 正しいデータかどうかのチェック
+  // カードが3つで3つともfrontImageとBackTitleとBackDescriptionがある場合はウェルカムページを表示
+  const isWelcomeCardValid =
+    welcomeCards?.length === 3 &&
+    welcomeCards.every(
+      (card) => card.frontImage && card.backTitle && card.backDescription,
+    )
 
   return (
     <Tabs
@@ -71,11 +78,11 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
           メンバーの時に表示
           メンバー以外はカードが設定されている時に表示
         */}
-        {isMember && (
+        {isMember || isWelcomeCardValid ? (
           <Tab flexShrink={0} as={Link} href={`/circles/${circle?.id}/welcome`}>
             Welcome
           </Tab>
-        )}
+        ) : undefined}
         <Tab
           flexShrink={0}
           as={Link}
@@ -107,15 +114,17 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
         </Tab>
       </TabList>
       <TabPanels h="full">
-        {isMember && (
+        {isMember || isWelcomeCardValid ? (
           <TabPanel h="full">
             <CircleWelcome
               isMember={isMember}
               circleId={circle?.id || ""}
               userId={userId}
+              welcomeCards={welcomeCards}
+              isWelcomeCardValid={isWelcomeCardValid}
             />
           </TabPanel>
-        )}
+        ) : undefined}
         <TabPanel h="full">
           <CircleActivitydays
             userId={userId}

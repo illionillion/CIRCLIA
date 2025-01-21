@@ -15,40 +15,38 @@ import {
 import { useState } from "react"
 import { WelcomeCardForm } from "../forms/welcome-card-form"
 import { WelcomeCard } from "./welcome-card"
+import type { getWelcomeCard } from "@/actions/circle/welcome-card"
 import type { FrontWelcomeCard } from "@/schema/welcome"
 
 interface CircleWelcomeProps {
   isMember?: boolean
   circleId: string
   userId: string
+  welcomeCards: Awaited<ReturnType<typeof getWelcomeCard>>
+  isWelcomeCardValid: boolean
 }
 
 export const CircleWelcome: FC<CircleWelcomeProps> = ({
   isMember,
   circleId,
   userId,
+  welcomeCards,
+  isWelcomeCardValid,
 }) => {
   const { open, onOpen, onClose } = useDisclosure()
-  const [cards, setCards] = useState<FrontWelcomeCard[]>([
-    {
-      frontTitle: "",
-      frontImage: "",
-      backTitle: "",
-      backDescription: "",
-    },
-    {
-      frontTitle: "",
-      frontImage: "",
-      backTitle: "",
-      backDescription: "",
-    },
-    {
-      frontTitle: "",
-      frontImage: "",
-      backTitle: "",
-      backDescription: "",
-    },
-  ])
+  // データが正しければプロパティのwelcomeCardsを使用、正しくなければデフォルトのカードを表示
+  const defaultCards = isWelcomeCardValid
+    ? welcomeCards
+    : Array(3)
+        .fill(null)
+        .map((_, index) => ({
+          frontTitle: welcomeCards[index]?.frontTitle ?? "",
+          frontImage: welcomeCards[index]?.frontImage ?? "",
+          backTitle: welcomeCards[index]?.backTitle ?? "",
+          backDescription: welcomeCards[index]?.backDescription ?? "",
+        }))
+  console.log(defaultCards)
+  const [cards, setCards] = useState<FrontWelcomeCard[]>(defaultCards)
 
   const renderCardContent = (index: number) => {
     const card = cards[index]
