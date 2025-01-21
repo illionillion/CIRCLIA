@@ -494,10 +494,18 @@ export const CircleForm: FC<CircleFormProps> = ({
               as={Link}
               href={`/circles/${circle?.id || ""}`}
               colorScheme="riverBlue"
+              transition="0.5s"
+              _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
             >
               キャンセル
             </Button>
-            <Button type="submit" loading={isLoading} colorScheme="riverBlue">
+            <Button
+              type="submit"
+              loading={isLoading}
+              colorScheme="riverBlue"
+              transition="0.5s"
+              _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
+            >
               {mode === "create" ? "作成" : "更新"}
             </Button>
           </Center>

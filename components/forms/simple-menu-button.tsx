@@ -27,7 +27,10 @@ export const SimpleMenuButton: FC<SimpleMenuButtonProps> = ({
         variant="ghost"
         fullRounded
       />
-      <MenuList>
+      <MenuList
+        transition="0.5s"
+        _hover={{ transform: "scale(1.02)", transition: "0.5s" }}
+      >
         <MenuItem icon={<PenIcon fontSize="2xl" />} as={Link} href={editLink}>
           編集
         </MenuItem>

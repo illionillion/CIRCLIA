@@ -104,7 +104,7 @@ export const ActivityCard: FC<ActivityCardProps> = ({
                   variant="outline"
                   key={participant.id}
                   transition="0.5s"
-                  _hover={{ transform: "scale(1.02)", transition: "0.5s" }}
+                  _hover={{ transform: "scale(1.01)", transition: "0.5s" }}
                 >
                   <CardBody as={LinkBox}>
                     <HStack

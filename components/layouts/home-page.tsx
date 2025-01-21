@@ -102,6 +102,8 @@ export const HomePage: FC<HomePageProps> = ({
             src={user?.profileImageUrl || ""}
             boxSize={{ base: "xs", md: "24" }}
             title="プロフィールへ移動"
+            transition="0.5s"
+            _hover={{ transform: "scale(1.05)", transition: "0.5s" }}
           />
           <Heading display={{ base: "none", md: "block" }} fontSize="lg">
             <Text>{user?.studentNumber}</Text>
