@@ -31,6 +31,12 @@ export const FrontWelcomeCardSchema = WelcomeCardSchema.extend({
     }),
 })
 
+export const BackWelcomeCardSchema = WelcomeCardSchema.extend({
+  backImage: z.string().optional(),
+}).brand("backWelcomeCard")
+
 export type WelcomeCard = z.infer<typeof WelcomeCardSchema>
 
 export type FrontWelcomeCard = z.infer<typeof FrontWelcomeCardSchema>
+
+export type BackWelcomeCard = z.infer<typeof BackWelcomeCardSchema>
