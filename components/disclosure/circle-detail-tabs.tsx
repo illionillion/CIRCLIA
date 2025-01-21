@@ -105,7 +105,11 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
       <TabPanels h="full">
         {isMember && (
           <TabPanel h="full">
-            <CircleWelcome isMember={isMember} />
+            <CircleWelcome
+              isMember={isMember}
+              circleId={circle?.id || ""}
+              userId={userId}
+            />
           </TabPanel>
         )}
         <TabPanel h="full">

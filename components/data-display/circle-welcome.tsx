@@ -19,9 +19,15 @@ import type { FrontWelcomeCard } from "@/schema/welcome"
 
 interface CircleWelcomeProps {
   isMember?: boolean
+  circleId: string
+  userId: string
 }
 
-export const CircleWelcome: FC<CircleWelcomeProps> = ({ isMember }) => {
+export const CircleWelcome: FC<CircleWelcomeProps> = ({
+  isMember,
+  circleId,
+  userId,
+}) => {
   const { open, onOpen, onClose } = useDisclosure()
   const [cards, setCards] = useState<FrontWelcomeCard[]>([
     {
@@ -141,6 +147,8 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isMember }) => {
         onClose={onClose}
         cards={cards}
         onUpdateCards={setCards}
+        circleId={circleId}
+        userId={userId}
       />
       {isMember && (
         <Button

@@ -33,7 +33,7 @@ import {
 import type { FC } from "react"
 import { useState } from "react"
 import { Controller, useForm } from "react-hook-form"
-
+import { updateWelcomeCard } from "@/actions/circle/welcome-card"
 import type { FrontWelcomeCard } from "@/schema/welcome"
 import { FrontWelcomeCardSchema } from "@/schema/welcome"
 
@@ -42,6 +42,8 @@ interface WelcomeCardFormProps {
   open: boolean
   onClose: () => void
   onUpdateCards: (cards: FrontWelcomeCard[]) => void
+  circleId: string
+  userId: string
 }
 
 export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
@@ -49,6 +51,8 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
   open,
   onClose,
   onUpdateCards,
+  circleId,
+  userId,
 }) => {
   const notice = useNotice()
   const os = useOS()
@@ -63,7 +67,6 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
 
   const watchCards = watch()
 
-  // onSubmitを簡略化（状態の更新は不要）
   const onSubmit = async (data: FrontWelcomeCard) => {
     const updatedCards = await Promise.all(
       draftCards.map(async (card, index) => {
@@ -78,13 +81,24 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
       }),
     )
 
-    onUpdateCards(updatedCards)
-    onClose()
-    notice({
-      title: `ウェルカムカードを更新しました`,
-      status: "success",
-      placement: "bottom",
-    })
+    // サーバーアクションを呼び出す
+    const response = await updateWelcomeCard(circleId, userId, updatedCards)
+
+    if (response.success) {
+      onUpdateCards(updatedCards)
+      onClose()
+      notice({
+        title: response.message,
+        status: "success",
+        placement: "bottom",
+      })
+    } else {
+      notice({
+        title: response.message,
+        status: "error",
+        placement: "bottom",
+      })
+    }
   }
 
   const handlePrevCard = () => {
