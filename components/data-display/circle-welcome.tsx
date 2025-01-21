@@ -35,49 +35,15 @@ import {
 } from "@yamada-ui/react"
 import { useState } from "react"
 import { useForm, Controller } from "react-hook-form"
-import { z } from "zod"
 import { WelcomeCard } from "./welcome-card"
-import { getBase64Image } from "@/utils/file"
+import { FrontWelcomeCardSchema } from "@/schema/welcome"
+import type { FrontWelcomeCard } from "@/schema/welcome"
 
 interface CircleWelcomeProps {
-  isAdmin?: boolean
+  isMember?: boolean
 }
 
-// カードのスキーマを定義
-const WelcomeCardSchema = z.object({
-  frontTitle: z.string(),
-  backTitle: z.string(),
-  backDescription: z.string(),
-}) //.brand("welcomeCard")
-
-const FrontWelcomeCardSchema = WelcomeCardSchema.extend({
-  frontImage: z
-    .custom<FileList>()
-    .optional() // 画像ファイルはオプション
-    .refine(
-      (file) =>
-        typeof file === "string" ||
-        !file ||
-        file.length === 0 ||
-        (file.length > 0 && file[0].type.startsWith("image/")),
-      {
-        message: "画像ファイルを選択してください",
-      },
-    )
-    .transform(async (file) => {
-      if (typeof file === "string" || !file || file.length === 0) {
-        return null // 画像がない場合はnullを返す
-      }
-      const selectedFile = file[0]
-      return await getBase64Image(selectedFile)
-    }),
-})
-
-type WelcomeCard = z.infer<typeof WelcomeCardSchema>
-
-type FrontWelcomeCard = z.infer<typeof FrontWelcomeCardSchema>
-
-export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
+export const CircleWelcome: FC<CircleWelcomeProps> = ({ isMember }) => {
   const { open, onOpen, onClose } = useDisclosure()
   const notice = useNotice()
 
@@ -398,7 +364,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({ isAdmin }) => {
           </ButtonGroup>
         </ModalFooter>
       </Modal>
-      {isAdmin && (
+      {isMember && (
         <Button
           startIcon={<SquarePenIcon />}
           ml="auto"
