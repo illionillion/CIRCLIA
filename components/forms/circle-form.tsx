@@ -271,7 +271,7 @@ export const CircleForm: FC<CircleFormProps> = ({
             })}
       >
         <FormControl
-          isInvalid={!!errors.imagePath}
+          invalid={!!errors.imagePath}
           errorMessage={errors.imagePath ? errors.imagePath.message : undefined}
         >
           <Controller
@@ -327,9 +327,9 @@ export const CircleForm: FC<CircleFormProps> = ({
             flexDirection={{ base: "row", md: "column" }}
             gap={{ base: "2xl", md: "md" }}
             maxW="2xl"
-            isInvalid={!!errors.name}
+            invalid={!!errors.name}
           >
-            <Label flexGrow={1} isRequired>
+            <Label flexGrow={1} required>
               サークル名
             </Label>
             <VStack w="auto">
@@ -354,9 +354,9 @@ export const CircleForm: FC<CircleFormProps> = ({
             flexDirection={{ base: "row", md: "column" }}
             gap={{ base: "2xl", md: "md" }}
             maxW="2xl"
-            isInvalid={!!errors.description}
+            invalid={!!errors.description}
           >
-            <Label flexGrow={1} isRequired>
+            <Label flexGrow={1} required>
               説明
             </Label>
             <VStack w="auto">
@@ -381,14 +381,14 @@ export const CircleForm: FC<CircleFormProps> = ({
             flexDirection={{ base: "row", md: "column" }}
             gap={{ base: "2xl", md: "md" }}
             maxW="2xl"
-            isInvalid={!!errors.instructors}
+            invalid={!!errors.instructors}
           >
             <Controller
               name="instructors"
               control={control}
               render={({ field }) => (
                 <>
-                  <Label flexGrow={1} isRequired>
+                  <Label flexGrow={1} required>
                     講師
                   </Label>
                   <VStack w="auto">
@@ -439,9 +439,9 @@ export const CircleForm: FC<CircleFormProps> = ({
             flexDirection={{ base: "row", md: "column" }}
             gap={{ base: "2xl", md: "md" }}
             maxW="2xl"
-            isInvalid={!!errors.location}
+            invalid={!!errors.location}
           >
-            <Label flexGrow={1} isRequired>
+            <Label flexGrow={1} required>
               活動場所
             </Label>
             <VStack w="auto">
@@ -466,9 +466,9 @@ export const CircleForm: FC<CircleFormProps> = ({
             flexDirection={{ base: "row", md: "column" }}
             gap={{ base: "2xl", md: "md" }}
             maxW="2xl"
-            isInvalid={!!errors.activityDay}
+            invalid={!!errors.activityDay}
           >
-            <Label flexGrow={1} isRequired>
+            <Label flexGrow={1} required>
               活動日
             </Label>
             <VStack w="auto">

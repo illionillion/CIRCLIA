@@ -137,7 +137,7 @@ export const ProfileForm: FC<ProfileForm> = ({ user }) => {
     >
       <HStack w="full" m="auto" flexDir={{ base: "row", sm: "column" }}>
         <FormControl
-          isInvalid={!!errors.profileImageUrl}
+          invalid={!!errors.profileImageUrl}
           errorMessage={
             errors.profileImageUrl ? errors.profileImageUrl.message : undefined
           }
@@ -207,7 +207,7 @@ export const ProfileForm: FC<ProfileForm> = ({ user }) => {
       </HStack>
       <FormControl
         gap={{ base: "2xl", md: "md" }}
-        isInvalid={!!errors.profileText}
+        invalid={!!errors.profileText}
         m="auto"
       >
         <Label flexGrow={1}>自己紹介</Label>

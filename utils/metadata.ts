@@ -4,6 +4,8 @@ import { getCircleById } from "@/actions/circle/fetch-circle"
 
 const handlingTabTitle = (key: string) => {
   switch (key) {
+    case "welcome":
+      return "ウェルカムページ"
     case "activities":
       return "活動日程"
     case "album":

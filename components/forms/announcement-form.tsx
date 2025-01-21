@@ -100,9 +100,9 @@ export const AnnouncementForm: FC<AnnouncementFormProps> = ({
           flexDirection={{ base: "row", md: "column" }}
           gap={{ base: "2xl", md: "md" }}
           maxW="2xl"
-          isInvalid={!!errors.title}
+          invalid={!!errors.title}
         >
-          <Label flexGrow={1} isRequired>
+          <Label flexGrow={1} required>
             タイトル
           </Label>
           <VStack w="auto">
@@ -127,9 +127,9 @@ export const AnnouncementForm: FC<AnnouncementFormProps> = ({
           flexDirection={{ base: "row", md: "column" }}
           gap={{ base: "2xl", md: "md" }}
           maxW="2xl"
-          isInvalid={!!errors.content}
+          invalid={!!errors.content}
         >
-          <Label flexGrow={1} isRequired>
+          <Label flexGrow={1} required>
             内容
           </Label>
           <VStack w="auto">
