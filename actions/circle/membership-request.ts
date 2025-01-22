@@ -262,8 +262,9 @@ export const removeMember = async ({
 
     //参加していたサークルの活動予定から削除
     //
-    //
-    //
+    //そのサークルのActivityを検索
+    //そのActivityのActivityParticipantを参照
+    //targetMember.idと一致するユーザーのremoveAtに現在の日付を登録する
     //
 
     return {
