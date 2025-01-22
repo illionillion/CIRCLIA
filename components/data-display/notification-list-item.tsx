@@ -54,7 +54,7 @@ export const NotificationListItem: FC<NotificationListItemProps> = ({
       <CardBody flexDir="row">
         {notification.readAt ? undefined : (
           <Center m="auto">
-            <CircleAlertIcon color="danger" fontSize="2xl" />
+            <CircleAlertIcon color="riverBlue.500" fontSize="2xl" />
           </Center>
         )}
         <LinkOverlay as={Link} href={link} w="full">

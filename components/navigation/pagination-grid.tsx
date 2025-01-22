@@ -46,6 +46,7 @@ export const PaginationGrid = <T,>({
           total={totalPages}
           onChange={setPage}
           justifyContent="center"
+          colorScheme="riverBlue"
         />
       )}
     </VStack>

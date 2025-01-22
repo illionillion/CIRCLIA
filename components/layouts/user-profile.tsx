@@ -63,6 +63,7 @@ export const UserProfile: FC<UserProfileProps> = ({
                 as={Link}
                 href={`/user/${userId}/edit`}
                 colorScheme="riverBlue"
+                _hover={{ transform: "scale(1.1)" }}
               >
                 プロフィール編集
               </Button>
