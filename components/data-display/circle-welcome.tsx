@@ -126,7 +126,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
             </CardHeader>
           )}
           {card.backDescription && (
-            <CardBody>
+            <CardBody overflowY="auto">
               <Text as="pre">{card.backDescription}</Text>
             </CardBody>
           )}
@@ -241,7 +241,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
                     メンバー募集！！
                   </Heading>
                 </CardHeader>
-                <CardBody display="flex" flex={1} minH={0}>
+                <CardBody overflowY="auto">
                   <Text>👌かけもちOK！</Text>
                   <Text>👌文系の方でも大歓迎</Text>
                   <Text>👌活動は週一回程度</Text>
