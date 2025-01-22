@@ -127,7 +127,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
           )}
           {card.backDescription && (
             <CardBody>
-              <Text>{card.backDescription}</Text>
+              <Text as="pre">{card.backDescription}</Text>
             </CardBody>
           )}
         </>
