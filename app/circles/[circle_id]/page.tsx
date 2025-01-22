@@ -30,15 +30,16 @@ const Page = async ({ params }: Props) => {
   const { circle_id } = params
   const session = await auth()
   const userId = session?.user?.id || ""
-  const circle = await getCircleById(circle_id || "")
+
+  const [circle, membershipRequests, welcomeCards] = await Promise.all([
+    getCircleById(circle_id || ""),
+    getMembershipRequests(userId, circle_id || ""),
+    getWelcomeCard(circle_id || ""),
+  ])
+
   if (!circle) {
     notFound()
   }
-  const membershipRequests = await getMembershipRequests(
-    userId,
-    circle_id || "",
-  )
-  const welcomeCards = await getWelcomeCard(circle_id || "")
 
   return (
     <CircleDetailPage
