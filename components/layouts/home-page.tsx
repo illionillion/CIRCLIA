@@ -1,6 +1,5 @@
 "use client"
-import type {
-  FC} from "@yamada-ui/react";
+import type { FC } from "@yamada-ui/react"
 import {
   Avatar,
   Card,
