@@ -163,6 +163,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
         maxW="7xl"
         w="full"
         h="full"
+        minH="sm"
         gridTemplateAreas={{
           base: `
             "one one one two two"
