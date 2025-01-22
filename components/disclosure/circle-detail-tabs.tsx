@@ -56,7 +56,6 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
   const userRole = circle?.members.find((member) => member.id === userId)?.role
   const tabIndex = handlingTab(tabKey || "")
   const { data } = membershipRequests
-  console.log(welcomeCards)
   // 正しいデータかどうかのチェック
   // カードが3つで3つともfrontImageとBackTitleとBackDescriptionがある場合はウェルカムページを表示
   const isWelcomeCardValid =
@@ -67,7 +66,11 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
 
   return (
     <Tabs
-      index={isMember || tabIndex === 0 ? tabIndex : tabIndex - 1}
+      index={
+        isMember || isWelcomeCardValid || tabIndex === 0
+          ? tabIndex
+          : tabIndex - 1
+      }
       w="full"
       maxW="9xl"
       h="full"
