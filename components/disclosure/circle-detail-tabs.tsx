@@ -74,10 +74,6 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
       m="auto"
     >
       <TabList overflowX="auto" overflowY="hidden">
-        {/* 
-          メンバーの時に表示
-          メンバー以外はカードが設定されている時に表示
-        */}
         {isMember || isWelcomeCardValid ? (
           <Tab flexShrink={0} as={Link} href={`/circles/${circle?.id}/welcome`}>
             Welcome
