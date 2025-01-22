@@ -45,7 +45,6 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
           backTitle: welcomeCards[index]?.backTitle ?? "",
           backDescription: welcomeCards[index]?.backDescription ?? "",
         }))
-  console.log(defaultCards)
   const [cards, setCards] = useState<FrontWelcomeCard[]>(defaultCards)
 
   const renderCardContent = (index: number) => {

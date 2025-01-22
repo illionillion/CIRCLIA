@@ -70,13 +70,24 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
   const onSubmit = async (data: FrontWelcomeCard) => {
     const updatedCards = await Promise.all(
       draftCards.map(async (card, index) => {
-        if (index === currentCard) return data
+        if (index === currentCard) {
+          return {
+            ...data,
+            frontImage:
+              typeof card.frontImage === "string" && card.frontImage !== ""
+                ? card.frontImage
+                : data.frontImage || null,
+          }
+        }
         const result = await FrontWelcomeCardSchema.parseAsync(card)
         return {
           frontTitle: result.frontTitle || "",
           backTitle: result.backTitle || "",
           backDescription: result.backDescription || "",
-          frontImage: result.frontImage || null,
+          frontImage:
+            typeof card.frontImage === "string" && card.frontImage !== ""
+              ? card.frontImage
+              : result.frontImage || null,
         }
       }),
     )
