@@ -183,28 +183,18 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
     >
       <ModalHeader justifyContent="space-between">
         <Text>カード{currentCard + 1}/3</Text>
-        <HStack>
-          <Tooltip
-            label="カードを3つ全て入力するとウェルカムページで反映されます。"
-            placement="bottom"
-          >
-            <Center>
-              <CircleHelpIcon />
-            </Center>
-          </Tooltip>
-          <ButtonGroup attached>
-            <IconButton
-              icon={<ChevronLeftIcon />}
-              colorScheme="riverBlue"
-              onClick={handlePrevCard}
-            />
-            <IconButton
-              icon={<ChevronRightIcon />}
-              colorScheme="riverBlue"
-              onClick={handleNextCard}
-            />
-          </ButtonGroup>
-        </HStack>
+        <ButtonGroup attached>
+          <IconButton
+            icon={<ChevronLeftIcon />}
+            colorScheme="riverBlue"
+            onClick={handlePrevCard}
+          />
+          <IconButton
+            icon={<ChevronRightIcon />}
+            colorScheme="riverBlue"
+            onClick={handleNextCard}
+          />
+        </ButtonGroup>
       </ModalHeader>
       <ModalBody>
         <HStack
@@ -305,7 +295,13 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
           </VStack>
         </HStack>
       </ModalBody>
-      <ModalFooter>
+      <ModalFooter justifyContent="space-between">
+        <HStack gap="xs">
+          <CircleHelpIcon />
+          <Text fontSize="xs" color="danger">
+            カードを3つ全て入力するとウェルカムページで反映されます。
+          </Text>
+        </HStack>
         <ButtonGroup attached>
           <Button colorScheme="riverBlue" onClick={onClose}>
             キャンセル
