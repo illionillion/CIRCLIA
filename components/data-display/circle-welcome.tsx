@@ -241,7 +241,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
                     メンバー募集！！
                   </Heading>
                 </CardHeader>
-                <CardBody>
+                <CardBody display="flex" flex={1} minH={0}>
                   <Text>👌かけもちOK！</Text>
                   <Text>👌文系の方でも大歓迎</Text>
                   <Text>👌活動は週一回程度</Text>
