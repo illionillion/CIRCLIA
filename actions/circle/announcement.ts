@@ -46,7 +46,7 @@ export const submitAnnouncement = async (
     const result = await createAnnouncement(parsedData.data, userId, circleId)
     await createNotification(
       "CIRCLE_ANNOUNCEMENT",
-      `${circle?.name}お知らせ - ${parsedData.data.title}`,
+      `${circle?.name}`,
       `${parsedData.data.title}`,
       members
         ? members.map((member) => member.id).filter((id) => id !== userId)
