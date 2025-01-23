@@ -110,23 +110,27 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
           <HStack>
             <ButtonGroup attached>
               <IconButton
-                icon={<ChevronLeftIcon fontSize="2xl" />}
+                icon={
+                  <ChevronLeftIcon
+                    fontSize="2xl"
+                    _hover={{ transform: "scale(1.3)" }}
+                  />
+                }
                 colorScheme="riverBlue"
                 onClick={previousWeek}
-                _hover={{ transform: "scale(1.1)" }}
               />
-              <Button
-                colorScheme="riverBlue"
-                onClick={goToToday}
-                _hover={{ transform: "scale(1.1)" }}
-              >
-                今日
+              <Button colorScheme="riverBlue" onClick={goToToday}>
+                <Text _hover={{ transform: "scale(1.3)" }}>今日</Text>
               </Button>
               <IconButton
-                icon={<ChevronRightIcon fontSize="2xl" />}
+                icon={
+                  <ChevronRightIcon
+                    fontSize="2xl"
+                    _hover={{ transform: "scale(1.3)" }}
+                  />
+                }
                 colorScheme="riverBlue"
                 onClick={nextWeek}
-                _hover={{ transform: "scale(1.1)" }}
               />
             </ButtonGroup>
           </HStack>
