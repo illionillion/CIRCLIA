@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { getCircleById, getCircles } from "@/actions/circle/fetch-circle"
 import { getMembershipRequests } from "@/actions/circle/membership-request"
+import { getWelcomeCard } from "@/actions/circle/welcome-card"
 import { auth } from "@/auth"
 import { CircleDetailPage } from "@/components/layouts/circle-detail-page"
 import { MetadataSet } from "@/utils/metadata"
@@ -29,20 +30,23 @@ const Page = async ({ params }: Props) => {
   const { circle_id } = params
   const session = await auth()
   const userId = session?.user?.id || ""
-  const circle = await getCircleById(circle_id || "")
+
+  const [circle, membershipRequests, welcomeCards] = await Promise.all([
+    getCircleById(circle_id || ""),
+    getMembershipRequests(userId, circle_id || ""),
+    getWelcomeCard(circle_id || ""),
+  ])
+
   if (!circle) {
     notFound()
   }
-  const membershipRequests = await getMembershipRequests(
-    userId,
-    circle_id || "",
-  )
 
   return (
     <CircleDetailPage
       circle={circle}
       userId={userId}
       membershipRequests={membershipRequests}
+      welcomeCards={welcomeCards}
     />
   )
 }

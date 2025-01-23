@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { getCircleById, getCircles } from "@/actions/circle/fetch-circle"
 import { getMembershipRequests } from "@/actions/circle/membership-request"
+import { getWelcomeCard } from "@/actions/circle/welcome-card"
 import { auth } from "@/auth"
 import { CircleDetailPage } from "@/components/layouts/circle-detail-page"
 import { getAlbumById, getAlbums } from "@/data/album"
@@ -38,12 +39,14 @@ const Page = async ({ params }: Props) => {
   const { circle_id, album_id: albumId } = params
   const session = await auth()
   const userId = session?.user?.id || ""
-  const circle = await getCircleById(circle_id || "")
-  const membershipRequests = await getMembershipRequests(
-    userId,
-    circle_id || "",
-  )
-  const currentAlbum = await getAlbumById(albumId || "")
+  const [circle, membershipRequests, currentAlbum, welcomeCards] =
+    await Promise.all([
+      getCircleById(circle_id || ""),
+      getMembershipRequests(userId, circle_id || ""),
+      getAlbumById(albumId || ""),
+      getWelcomeCard(circle_id || ""),
+    ])
+
   if (!circle || !currentAlbum) {
     notFound()
   }
@@ -55,6 +58,7 @@ const Page = async ({ params }: Props) => {
       membershipRequests={membershipRequests}
       currentAlbum={currentAlbum}
       tabKey="album"
+      welcomeCards={welcomeCards}
     />
   )
 }

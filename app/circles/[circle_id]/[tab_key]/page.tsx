@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { getCircleById, getCircles } from "@/actions/circle/fetch-circle"
 import { getMembershipRequests } from "@/actions/circle/membership-request"
+import { getWelcomeCard } from "@/actions/circle/welcome-card"
 import { auth } from "@/auth"
 import { CircleDetailPage } from "@/components/layouts/circle-detail-page"
 import { MetadataSet } from "@/utils/metadata"
@@ -16,7 +17,7 @@ export const generateMetadata = ({ params }: Props) =>
   MetadataSet(params.circle_id || "", params.tab_key || "")
 
 // 固定されたタブキーのリスト
-const list = ["activities", "album", "notifications", "members"]
+const list = ["welcome", "activities", "album", "notifications", "members"]
 
 export const dynamicParams = false
 export const dynamic = "force-dynamic"
@@ -41,14 +42,15 @@ const Page = async ({ params }: Props) => {
   const { circle_id, tab_key } = params
   const session = await auth()
   const userId = session?.user?.id || ""
-  const circle = await getCircleById(circle_id || "")
+  const [circle, membershipRequests, welcomeCards] = await Promise.all([
+    getCircleById(circle_id || ""),
+    getMembershipRequests(userId, circle_id || ""),
+    getWelcomeCard(circle_id || ""),
+  ])
+
   if (!circle) {
     notFound()
   }
-  const membershipRequests = await getMembershipRequests(
-    userId,
-    circle_id || "",
-  )
 
   return (
     <CircleDetailPage
@@ -56,6 +58,7 @@ const Page = async ({ params }: Props) => {
       userId={userId}
       membershipRequests={membershipRequests}
       tabKey={tab_key}
+      welcomeCards={welcomeCards}
     />
   )
 }

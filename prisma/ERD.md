@@ -154,6 +154,17 @@ CIRCLE_THREAD CIRCLE_THREAD
     }
 
 
+  "WelcomeCard" {
+    String id "🗝️"
+    String frontTitle
+    String frontImage "❓"
+    String backTitle
+    String backDescription
+    DateTime createdAt
+    DateTime updatedAt
+    }
+
+
   "Notification" {
     String id "🗝️"
     NotificationType type
@@ -211,6 +222,7 @@ CIRCLE_THREAD CIRCLE_THREAD
     "Circle" o{--}o "Activity" : "Activity"
     "Circle" o{--}o "Album" : "Album"
     "Circle" o{--}o "Topic" : "topic"
+    "Circle" o{--}o "WelcomeCard" : "WelcomeCard"
     "CircleMember" o|--|| "User" : "user"
     "CircleMember" o|--|| "Circle" : "circle"
     "CircleMember" o|--|| "Role" : "role"
@@ -236,6 +248,7 @@ CIRCLE_THREAD CIRCLE_THREAD
     "Album" o|--|| "Circle" : "circle"
     "Album" o|--|| "User" : "creator"
     "AlbumImage" o|--|| "Album" : "album"
+    "WelcomeCard" o|--|| "Circle" : "circle"
     "Notification" o|--|| "NotificationType" : "enum:type"
     "Notification" o{--}o "NotificationState" : "NotificationState"
     "NotificationState" o|--|| "User" : "user"

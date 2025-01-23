@@ -63,7 +63,7 @@ export const LoginForm = () => {
         </Center>
         <FormControl
           label="メールアドレス"
-          isInvalid={!!errors.email}
+          invalid={!!errors.email}
           errorMessage={errors.email ? errors.email.message : undefined}
         >
           <Input
@@ -74,7 +74,7 @@ export const LoginForm = () => {
         </FormControl>
         <FormControl
           label="パスワード"
-          isInvalid={!!errors.password}
+          invalid={!!errors.password}
           errorMessage={errors.password ? errors.password.message : undefined}
         >
           <Input
