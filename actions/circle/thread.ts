@@ -48,7 +48,7 @@ export const submitThread = async (
     const result = await createThread(parsedData.data, userId, circleId)
     await createNotification(
       "CIRCLE_THREAD",
-      `${circle?.name}スレッド - ${parsedData.data.title}`,
+      `${circle?.name}スレッド`,
       `${parsedData.data.title}`,
       members
         ? members.map((member) => member.id).filter((id) => id !== userId)
