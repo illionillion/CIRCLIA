@@ -14,8 +14,10 @@ import { CircleActivitydays } from "../data-display/circle-activitydays"
 import { CircleAlbums } from "../data-display/circle-albums"
 import { CircleMembers } from "../data-display/circle-members"
 import { CircleThreads } from "../data-display/circle-threads"
+import { CircleWelcome } from "../data-display/circle-welcome"
 import type { getCircleById } from "@/actions/circle/fetch-circle"
 import { type getMembershipRequests } from "@/actions/circle/membership-request"
+import type { getWelcomeCard } from "@/actions/circle/welcome-card"
 import type { getActivityById } from "@/data/activity"
 import type { getAlbumById } from "@/data/album"
 import type { getAnnouncementById } from "@/data/announcement"
@@ -34,6 +36,7 @@ interface CircleDetailTabsProps {
   currentAnnouncement?: Awaited<ReturnType<typeof getAnnouncementById>>
   currentAlbum?: Awaited<ReturnType<typeof getAlbumById>>
   fetchData: () => Promise<void>
+  welcomeCards: Awaited<ReturnType<typeof getWelcomeCard>>
 }
 
 export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
@@ -48,14 +51,37 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
   currentAnnouncement,
   currentAlbum,
   fetchData,
+  welcomeCards,
 }) => {
   const userRole = circle?.members.find((member) => member.id === userId)?.role
   const tabIndex = handlingTab(tabKey || "")
   const { data } = membershipRequests
+  // 正しいデータかどうかのチェック
+  // カードが3つで3つともfrontImageとBackTitleとBackDescriptionがある場合はウェルカムページを表示
+  const isWelcomeCardValid =
+    welcomeCards?.length === 3 &&
+    welcomeCards.every(
+      (card) => card.frontImage && card.backTitle && card.backDescription,
+    )
 
   return (
-    <Tabs index={tabIndex} w="full" maxW="9xl" h="full" m="auto">
+    <Tabs
+      index={
+        isMember || isWelcomeCardValid || tabIndex === 0
+          ? tabIndex
+          : tabIndex - 1
+      }
+      w="full"
+      maxW="9xl"
+      h="full"
+      m="auto"
+    >
       <TabList overflowX="auto" overflowY="hidden">
+        {isMember || isWelcomeCardValid ? (
+          <Tab flexShrink={0} as={Link} href={`/circles/${circle?.id}/welcome`}>
+            Welcome
+          </Tab>
+        ) : undefined}
         <Tab
           flexShrink={0}
           as={Link}
@@ -87,6 +113,17 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
         </Tab>
       </TabList>
       <TabPanels h="full">
+        {isMember || isWelcomeCardValid ? (
+          <TabPanel h="full">
+            <CircleWelcome
+              isMember={isMember}
+              circleId={circle?.id || ""}
+              userId={userId}
+              welcomeCards={welcomeCards}
+              isWelcomeCardValid={isWelcomeCardValid}
+            />
+          </TabPanel>
+        ) : undefined}
         <TabPanel h="full">
           <CircleActivitydays
             userId={userId}
@@ -116,7 +153,6 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
             currentAnnouncement={currentAnnouncement}
           />
         </TabPanel>
-
         <TabPanel h="full">
           <CircleMembers
             userId={userId}

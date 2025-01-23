@@ -20,6 +20,7 @@ import { CircleDetailTabs } from "../disclosure/circle-detail-tabs"
 import { CircleDetailButton } from "../forms/circle-detail-button"
 import { getCircleById } from "@/actions/circle/fetch-circle"
 import { getMembershipRequests } from "@/actions/circle/membership-request"
+import type { getWelcomeCard } from "@/actions/circle/welcome-card"
 import type { getActivityById } from "@/data/activity"
 import type { getAlbumById } from "@/data/album"
 import type { getAnnouncementById } from "@/data/announcement"
@@ -28,6 +29,7 @@ import type { getThreadById } from "@/data/thread"
 export const CircleDetailPage: FC<{
   circle: Awaited<ReturnType<typeof getCircleById>>
   membershipRequests: Awaited<ReturnType<typeof getMembershipRequests>>
+  welcomeCards: Awaited<ReturnType<typeof getWelcomeCard>>
   tabKey?: string
   userId: string
   currentActivity?: Awaited<ReturnType<typeof getActivityById>>
@@ -43,6 +45,7 @@ export const CircleDetailPage: FC<{
   currentThread,
   currentAnnouncement,
   currentAlbum,
+  welcomeCards,
 }) => {
   const { open, onToggle } = useDisclosure()
 
@@ -108,7 +111,7 @@ export const CircleDetailPage: FC<{
   }
 
   return (
-    <VStack w="full" h="fit-content" gap={0} p={0}>
+    <VStack w="full" h={{ base: "full", md: "fit-content" }} gap={0} p={0}>
       <VStack w="full" h="full" flexGrow={1} p={0}>
         <VStack
           {...(circle?.imagePath
@@ -221,6 +224,7 @@ export const CircleDetailPage: FC<{
         </VStack>
         <CircleDetailTabs
           circle={circleData}
+          welcomeCards={welcomeCards}
           tabKey={tabKey}
           membershipRequests={requests}
           userId={userId}
