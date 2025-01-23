@@ -115,7 +115,9 @@ export const LoginForm = () => {
             boxShadow="0px 4px 15px rgba(0, 0, 0, 0.2)"
             fullRounded
             transition="all 0.3s ease"
+            fontSize={{ base: "md", sm: "xs" }}
             startIcon={<MicrosoftIcon />}
+            gap={{ base: "xs", sm: "none" }}
           >
             Microsoftアカウントでサインイン
           </Button>
