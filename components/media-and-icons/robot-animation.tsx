@@ -30,8 +30,8 @@ export default function RobotAnimation() {
   return (
     <ui.div
       pointerEvents="none"
-      height="250px"
-      width="250px"
+      height={{ base: "250px", sm: "150px" }}
+      width={{ base: "250px", sm: "150px" }}
       ref={animationRef}
     ></ui.div>
   )

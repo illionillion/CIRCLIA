@@ -30,8 +30,8 @@ export default function NetWorkAnimation() {
   return (
     <ui.div
       pointerEvents="none"
-      height="150px"
-      width="150px"
+      height={{ base: "150px", sm: "100px" }}
+      width={{ base: "150px", sm: "100px" }}
       ref={animationRef}
     ></ui.div>
   )
