@@ -120,7 +120,7 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
                 onClick={previousWeek}
               />
               <Button colorScheme="riverBlue" onClick={goToToday}>
-                <Text _hover={{ transform: "scale(1.3)" }}>今日</Text>
+                <Text _hover={{ transform: "scale(1.2)" }}>今日</Text>
               </Button>
               <IconButton
                 icon={
