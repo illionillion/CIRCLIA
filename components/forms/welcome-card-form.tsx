@@ -221,8 +221,9 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
                   {...(imagePreview
                     ? {
                         backgroundImage: imagePreview,
-                        backgroundSize: "cover",
+                        backgroundSize: "contain",
                         backgroundPosition: "center",
+                        backgroundColor: "gray.100",
                       }
                     : {
                         backgroundColor: "gray.100",
