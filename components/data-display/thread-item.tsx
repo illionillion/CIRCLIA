@@ -36,13 +36,7 @@ export const ThreadItem: FC<ThreadItemProps> = ({
   handleDelete,
 }) => {
   return (
-    <Card
-      w="full"
-      rounded="md"
-      bg="white"
-      transition="0.5s"
-      _hover={{ transform: "scale(1.02)", transition: "0.5s" }}
-    >
+    <Card w="full" rounded="md" bg="white">
       <CardBody as={LinkBox}>
         <HStack
           w="full"

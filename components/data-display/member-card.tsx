@@ -97,14 +97,7 @@ export const MemberCard: FC<MemberCard> = ({
   }
 
   return (
-    <GridItem
-      w="full"
-      rounded="md"
-      as={Card}
-      bg="white"
-      transition="0.5s"
-      _hover={{ transform: "scale(1.02)", transition: "0.5s" }}
-    >
+    <GridItem w="full" rounded="md" as={Card} bg="white">
       <CardBody as={LinkBox}>
         <HStack
           as={Center}
@@ -140,19 +133,19 @@ export const MemberCard: FC<MemberCard> = ({
                   <>
                     <MenuItem
                       onClick={() => openRoleDialog(0, "代表")}
-                      isDisabled={member.role.id === 0}
+                      disabled={member.role.id === 0}
                     >
                       代表
                     </MenuItem>
                     <MenuItem
                       onClick={() => openRoleDialog(1, "副代表")}
-                      isDisabled={member.role.id === 1}
+                      disabled={member.role.id === 1}
                     >
                       副代表
                     </MenuItem>
                     <MenuItem
                       onClick={() => openRoleDialog(2, "一般")}
-                      isDisabled={member.role.id === 2}
+                      disabled={member.role.id === 2}
                     >
                       一般
                     </MenuItem>
@@ -168,13 +161,13 @@ export const MemberCard: FC<MemberCard> = ({
                   <>
                     <MenuItem
                       onClick={() => openRoleDialog(1, "副代表")}
-                      isDisabled={member.role.id === 1}
+                      disabled={member.role.id === 1}
                     >
                       副代表
                     </MenuItem>
                     <MenuItem
                       onClick={() => openRoleDialog(2, "一般")}
-                      isDisabled={member.role.id === 2}
+                      disabled={member.role.id === 2}
                     >
                       一般
                     </MenuItem>
