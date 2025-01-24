@@ -72,7 +72,8 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
               src={card.frontImage}
               w="full"
               h="full"
-              objectFit="cover"
+              objectFit="contain"
+              backgroundColor="gray.100"
               alt={`card ${index + 1} image`}
             />
           </CardBody>
@@ -95,7 +96,8 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
                 src={card.frontImage}
                 w="full"
                 h="full"
-                objectFit="cover"
+                objectFit="contain"
+                backgroundColor="gray.100"
                 alt={`card ${index + 1} image`}
               />
             </CardBody>
