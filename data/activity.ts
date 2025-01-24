@@ -336,7 +336,8 @@ export async function getWeeklyActivities(
   activities.forEach((activity) => {
     const date = DateTime.fromJSDate(activity.activityDay)
       .setZone(timeZone)
-      .toFormat("MM/dd") // MM/ddフォーマットで日付を文字列化
+      .toFormat("M/d")
+
     if (groupedActivities[date]) {
       // 必ず存在することを確認
       groupedActivities[date].activities.push({
