@@ -335,8 +335,10 @@ export async function getWeeklyActivities(
   // データを分類
   activities.forEach((activity) => {
     const date = parseMonthDate(
-      DateTime.fromJSDate(activity.activityDay, { zone: timeZone }).toJSDate(),
-    ) // 日付を文字列に変換
+      DateTime.fromJSDate(activity.activityDay)
+        .setZone(timeZone) // 明示的にタイムゾーンを設定
+        .toJSDate(),
+    )
     if (groupedActivities[date]) {
       // 必ず存在することを確認
       groupedActivities[date].activities.push({
@@ -344,10 +346,8 @@ export async function getWeeklyActivities(
         title: activity.title,
         description: activity.description || undefined,
         location: activity.location,
-        startTime: parseMonthDate(activity.startTime),
-        endTime: activity.endTime
-          ? parseMonthDate(activity.endTime)
-          : undefined,
+        startTime: activity.startTime.toISOString(),
+        endTime: activity.endTime ? activity.endTime.toISOString() : undefined,
         circle: activity.circle,
       })
     } else {
