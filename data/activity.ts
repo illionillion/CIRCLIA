@@ -274,13 +274,16 @@ export async function getWeeklyActivities(
   userId: string,
   startDate?: Date,
 ): Promise<WeeklyActivities> {
-  const start = startDate ?? new Date()
-  // 時刻部分を0にする
-  start.setHours(0, 0, 0, 0)
+  // 開始日を日本時間で設定
+  const start = DateTime.fromJSDate(startDate ?? new Date(), { zone: timeZone })
+    .startOf("day")
+    .toJSDate()
 
-  const end = new Date(start)
-  end.setDate(start.getDate() + 7) // 1週間後の日付
-  end.setHours(23, 59, 59, 999) // 時刻を23:59:59.999に設定
+  // 終了日を日本時間で設定 (1週間後)
+  const end = DateTime.fromJSDate(start, { zone: timeZone })
+    .plus({ days: 7 })
+    .endOf("day")
+    .toJSDate()
 
   const activities = await db.activity.findMany({
     where: {
@@ -319,8 +322,9 @@ export async function getWeeklyActivities(
 
   // 1週間の日付を初期化（空の配列を設定）
   for (let i = 0; i < 7; i++) {
-    const currentDate = new Date(start)
-    currentDate.setDate(start.getDate() + i)
+    const currentDate = DateTime.fromJSDate(start, { zone: timeZone })
+      .plus({ days: i })
+      .toJSDate()
     const dateStr = parseMonthDate(currentDate) // 日付を文字列に変換
     groupedActivities[dateStr] = {
       date: dateStr,
@@ -330,7 +334,9 @@ export async function getWeeklyActivities(
 
   // データを分類
   activities.forEach((activity) => {
-    const date = parseMonthDate(activity.activityDay) // 日付を文字列に変換
+    const date = parseMonthDate(
+      DateTime.fromJSDate(activity.activityDay, { zone: timeZone }).toJSDate(),
+    ) // 日付を文字列に変換
     if (groupedActivities[date]) {
       // 必ず存在することを確認
       groupedActivities[date].activities.push({

@@ -61,6 +61,7 @@ const Page = async ({ params }: Props) => {
       membershipRequests={membershipRequests}
       currentActivity={currentActivity}
       welcomeCards={welcomeCards}
+      tabKey="activities"
     />
   )
 }
