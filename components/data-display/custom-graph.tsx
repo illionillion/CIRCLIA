@@ -184,6 +184,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
         >
           <NetWorkAnimation />
           <Text>AIを使って類似度で検索しよう</Text>
+          <Text color="danger">PC推奨</Text>
         </Center>
       )}
       <ForceGraph2D
