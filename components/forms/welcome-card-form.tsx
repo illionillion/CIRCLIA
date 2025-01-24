@@ -278,7 +278,7 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
             <Card minH={{ base: "sm", md: "2xs" }}>
               <CardHeader>
                 <Input
-                  placeholder="サークルのメンバーは？"
+                  placeholder="楽しくプログラミングするサークル！"
                   {...register("backTitle")}
                 />
               </CardHeader>
@@ -287,7 +287,7 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
                   w="full"
                   h="full"
                   flexGrow={1}
-                  placeholder="サークルの詳しい説明"
+                  placeholder="みんなで集まってプログラミングをしています！"
                   {...register("backDescription")}
                 />
               </CardBody>
