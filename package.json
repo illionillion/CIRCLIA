@@ -97,5 +97,11 @@
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
+  },
+  "pnpm": {
+    "overrides": {
+      "ws": "^8.17.1",
+      "got": "^11.8.5"
+    }
   }
 }
