@@ -65,7 +65,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
       // 画像のみがある場合
       if (!card.frontTitle && card.frontImage) {
         return (
-          <CardBody display="flex" h="full">
+          <CardBody display="flex" h="full" backgroundColor="gray.100">
             <Image
               userSelect="none"
               pointerEvents="none"
@@ -73,7 +73,6 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
               w="full"
               h="full"
               objectFit="contain"
-              backgroundColor="gray.100"
               alt={`card ${index + 1} image`}
             />
           </CardBody>
@@ -89,7 +88,12 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
             </Heading>
           </CardHeader>
           {card.frontImage && (
-            <CardBody display="flex" flex={1} minH={0}>
+            <CardBody
+              display="flex"
+              flex={1}
+              minH={0}
+              backgroundColor="gray.100"
+            >
               <Image
                 userSelect="none"
                 pointerEvents="none"
@@ -97,7 +101,6 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
                 w="full"
                 h="full"
                 objectFit="contain"
-                backgroundColor="gray.100"
                 alt={`card ${index + 1} image`}
               />
             </CardBody>
