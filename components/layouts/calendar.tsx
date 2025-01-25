@@ -12,9 +12,16 @@ import {
   Text,
   useSafeLayoutEffect,
   useToken,
+  useDisclosure,
+  Drawer,
+  DrawerOverlay,
+  DrawerHeader,
+  DrawerBody,
+  DrawerCloseButton,
+  HStack,
 } from "@yamada-ui/react"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { getMonthlyEventsActions } from "@/actions/circle/fetch-activity"
 import type { getMonthlyEvents } from "@/data/activity"
 import "dayjs/locale/ja"
@@ -26,7 +33,6 @@ interface CalendarPageProps {
 
 export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
   const [currentMonth, onChangeMonth] = useState<Date>(new Date())
-
   const [currentEvents, setCurrentEvents] =
     useState<Awaited<ReturnType<typeof getMonthlyEvents>>>(events)
 
@@ -36,17 +42,39 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
   }
 
   const mt = useToken("spaces", "xs")
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [selectedEvents, setSelectedEvents] = useState<Awaited<ReturnType<typeof getMonthlyEvents>>>([])
+
+  // スマホかどうかを判定してDrawerの表示位置を動的に変更
+  const [placement, setPlacement] = useState<"right" | "bottom">(
+    window.innerWidth <= 768 ? "bottom" : "right"
+  );
+  
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setPlacement("bottom")
+      } else {
+        setPlacement("right")
+      }
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
   useSafeLayoutEffect(() => {
     fetchData()
   }, [currentMonth])
 
   return (
-    <Center height="100vh">
-      <Container maxW="9xl" m="auto" p={4}>
-        <Heading mb={4} fontSize="2xl">
-          カレンダー
-        </Heading>
+    <Container maxW="9xl" m="auto" p={4}>
+      <Heading mb={4} fontSize="2xl">
+        カレンダー
+      </Heading>
+      <Center>
         <Calendar
           month={currentMonth}
           onChangeMonth={onChangeMonth}
@@ -54,7 +82,7 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
           locale="ja"
           size="full"
           type="date"
-          headerProps={{ mb: 2, fontSize: "xl", fontWeight: "bold" }} // ヘッダー文字を大きく
+          headerProps={{ mb: 2, fontSize: "xl", fontWeight: "bold" }}
           labelProps={{
             pointerEvents: "none",
             icon: { display: "none" },
@@ -66,14 +94,14 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
             width: "100%",
             border: "1px solid",
             borderColor: "border",
-            fontSize: "lg", // テーブル全体の文字サイズを大きく
+            fontSize: "lg",
             bg: "white",
             th: {
               border: "1px solid",
               borderColor: "border",
               fontWeight: "bold",
               fontSize: "lg",
-            }, // ヘッダーセル
+            },
             td: {
               border: "1px solid",
               borderColor: "border",
@@ -103,21 +131,37 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
               const isToday =
                 date.getFullYear() === new Date().getFullYear() &&
                 date.getMonth() === new Date().getMonth() &&
-                date.getDate() === new Date().getDate()
-              const isSaturday = date.getDay() === 6 // 土曜日かどうかを判定
-              const dayEvents = currentEvents.filter(
-                (event) =>
-                  event.activityDay.getFullYear() === date.getFullYear() &&
-                  event.activityDay.getMonth() === date.getMonth() &&
-                  event.activityDay.getDate() === date.getDate(),
-              )
+                date.getDate() === new Date().getDate();
+              const isSaturday = date.getDay() === 6;
+              const dayEvents = currentEvents
+             .filter((event) => {
+               const eventDate = new Date(event.activityDay);
+               return (
+                 eventDate.getFullYear() === date.getFullYear() &&
+                 eventDate.getMonth() === date.getMonth() &&
+                 eventDate.getDate() === date.getDate()
+               );
+             })
+             .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
 
-              const displayedEvents = dayEvents.slice(0, 2)
-              const hiddenEventCount = dayEvents.length - displayedEvents.length
-
+  
+              const displayedEvents = dayEvents.slice(0, 2);
+              const hiddenEventCount = dayEvents.length - displayedEvents.length;
+  
               return (
-                <VStack alignItems="center" w="100%" h="100%" overflow="hidden">
-                  <Center w="100%">
+                <VStack 
+                alignItems="center" 
+                w="100%" 
+                h="100%" 
+                overflow="hidden"
+                onClick={() => {
+                  setSelectedDate(date);
+                  setSelectedEvents(dayEvents);
+                  onOpen();
+                }}
+                >
+                <Center w="100%"
+                  >
                     {isToday ? (
                       <Center
                         rounded="full"
@@ -133,15 +177,13 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
                         fontSize="l"
                         fontWeight="bold"
                         mt="xs"
-                        color={isSaturday ? "blue.500" : "inherit"} // 土曜日を青色にする
+                        color={isSaturday ? "blue.500" : "inherit"}
                       >
-                        {" "}
-                        {/* 通常日付 */}
                         {date.getDate()}
                       </Text>
                     )}
                   </Center>
-
+  
                   <List w="full" px={1} overflow="hidden">
                     {displayedEvents.map((event) => (
                       <ListItem
@@ -153,7 +195,7 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
                         px="2"
                         bg="blue.100"
                         color="blue"
-                        fontSize="sm" // イベント文字サイズ
+                        fontSize="sm"
                         lineHeight="taller"
                         rounded="md"
                         overflow="hidden"
@@ -181,11 +223,79 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
                     )}
                   </List>
                 </VStack>
-              )
+              );
             },
           }}
         />
-      </Container>
-    </Center>
-  )
+      </Center>
+  
+      <Drawer isOpen={isOpen} onClose={onClose} placement={placement}>
+        <DrawerOverlay />
+        <div
+            style={{
+              backgroundColor: 'white',
+              height: '100%',
+              width: '100%',
+              boxShadow: 'lg', 
+              position: 'relative',
+            }}
+          >
+          <DrawerCloseButton />
+          <DrawerHeader>
+          {selectedDate ? (
+            <Text fontSize="xl" fontWeight="bold">
+              {selectedDate.getFullYear()}年{selectedDate.getMonth() + 1}月{selectedDate.getDate()}日
+            </Text>
+          ) : (
+            <Text fontSize="xl" fontWeight="bold">詳細</Text>
+          )}
+        </DrawerHeader>
+
+          <DrawerBody>
+  {selectedEvents.length > 0 ? (
+    <List>
+  {selectedEvents.map((event) => {
+    const maxLength = 14;  // 14文字の制限
+    const formattedTitle =
+      event.title.length > maxLength
+        ? event.title.replace(new RegExp(`(.{${maxLength}})`, 'g'), '$1\n')
+        : event.title;
+
+    return (
+      <ListItem key={event.id} fontSize="lg" fontWeight="bold" py={1.5}>
+        <HStack gap={4} alignItems="start" wrap="wrap">
+          <Text 
+            w="100px" 
+            textAlign="right" 
+            fontWeight="medium" 
+            fontFamily="monospace"
+          >
+            {new Date(event.startTime).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })} ～
+            {event.endTime 
+              ? new Date(event.endTime).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" }) 
+              : ""}
+          </Text>
+          <Text 
+            whiteSpace="pre-wrap"  // 改行を保持
+            overflowWrap="break-word"
+            wordBreak="break-word"
+            fontSize="md"
+          >
+            {formattedTitle}
+          </Text>
+        </HStack>
+      </ListItem>
+        );
+      })}
+    </List>
+
+      ) : (
+        <Text fontSize="lg" fontWeight="bold">この日にはイベントがありません。</Text>
+          )}
+    </DrawerBody>
+
+        </div>
+      </Drawer>
+    </Container>
+  );
 }
