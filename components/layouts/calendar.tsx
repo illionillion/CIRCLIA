@@ -19,6 +19,7 @@ import {
   DrawerBody,
   DrawerCloseButton,
   HStack,
+  Box,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
@@ -251,48 +252,71 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
           )}
         </DrawerHeader>
 
-          <DrawerBody>
+        <DrawerBody>
   {selectedEvents.length > 0 ? (
     <List>
-  {selectedEvents.map((event) => {
-    const maxLength = 14;  // 14文字の制限
-    const formattedTitle =
-      event.title.length > maxLength
-        ? event.title.replace(new RegExp(`(.{${maxLength}})`, 'g'), '$1\n')
-        : event.title;
+      {selectedEvents.map((event) => {
+        // 16文字ごとに改行を挿入する関数
+        const formatTitle = (title: string, length: number = 16) => {
+          return title.replace(new RegExp(`(.{${length}})`, 'g'), '$1\n');
+        };
 
-    return (
-      <ListItem key={event.id} fontSize="lg" fontWeight="bold" py={1.5}>
-        <HStack gap={4} alignItems="start" wrap="wrap">
-          <Text 
-            w="100px" 
-            textAlign="right" 
-            fontWeight="medium" 
-            fontFamily="monospace"
+        return (
+          <ListItem
+            key={event.id}
+            fontSize="lg"
+            fontWeight="bold"
+            py={1.5}
+            bg="transparent"  // 背景色を削除
+            color="black"     // 通常のテキスト色
+            rounded="none"    // 角丸なし
+            textAlign="left"
+            mx="auto"
+            width="100%"      // レイアウトを維持
+            minWidth="80px"
+            overflow="hidden"
           >
-            {new Date(event.startTime).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })} ～
-            {event.endTime 
-              ? new Date(event.endTime).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" }) 
-              : ""}
-          </Text>
-          <Text 
-            whiteSpace="pre-wrap"  // 改行を保持
-            overflowWrap="break-word"
-            wordBreak="break-word"
-            fontSize="md"
-          >
-            {formattedTitle}
-          </Text>
-        </HStack>
-      </ListItem>
+            <HStack alignItems="start" wrap="wrap">
+              {/* 時間部分 */}
+              <Text 
+                w="100px" 
+                textAlign="right" 
+                fontWeight="medium" 
+                fontFamily="monospace"
+                flexShrink={0}
+              >
+                {new Date(event.startTime).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })} ～
+                {event.endTime 
+                  ? new Date(event.endTime).toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" }) 
+                  : ""}
+              </Text>
+              {/* イベント名をリンクに */}
+              <Box>
+                <Link href={`/circles/${event.circle.id}/activities/${event.id}`} passHref legacyBehavior>
+                  <a style={{ color: "blue", fontWeight: "bold", textDecoration: "none" }}>
+                    <Text 
+                      fontSize="md"
+                      fontWeight="bold"
+                      whiteSpace="pre-wrap"  // 改行を反映
+                      overflowWrap="break-word"
+                      wordBreak="break-word"
+                      _hover={{ textDecoration: "underline" }}
+                    >
+                      {formatTitle(event.title)}
+                    </Text>
+                  </a>
+                </Link>
+              </Box>
+            </HStack>
+          </ListItem>
         );
       })}
     </List>
+  ) : (
+    <Text fontSize="lg" fontWeight="bold">この日にはイベントがありません。</Text>
+  )}
+</DrawerBody>
 
-      ) : (
-        <Text fontSize="lg" fontWeight="bold">この日にはイベントがありません。</Text>
-          )}
-    </DrawerBody>
 
         </div>
       </Drawer>
