@@ -78,12 +78,11 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
     <>
       <Center height="100vh">
         <Container maxW="9xl" m="auto" p={4}>
-          <HStack alignItems="start" gap="lg" mb="4">
+          <HStack alignItems="start" gap="lg">
             <Heading fontSize="2xl">カレンダー</Heading>
             <Button
               onClick={() => onChangeMonth(new Date())}
               colorScheme="riverBlue"
-              mt={2}
             >
               今日
             </Button>
