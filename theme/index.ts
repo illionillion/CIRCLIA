@@ -1,6 +1,6 @@
 "use client"
 import type { UsageTheme } from "@yamada-ui/react"
-import { extendTheme } from "@yamada-ui/react"
+import { extendComponent, extendTheme } from "@yamada-ui/react"
 
 import * as styles from "./styles"
 // import components from './components'
@@ -15,6 +15,18 @@ const customTheme: UsageTheme = {
         bg: "white",
       },
     },
+    Flip: extendComponent("Flip", {
+      baseStyle: {
+        from: {
+          w: "full",
+          h: "full",
+        },
+        to: {
+          w: "full",
+          h: "full",
+        },
+      },
+    }),
   },
   ...tokens,
 }

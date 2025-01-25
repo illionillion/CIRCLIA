@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { getCircleById, getCircles } from "@/actions/circle/fetch-circle"
 import { getMembershipRequests } from "@/actions/circle/membership-request"
+import { getWelcomeCard } from "@/actions/circle/welcome-card"
 import { auth } from "@/auth"
 import { CircleDetailPage } from "@/components/layouts/circle-detail-page"
 import { getAnnouncementById, getAnnouncements } from "@/data/announcement"
@@ -39,12 +40,13 @@ const Page = async ({ params }: Props) => {
   const session = await auth()
   const userId = session?.user?.id || ""
   const announcementId = topic_id || ""
-  const circle = await getCircleById(circle_id || "")
-  const membershipRequests = await getMembershipRequests(
-    userId,
-    circle_id || "",
-  )
-  const currentAnnouncement = await getAnnouncementById(announcementId)
+  const [circle, membershipRequests, currentAnnouncement, welcomeCards] =
+    await Promise.all([
+      getCircleById(circle_id || ""),
+      getMembershipRequests(userId, circle_id || ""),
+      getAnnouncementById(announcementId),
+      getWelcomeCard(circle_id || ""),
+    ])
   if (
     !circle ||
     !currentAnnouncement ||
@@ -58,6 +60,7 @@ const Page = async ({ params }: Props) => {
       userId={userId}
       membershipRequests={membershipRequests}
       currentAnnouncement={currentAnnouncement}
+      welcomeCards={welcomeCards}
       tabKey="notifications"
     />
   )

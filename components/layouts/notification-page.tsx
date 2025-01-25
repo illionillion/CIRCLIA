@@ -18,7 +18,13 @@ export const NotificationPage: FC<NotificationPageProps> = ({ userId }) => {
     refreshNotifications(userId)
   }
   return (
-    <VStack w="full" h="full" gap="md" maxW="9xl" m="auto">
+    <VStack
+      w="full"
+      h={{ base: "full", sm: "fit-content" }}
+      gap="md"
+      maxW="9xl"
+      m="auto"
+    >
       <HStack justifyContent="space-between" p={4}>
         <Heading as="h2" size="lg" textWrap="nowrap">
           通知

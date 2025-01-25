@@ -63,7 +63,7 @@ export const LoginForm = () => {
         </Center>
         <FormControl
           label="メールアドレス"
-          isInvalid={!!errors.email}
+          invalid={!!errors.email}
           errorMessage={errors.email ? errors.email.message : undefined}
         >
           <Input
@@ -74,7 +74,7 @@ export const LoginForm = () => {
         </FormControl>
         <FormControl
           label="パスワード"
-          isInvalid={!!errors.password}
+          invalid={!!errors.password}
           errorMessage={errors.password ? errors.password.message : undefined}
         >
           <Input
@@ -93,7 +93,7 @@ export const LoginForm = () => {
             bgGradient="linear(to-r, teal.400, blue.500)"
             _hover={{
               bgGradient: "linear(to-r, teal.600, blue.700)",
-              transform: "scale(1.05)",
+              transform: "scale(1.03)",
             }}
             color="white"
             boxShadow="0px 4px 15px rgba(0, 0, 0, 0.2)"
@@ -109,13 +109,15 @@ export const LoginForm = () => {
             bgGradient="linear(to-r, purple.400, pink.500)"
             _hover={{
               bgGradient: "linear(to-r, purple.600, pink.700)",
-              transform: "scale(1.05)",
+              transform: "scale(1.03)",
             }}
             color="white"
             boxShadow="0px 4px 15px rgba(0, 0, 0, 0.2)"
             fullRounded
             transition="all 0.3s ease"
+            fontSize={{ base: "md", sm: "xs" }}
             startIcon={<MicrosoftIcon />}
+            gap={{ base: "xs", sm: "none" }}
           >
             Microsoftアカウントでサインイン
           </Button>

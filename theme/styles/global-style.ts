@@ -15,4 +15,10 @@ export const globalStyle: UIStyle = {
   ".ui-date-picker__field": {
     bg: "rgba(0, 0, 0, 0.04) !important",
   },
+  ".wmde-markdown ul": {
+    listStyle: "disc",
+  },
+  ".wmde-markdown ol": {
+    listStyle: "decimal",
+  },
 }

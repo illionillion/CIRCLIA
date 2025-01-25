@@ -148,7 +148,7 @@ export const ThreadCard: FC<ThreadCardProps> = ({
           alignItems="start"
         >
           <FormControl
-            isInvalid={!!errors.content}
+            invalid={!!errors.content}
             errorMessage={errors.content?.message}
           >
             <Textarea

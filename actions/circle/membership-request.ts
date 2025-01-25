@@ -68,7 +68,7 @@ export const handleMembershipRequest = async (
 
     await createNotification(
       "CIRCLE_INVITE",
-      `${circle?.name}への${requestType === "join" ? "入会" : "退会"}申請`,
+      `${circle?.name}に${requestType === "join" ? "入会" : "退会"}申請が届いています`,
       `${circle?.name}に${session.user.name}さんからの${requestType === "join" ? "入会" : "退会"}申請が届いています。`,
       ownerUsers.map((user) => user.userId),
       circle?.id,
@@ -195,7 +195,7 @@ export const handleMembershipRequestAction = async (
         await addMemberToCircle(targetUserId, circleId, 2) // 対象ユーザーをメンバーに追加
         await createNotification(
           "CIRCLE_INVITE",
-          `${circle?.name}への入会完了`,
+          `${circle?.name}の入会完了`,
           `${circle?.name}への入会が完了しました。`,
           [targetUserId],
           circle?.id,

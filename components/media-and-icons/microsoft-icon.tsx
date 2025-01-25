@@ -6,7 +6,7 @@ export const MicrosoftIcon: FC = () => (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 48 48"
     fill="currentColor"
-    boxSize="7"
+    boxSize={{ base: "7", sm: "5" }}
   >
     <path
       fill="#ff5722"

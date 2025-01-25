@@ -1,5 +1,6 @@
 import type { BackCircleForm } from "@/schema/circle"
 import { db } from "@/utils/db"
+import { generateEmbedding } from "@/utils/embedding"
 
 export const getCircleOwner = async (circleId: string) => {
   return await db.circleMember.findMany({
@@ -125,6 +126,7 @@ export const deleteCircle = async (circleId: string) => {
 }
 
 export const addCircle = async (values: BackCircleForm) => {
+  const inputText = `${values.name} ${values.tags.join(" ")} ${values.description}`
   try {
     const circle = await db.circle.create({
       data: {
@@ -133,6 +135,7 @@ export const addCircle = async (values: BackCircleForm) => {
         location: values.location,
         imagePath: values.imagePath,
         activityDay: values.activityDay,
+        embedding: await generateEmbedding(inputText),
       },
     })
     return circle // 成功した場合は作成したサークルを返す
@@ -146,6 +149,7 @@ export const updateCircle = async (
   circleId: string,
   values: BackCircleForm,
 ) => {
+  const inputText = `${values.name} ${values.tags.join(" ")} ${values.description}`
   try {
     return await db.circle.update({
       where: {
@@ -158,6 +162,7 @@ export const updateCircle = async (
         location: values.location,
         imagePath: values.imagePath,
         activityDay: values.activityDay,
+        embedding: await generateEmbedding(inputText),
       },
     })
   } catch (error) {
