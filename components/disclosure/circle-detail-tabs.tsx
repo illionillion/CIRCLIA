@@ -73,8 +73,8 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
       }
       w="full"
       maxW="9xl"
-      h="full"
-      m="auto"
+      h="fit-content"
+      mx="auto"
     >
       <TabList overflowX="auto" overflowY="hidden">
         {isMember || isWelcomeCardValid ? (
