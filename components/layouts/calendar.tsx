@@ -22,6 +22,8 @@ import {
   HStack,
   Link as UILink,
   Box,
+  useMediaQuery,
+  Flex,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useState, useEffect } from "react"
@@ -32,6 +34,21 @@ import "dayjs/locale/ja"
 interface CalendarPageProps {
   userId: string
   events: Awaited<ReturnType<typeof getMonthlyEvents>>
+}
+
+const formatEventTime = (
+  startTime?: string | Date,
+  endTime?: string | Date,
+) => {
+  if (!startTime) return "未定"
+
+  const formatTime = (time: string | Date) =>
+    new Date(time).toLocaleTimeString("ja-JP", {
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+
+  return `${formatTime(startTime)} ～ ${endTime ? formatTime(endTime) : ""}`
 }
 
 export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
@@ -52,23 +69,8 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
   >([])
 
   // スマホかどうかを判定してDrawerの表示位置を動的に変更
-  const [placement, setPlacement] = useState<"right" | "bottom">(
-    window.innerWidth <= 768 ? "bottom" : "right",
-  )
-
-  useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth <= 768) {
-        setPlacement("bottom")
-      } else {
-        setPlacement("right")
-      }
-    }
-
-    handleResize()
-    window.addEventListener("resize", handleResize)
-    return () => window.removeEventListener("resize", handleResize)
-  }, [])
+  const [isMobile] = useMediaQuery(["(max-width: 768px)"])
+  const placement = isMobile ? "bottom" : "right"
 
   useSafeLayoutEffect(() => {
     fetchData()
@@ -76,7 +78,7 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
 
   return (
     <>
-      <Center height="100vh">
+      <Center height="10vh">
         <Container maxW="9xl" m="auto" p={4}>
           <HStack alignItems="start" gap="lg">
             <Heading fontSize="2xl">カレンダー</Heading>
@@ -263,77 +265,60 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
         <DrawerBody>
           {selectedEvents.length > 0 ? (
             <List>
-              {selectedEvents.map((event) => {
-                // 16文字ごとに改行を挿入する関数
-                const formatTitle = (title: string, length: number = 16) => {
-                  return title.replace(
-                    new RegExp(`(.{${length}})`, "g"),
-                    "$1\n",
-                  )
-                }
-
-                return (
-                  <ListItem
-                    key={event.id}
-                    fontSize="lg"
-                    fontWeight="bold"
-                    py={1.5}
-                    bg="transparent" // 背景色を削除
-                    color="black" // 通常のテキスト色
-                    rounded="none" // 角丸なし
-                    textAlign="left"
-                    mx="auto"
-                    width="100%" // レイアウトを維持
-                    minWidth="80px"
-                    overflow="hidden"
-                  >
-                    <HStack alignItems="start" wrap="wrap">
-                      {/* 時間部分 */}
-                      <Text
-                        w="100px"
-                        textAlign="right"
-                        fontWeight="medium"
-                        fontFamily="monospace"
-                        flexShrink={0}
-                      >
+              {selectedEvents.map((event, index) => (
+                <Box key={event.id} w="full">
+                  <Flex alignItems="center">
+                    <Box
+                      textAlign="center"
+                      fontFamily="monospace"
+                      fontWeight="bold"
+                    >
+                      <Text fontSize="lg">
                         {new Date(event.startTime).toLocaleTimeString("ja-JP", {
                           hour: "2-digit",
                           minute: "2-digit",
-                        })}{" "}
-                        ～
+                        })}
+                      </Text>
+                      <Text fontSize="lg">～</Text>
+                      <Text fontSize="lg">
                         {event.endTime
                           ? new Date(event.endTime).toLocaleTimeString(
                               "ja-JP",
-                              { hour: "2-digit", minute: "2-digit" },
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              },
                             )
                           : ""}
                       </Text>
-                      {/* イベント名をリンクに */}
-                      <Box>
-                        <UILink
-                          as={Link}
-                          href={`/circles/${event.circle.id}/activities/${event.id}`}
-                          color="blue"
-                          fontWeight="bold"
-                          textDecoration="none"
-                          _hover={{ textDecoration: "underline" }}
-                        >
-                          <Text
-                            fontSize="md"
-                            fontWeight="bold"
-                            whiteSpace="pre-wrap" // 改行を反映
-                            overflowWrap="break-word"
-                            wordBreak="break-word"
-                            _hover={{ textDecoration: "underline" }}
-                          >
-                            {formatTitle(event.title)}
-                          </Text>
-                        </UILink>
-                      </Box>
-                    </HStack>
-                  </ListItem>
-                )
-              })}
+                    </Box>
+
+                    <Box ml={4} flex="1">
+                      <UILink
+                        as={Link}
+                        href={`/circles/${event.circle.id}/activities/${event.id}`}
+                        colorScheme="riverBlue"
+                        fontWeight="bold"
+                        fontSize="md"
+                        whiteSpace="pre-wrap"
+                        _hover={{ textDecoration: "underline" }}
+                      >
+                        {event.title}
+                      </UILink>
+                    </Box>
+                  </Flex>
+
+                  {/* イベント間の区切り線 */}
+                  {index < selectedEvents.length - 1 && (
+                    <Box
+                      borderBottom="1px solid"
+                      borderColor="gray.300"
+                      my={3}
+                      w="full"
+                    />
+                  )}
+                </Box>
+              ))}
             </List>
           ) : (
             <Text fontSize="lg" fontWeight="bold">
