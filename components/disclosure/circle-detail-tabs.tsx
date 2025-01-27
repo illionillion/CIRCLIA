@@ -63,17 +63,19 @@ export const CircleDetailTabs: FC<CircleDetailTabsProps> = ({
     welcomeCards.every(
       (card) => card.frontImage && card.backTitle && card.backDescription,
     )
+  const newTabIndex =
+    isMember || isWelcomeCardValid || tabIndex === 0 ? tabIndex : tabIndex - 1
 
   return (
     <Tabs
-      index={
-        isMember || isWelcomeCardValid || tabIndex === 0
-          ? tabIndex
-          : tabIndex - 1
-      }
+      index={newTabIndex}
       w="full"
       maxW="9xl"
-      h="fit-content"
+      h={
+        (isMember || isWelcomeCardValid) && newTabIndex === 0
+          ? "full"
+          : "fit-content"
+      }
       mx="auto"
     >
       <TabList overflowX="auto" overflowY="hidden">
