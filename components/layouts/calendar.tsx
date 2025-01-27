@@ -26,7 +26,7 @@ import {
   Flex,
 } from "@yamada-ui/react"
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { getMonthlyEventsActions } from "@/actions/circle/fetch-activity"
 import type { getMonthlyEvents } from "@/data/activity"
 import "dayjs/locale/ja"
