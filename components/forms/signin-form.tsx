@@ -63,7 +63,7 @@ export const LoginForm = () => {
         </Center>
         <FormControl
           label="メールアドレス"
-          isInvalid={!!errors.email}
+          invalid={!!errors.email}
           errorMessage={errors.email ? errors.email.message : undefined}
         >
           <Input
@@ -74,7 +74,7 @@ export const LoginForm = () => {
         </FormControl>
         <FormControl
           label="パスワード"
-          isInvalid={!!errors.password}
+          invalid={!!errors.password}
           errorMessage={errors.password ? errors.password.message : undefined}
         >
           <Input
@@ -117,7 +117,9 @@ export const LoginForm = () => {
             boxShadow="0px 4px 15px rgba(0, 0, 0, 0.2)"
             fullRounded
             transition="all 0.5s ease"
+            fontSize={{ base: "md", sm: "xs" }}
             startIcon={<MicrosoftIcon />}
+            gap={{ base: "xs", sm: "none" }}
           >
             Microsoftアカウントでサインイン
           </Button>

@@ -7,6 +7,7 @@ import {
   Center,
   Text,
   Card,
+  useBreakpointEffect,
 } from "@yamada-ui/react"
 import { useRef, useState } from "react"
 import { ForceGraph2D } from "react-force-graph"
@@ -51,11 +52,20 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const [isDragging, setIsDragging] = useBoolean(false)
   const zoomLevelRef = useRef(1)
+  const breakPointRef = useRef(0)
 
   // onZoomハンドラ内ではuseRefの値を更新する
   const handleZoom = (event: { k: number }) => {
     zoomLevelRef.current = event.k
   }
+
+  useBreakpointEffect((breakpoint) => {
+    if (breakpoint === "sm") {
+      breakPointRef.current = 60
+    } else {
+      breakPointRef.current = 0
+    }
+  }, [])
 
   useSafeLayoutEffect(() => {
     data.nodes.forEach((node) => {
@@ -90,9 +100,13 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
   useSafeLayoutEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
+        const height =
+          window.innerHeight -
+          containerRef.current.offsetTop -
+          breakPointRef.current
         setDimensions({
           width: containerRef.current.offsetWidth,
-          height: containerRef.current.offsetHeight,
+          height: height,
         })
       }
     }
@@ -147,7 +161,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
           position="absolute"
           zIndex="beerus"
           rounded="full"
-          boxSize="md"
+          boxSize={{ base: "md", sm: "xs" }}
           bg="blackAlpha.100"
           flexDir="column"
           pointerEvents="none"
@@ -162,7 +176,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
           position="absolute"
           zIndex="beerus"
           rounded="full"
-          boxSize="md"
+          boxSize={{ base: "md", sm: "xs" }}
           bg="blackAlpha.100"
           flexDir="column"
           pointerEvents="none"
@@ -170,6 +184,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
         >
           <NetWorkAnimation />
           <Text>AIを使って類似度で検索しよう</Text>
+          <Text color="danger">※PC推奨※</Text>
         </Center>
       )}
       <ForceGraph2D

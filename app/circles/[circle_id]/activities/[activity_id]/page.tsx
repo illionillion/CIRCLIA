@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation"
 import { getCircleById, getCircles } from "@/actions/circle/fetch-circle"
 import { getMembershipRequests } from "@/actions/circle/membership-request"
+import { getWelcomeCard } from "@/actions/circle/welcome-card"
 import { auth } from "@/auth"
 import { CircleDetailPage } from "@/components/layouts/circle-detail-page"
 import { getActivities, getActivityById } from "@/data/activity"
@@ -41,12 +42,14 @@ const Page = async ({ params }: Props) => {
   const activityId = !isNaN(parseInt(activity_id || ""))
     ? parseInt(activity_id || "")
     : 0
-  const circle = await getCircleById(circle_id || "")
-  const membershipRequests = await getMembershipRequests(
-    userId,
-    circle_id || "",
-  )
-  const currentActivity = await getActivityById(activityId)
+  const [circle, membershipRequests, currentActivity, welcomeCards] =
+    await Promise.all([
+      getCircleById(circle_id || ""),
+      getMembershipRequests(userId, circle_id || ""),
+      getActivityById(activityId),
+      getWelcomeCard(circle_id || ""),
+    ])
+
   if (!circle || !currentActivity || currentActivity.circleId !== circle_id) {
     notFound()
   }
@@ -57,6 +60,8 @@ const Page = async ({ params }: Props) => {
       userId={userId}
       membershipRequests={membershipRequests}
       currentActivity={currentActivity}
+      welcomeCards={welcomeCards}
+      tabKey="activities"
     />
   )
 }

@@ -81,7 +81,7 @@ model Circle {
     Activity          Activity[]
     Album             Album[] // User created Comments
     topic             Topic[]
-
+    WelcomeCard       WelcomeCard[]
     @@index([name]) // Optional: Index on circle name for fast lookup
 }
 
@@ -247,6 +247,19 @@ model AlbumImage {
 
     // リレーション
     album Album @relation(fields: [albumId], references: [id], onDelete: Cascade)
+}
+
+model WelcomeCard {
+    id        String    @id @default(uuid()) // プライマリキー
+    frontTitle String
+    frontImage String?
+    backTitle String
+    backDescription String
+    circleId String
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+
+    circle Circle @relation(fields: [circleId], references: [id], onDelete: Cascade)
 }
 
 model Notification {

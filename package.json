@@ -34,13 +34,13 @@
     "luxon": "^3.5.0",
     "match-sorter": "^8.0.0",
     "next": "14.2.21",
-    "next-auth": "5.0.0-beta.22",
+    "next-auth": "5.0.0-beta.25",
     "next-pwa": "^5.6.0",
-    "openai": "^4.78.1",
+    "openai": "^4.79.4",
     "prisma": "^5.22.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-force-graph": "^1.45.5",
+    "react-force-graph": "^1.46.0",
     "react-hook-form": "^7.54.2",
     "rehype-sanitize": "^6.0.0",
     "web-push": "^3.6.7",
@@ -63,12 +63,12 @@
     "@octokit/rest": "^21.1.0",
     "@prisma/client": "^5.22.0",
     "@types/eslint__js": "^8.42.3",
-    "@types/node": "^20.17.13",
+    "@types/node": "^20.17.14",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/web-push": "^3.6.4",
-    "@typescript-eslint/eslint-plugin": "^8.20.0",
-    "@typescript-eslint/typescript-estree": "^8.20.0",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/typescript-estree": "^8.21.0",
     "@uiw/react-md-editor": "^4.0.5",
     "@yamada-ui/calendar": "^1.8.13",
     "@yamada-ui/carousel": "^2.1.9",
@@ -81,21 +81,27 @@
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
-    "eslint-plugin-prettier": "^5.2.2",
+    "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-testing-library": "^6.5.0",
     "eslint-plugin-unused-imports": "^4.1.4",
     "eslint-plugin-vitest": "^0.5.4",
     "globals": "^15.14.0",
-    "lefthook": "^1.10.5",
+    "lefthook": "^1.10.10",
     "prettier": "^3.4.2",
     "prisma-erd-generator": "^1.11.2",
     "tsx": "^4.19.2",
     "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "typescript-eslint": "^8.21.0"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
+  },
+  "pnpm": {
+    "overrides": {
+      "ws": "^8.17.1",
+      "got": "^11.8.5"
+    }
   }
 }

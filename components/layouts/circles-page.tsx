@@ -152,8 +152,16 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
           zIndex={1}
         >
           <HStack
-            alignItems={{ base: "center", sm: "start" }}
-            flexDir={{ sm: "column" }}
+            alignItems={{
+              base: "center",
+              md: mode !== 0 ? "start" : "center",
+              sm: "start",
+            }}
+            flexDir={{
+              base: "row",
+              md: mode !== 0 ? "column" : "row",
+              sm: "column",
+            }}
           >
             <Heading flex={1} as="h1" size="lg">
               サークル一覧
@@ -218,7 +226,8 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
               _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
               position="absolute"
               right={0}
-              top="-1"
+              top={{ base: "-1", sm: "1.5" }}
+              size={{ base: "md", sm: "xs" }}
             >
               サークル作成
             </Button>
