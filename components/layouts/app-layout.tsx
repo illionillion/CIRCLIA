@@ -52,7 +52,7 @@ export const AppLayout: FC<{
         bgColor="black"
         px="md"
         position="sticky"
-        zIndex="9999"
+        zIndex="guldo"
         top={0}
         left={0}
         right={0}

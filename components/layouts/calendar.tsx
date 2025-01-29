@@ -11,12 +11,15 @@ import {
   ListItem,
   Text,
   useSafeLayoutEffect,
-  HStack,
   Button,
   useToken,
+  useDisclosure,
+  HStack,
+  useMediaQuery,
 } from "@yamada-ui/react"
 import Link from "next/link"
 import { useState } from "react"
+import { EventDrawer } from "../disclosure/event-drawer"
 import { getMonthlyEventsActions } from "@/actions/circle/fetch-activity"
 import type { getMonthlyEvents } from "@/data/activity"
 import "dayjs/locale/ja"
@@ -28,7 +31,6 @@ interface CalendarPageProps {
 
 export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
   const [currentMonth, onChangeMonth] = useState<Date>(new Date())
-
   const [currentEvents, setCurrentEvents] =
     useState<Awaited<ReturnType<typeof getMonthlyEvents>>>(events)
 
@@ -38,163 +40,196 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
   }
 
   const mt = useToken("spaces", "xs")
+  const { open, onOpen, onClose } = useDisclosure()
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [selectedEvents, setSelectedEvents] = useState<
+    Awaited<ReturnType<typeof getMonthlyEvents>>
+  >([])
+
+  // スマホかどうかを判定してDrawerの表示位置を動的に変更
+  const [isMobile] = useMediaQuery(["(max-width: 768px)"])
+  const placement = isMobile ? "bottom" : "right"
 
   useSafeLayoutEffect(() => {
     fetchData()
   }, [currentMonth])
 
   return (
-    <Center>
-      <Container maxW="9xl" m="auto" p={4}>
-        <HStack alignItems="start" gap="lg">
-          <Heading>カレンダー</Heading>
-          <Button
-            onClick={() => onChangeMonth(new Date())}
-            colorScheme="riverBlue"
-            mt={2}
-          >
-            今日
-          </Button>
-        </HStack>
-        <Calendar
-          month={currentMonth}
-          onChangeMonth={onChangeMonth}
-          dateFormat="YYYY年 M月"
-          locale="ja"
-          size="full"
-          type="date"
-          headerProps={{ mb: 2, fontSize: "xl", fontWeight: "bold" }} // ヘッダー文字を大きく
-          labelProps={{
-            pointerEvents: "none",
-            icon: { display: "none" },
-            fontWeight: "bold",
-            fontSize: "2xl",
-          }}
-          tableProps={{
-            tableLayout: "fixed",
-            width: "100%",
-            border: "1px solid",
-            borderColor: "border",
-            fontSize: "lg", // テーブル全体の文字サイズを大きく
-            bg: "white",
-            th: {
+    <>
+      <Center>
+        <Container maxW="9xl" m="auto" p={0} py={4}>
+          <HStack alignItems="center" gap="lg" px={4}>
+            <Heading fontSize="2xl">カレンダー</Heading>
+            <Button
+              onClick={() => onChangeMonth(new Date())}
+              colorScheme="riverBlue"
+            >
+              今日
+            </Button>
+          </HStack>
+          <Calendar
+            month={currentMonth}
+            onChangeMonth={onChangeMonth}
+            dateFormat="YYYY年 M月"
+            locale="ja"
+            size="full"
+            type="date"
+            headerProps={{ mb: 2, fontSize: "xl", fontWeight: "bold" }}
+            labelProps={{
+              pointerEvents: "none",
+              icon: { display: "none" },
+              fontWeight: "bold",
+              fontSize: "2xl",
+            }}
+            tableProps={{
+              tableLayout: "fixed",
+              width: "100%",
               border: "1px solid",
               borderColor: "border",
-              fontWeight: "bold",
               fontSize: "lg",
-            }, // ヘッダーセル
-            td: {
-              border: "1px solid",
-              borderColor: "border",
-              height: "135px",
-              overflow: "hidden",
-              whiteSpace: "nowrap",
-              textAlign: "center",
-              verticalAlign: "top",
-              fontWeight: "bold",
-              fontSize: "lg",
-            },
-          }}
-          dayProps={{
-            h: "full",
-            rounded: "none",
-            p: 0,
-            _active: {},
-            _selected: {
-              bg: "transparent",
-              border: "1px solid",
-              borderColor: "black",
-            },
-            _hover: {
-              bg: "transparent",
-            },
-            component: ({ date, isSelected }) => {
-              const isToday =
-                date.getFullYear() === new Date().getFullYear() &&
-                date.getMonth() === new Date().getMonth() &&
-                date.getDate() === new Date().getDate()
-              const isSaturday = date.getDay() === 6 // 土曜日かどうかを判定
-              const dayEvents = currentEvents.filter(
-                (event) =>
-                  event.activityDay.getFullYear() === date.getFullYear() &&
-                  event.activityDay.getMonth() === date.getMonth() &&
-                  event.activityDay.getDate() === date.getDate(),
-              )
+              bg: "white",
+              th: {
+                border: "1px solid",
+                borderColor: "border",
+                fontWeight: "bold",
+                fontSize: "lg",
+              },
+              td: {
+                border: "1px solid",
+                borderColor: "border",
+                height: "135px",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+                textAlign: "center",
+                verticalAlign: "top",
+                fontWeight: "bold",
+                fontSize: "lg",
+              },
+            }}
+            dayProps={{
+              h: "full",
+              rounded: "none",
+              p: 0,
+              _active: {},
+              _selected: {
+                bg: "transparent",
+                border: "1px solid",
+                borderColor: "black",
+              },
+              _hover: {
+                bg: "transparent",
+              },
+              component: ({ date, selected }) => {
+                const isToday =
+                  date.getFullYear() === new Date().getFullYear() &&
+                  date.getMonth() === new Date().getMonth() &&
+                  date.getDate() === new Date().getDate()
+                const isSaturday = date.getDay() === 6
+                const dayEvents = currentEvents
+                  .filter((event) => {
+                    const eventDate = new Date(event.activityDay)
+                    return (
+                      eventDate.getFullYear() === date.getFullYear() &&
+                      eventDate.getMonth() === date.getMonth() &&
+                      eventDate.getDate() === date.getDate()
+                    )
+                  })
+                  .sort(
+                    (a, b) =>
+                      new Date(a.startTime).getTime() -
+                      new Date(b.startTime).getTime(),
+                  )
 
-              const displayedEvents = dayEvents.slice(0, 2)
-              const hiddenEventCount = dayEvents.length - displayedEvents.length
+                const displayedEvents = dayEvents.slice(0, 2)
+                const hiddenEventCount =
+                  dayEvents.length - displayedEvents.length
 
-              return (
-                <VStack alignItems="center" w="100%" h="100%" overflow="hidden">
-                  <Center w="100%">
-                    {isToday ? (
-                      <Center
-                        rounded="full"
-                        w="10"
-                        mt={isSelected ? `calc(${mt} - 1px)` : "xs"}
-                        bg="black"
-                        color="white"
-                      >
-                        {date.getDate()}
-                      </Center>
-                    ) : (
-                      <Text
-                        fontSize="l"
-                        fontWeight="bold"
-                        mt="xs"
-                        color={isSaturday ? "blue.500" : "inherit"} // 土曜日を青色にする
-                      >
-                        {" "}
-                        {/* 通常日付 */}
-                        {date.getDate()}
-                      </Text>
-                    )}
-                  </Center>
+                return (
+                  <VStack
+                    alignItems="center"
+                    w="100%"
+                    h="100%"
+                    overflow="hidden"
+                    onClick={() => {
+                      setSelectedDate(date)
+                      setSelectedEvents(dayEvents)
+                      onOpen()
+                    }}
+                  >
+                    <Center w="100%">
+                      {isToday ? (
+                        <Center
+                          rounded="full"
+                          w="10"
+                          mt={selected ? `calc(${mt} - 1px)` : "xs"}
+                          bg="black"
+                          color="white"
+                        >
+                          {date.getDate()}
+                        </Center>
+                      ) : (
+                        <Text
+                          fontSize="l"
+                          fontWeight="bold"
+                          mt="xs"
+                          color={isSaturday ? "blue.500" : "inherit"}
+                        >
+                          {date.getDate()}
+                        </Text>
+                      )}
+                    </Center>
 
-                  <List w="full" px={1} overflow="hidden">
-                    {displayedEvents.map((event) => (
-                      <ListItem
-                        key={event.id}
-                        width="95%"
-                        height="6"
-                        minWidth="80px"
-                        py="0.1"
-                        px="2"
-                        bg="blue.100"
-                        color="blue"
-                        fontSize="sm" // イベント文字サイズ
-                        lineHeight="taller"
-                        rounded="md"
-                        overflow="hidden"
-                        whiteSpace="nowrap"
-                        textOverflow="ellipsis"
-                        textAlign="center"
-                        mx="auto"
-                        as={Link}
-                        href={`/circles/${event.circle.id}/activities/${event.id}`}
-                        fontWeight="normal"
-                      >
-                        {event.title}
-                      </ListItem>
-                    ))}
-                    {hiddenEventCount > 0 && (
-                      <Text
-                        fontSize="sm"
-                        color="gray.500"
-                        textAlign="right"
-                        mt={0.4}
-                        fontWeight="bold"
-                      >
-                        ...他{hiddenEventCount}件
-                      </Text>
-                    )}
-                  </List>
-                </VStack>
-              )
-            },
-          }}
-        />
-      </Container>
-    </Center>
+                    <List w="full" px={1} overflow="hidden">
+                      {displayedEvents.map((event) => (
+                        <ListItem
+                          key={event.id}
+                          width="full"
+                          height="6"
+                          py="0.1"
+                          px="2"
+                          bg="blue.100"
+                          color="blue"
+                          fontSize="sm"
+                          lineHeight="taller"
+                          rounded="md"
+                          overflow="hidden"
+                          whiteSpace="nowrap"
+                          textOverflow="ellipsis"
+                          textAlign="center"
+                          mx="auto"
+                          as={Link}
+                          href={`/circles/${event.circle.id}/activities/${event.id}`}
+                          fontWeight="normal"
+                        >
+                          {event.title}
+                        </ListItem>
+                      ))}
+                      {hiddenEventCount > 0 && (
+                        <Text
+                          fontSize="sm"
+                          color="gray.500"
+                          textAlign="right"
+                          mt={0.4}
+                          fontWeight="bold"
+                        >
+                          ...他{hiddenEventCount}件
+                        </Text>
+                      )}
+                    </List>
+                  </VStack>
+                )
+              },
+            }}
+          />
+        </Container>
+      </Center>
+      <EventDrawer
+        open={open}
+        onClose={onClose}
+        placement={placement}
+        selectedDate={selectedDate}
+        selectedEvents={selectedEvents}
+      />
+    </>
   )
 }

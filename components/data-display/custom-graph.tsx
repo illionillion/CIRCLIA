@@ -159,7 +159,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
       {loading && (
         <Center
           position="absolute"
-          zIndex="beerus"
+          zIndex="nappa"
           rounded="full"
           boxSize={{ base: "md", sm: "xs" }}
           bg="blackAlpha.100"
@@ -174,7 +174,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
       {data.nodes.length === 0 && !loading && (
         <Center
           position="absolute"
-          zIndex="beerus"
+          zIndex="nappa"
           rounded="full"
           boxSize={{ base: "md", sm: "xs" }}
           bg="blackAlpha.100"
