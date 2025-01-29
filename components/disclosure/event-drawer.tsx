@@ -1,7 +1,7 @@
-import { getMonthlyEvents } from "@/data/activity";
 import { Drawer, DrawerOverlay, DrawerHeader, DrawerBody, DrawerCloseButton, Box, Flex, Text, Link as UILink, List } from "@yamada-ui/react";
 import Link from "next/link";
 import type { FC } from "react";
+import type { getMonthlyEvents } from "@/data/activity";
 
 interface EventDrawerProps {
   open: boolean;

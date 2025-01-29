@@ -15,7 +15,6 @@ import {
   useToken,
   useDisclosure,
   HStack,
-  Link as UILink,
   useMediaQuery,
 } from "@yamada-ui/react"
 import Link from "next/link"
@@ -28,21 +27,6 @@ import "dayjs/locale/ja"
 interface CalendarPageProps {
   userId: string
   events: Awaited<ReturnType<typeof getMonthlyEvents>>
-}
-
-const formatEventTime = (
-  startTime?: string | Date,
-  endTime?: string | Date,
-) => {
-  if (!startTime) return "未定"
-
-  const formatTime = (time: string | Date) =>
-    new Date(time).toLocaleTimeString("ja-JP", {
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-
-  return `${formatTime(startTime)} ～ ${endTime ? formatTime(endTime) : ""}`
 }
 
 export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
