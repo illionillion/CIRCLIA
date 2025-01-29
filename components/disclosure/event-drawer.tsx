@@ -1,17 +1,34 @@
-import { Drawer, DrawerOverlay, DrawerHeader, DrawerBody, DrawerCloseButton, Box, Flex, Text, Link as UILink, List } from "@yamada-ui/react";
-import Link from "next/link";
-import type { FC } from "react";
-import type { getMonthlyEvents } from "@/data/activity";
+import {
+  Drawer,
+  DrawerOverlay,
+  DrawerHeader,
+  DrawerBody,
+  DrawerCloseButton,
+  Box,
+  Flex,
+  Text,
+  Link as UILink,
+  List,
+} from "@yamada-ui/react"
+import Link from "next/link"
+import type { FC } from "react"
+import type { getMonthlyEvents } from "@/data/activity"
 
 interface EventDrawerProps {
-  open: boolean;
-  onClose: () => void;
-  placement: "bottom" | "right";
-  selectedDate: Date | null;
+  open: boolean
+  onClose: () => void
+  placement: "bottom" | "right"
+  selectedDate: Date | null
   selectedEvents: Awaited<ReturnType<typeof getMonthlyEvents>>
 }
 
-export const EventDrawer: FC<EventDrawerProps> = ({ open, onClose, placement, selectedDate, selectedEvents }) => {
+export const EventDrawer: FC<EventDrawerProps> = ({
+  open,
+  onClose,
+  placement,
+  selectedDate,
+  selectedEvents,
+}) => {
   return (
     <Drawer open={open} onClose={onClose} placement={placement}>
       <DrawerOverlay />
@@ -19,7 +36,8 @@ export const EventDrawer: FC<EventDrawerProps> = ({ open, onClose, placement, se
       <DrawerHeader>
         {selectedDate ? (
           <Text fontSize="xl" fontWeight="bold">
-            {selectedDate.getFullYear()}年{selectedDate.getMonth() + 1}月{selectedDate.getDate()}日
+            {selectedDate.getFullYear()}年{selectedDate.getMonth() + 1}月
+            {selectedDate.getDate()}日
           </Text>
         ) : (
           <Text fontSize="xl" fontWeight="bold">
@@ -34,7 +52,11 @@ export const EventDrawer: FC<EventDrawerProps> = ({ open, onClose, placement, se
             {selectedEvents.map((event, index) => (
               <Box key={event.id} w="full">
                 <Flex alignItems="center">
-                  <Box textAlign="center" fontFamily="monospace" fontWeight="bold">
+                  <Box
+                    textAlign="center"
+                    fontFamily="monospace"
+                    fontWeight="bold"
+                  >
                     <Text fontSize="lg">
                       {new Date(event.startTime).toLocaleTimeString("ja-JP", {
                         hour: "2-digit",
@@ -69,7 +91,12 @@ export const EventDrawer: FC<EventDrawerProps> = ({ open, onClose, placement, se
 
                 {/* イベント間の区切り線 */}
                 {index < selectedEvents.length - 1 && (
-                  <Box borderBottom="1px solid" borderColor="gray.300" my={3} w="full" />
+                  <Box
+                    borderBottom="1px solid"
+                    borderColor="gray.300"
+                    my={3}
+                    w="full"
+                  />
                 )}
               </Box>
             ))}
@@ -81,5 +108,5 @@ export const EventDrawer: FC<EventDrawerProps> = ({ open, onClose, placement, se
         )}
       </DrawerBody>
     </Drawer>
-  );
-};
+  )
+}
