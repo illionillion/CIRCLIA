@@ -56,9 +56,9 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
 
   return (
     <>
-      <Center height="10vh">
-        <Container maxW="9xl" m="auto" p={4}>
-          <HStack alignItems="start" gap="lg">
+      <Center>
+        <Container maxW="9xl" m="auto" p={0} py={4}>
+          <HStack alignItems="center" gap="lg" px={4}>
             <Heading fontSize="2xl">カレンダー</Heading>
             <Button
               onClick={() => onChangeMonth(new Date())}
@@ -183,9 +183,8 @@ export const CalendarPage: FC<CalendarPageProps> = ({ userId, events }) => {
                       {displayedEvents.map((event) => (
                         <ListItem
                           key={event.id}
-                          width="95%"
+                          width="full"
                           height="6"
-                          minWidth="80px"
                           py="0.1"
                           px="2"
                           bg="blue.100"
