@@ -45,10 +45,9 @@ export const EventDrawer: FC<EventDrawerProps> = ({
           </Text>
         )}
       </DrawerHeader>
-
       <DrawerBody>
         {selectedEvents.length > 0 ? (
-          <List>
+          <List w="full" maxH={placement === "bottom" ? "md" : "full"}>
             {selectedEvents.map((event, index) => (
               <Box key={event.id} w="full">
                 <Flex alignItems="center">
@@ -63,7 +62,9 @@ export const EventDrawer: FC<EventDrawerProps> = ({
                         minute: "2-digit",
                       })}
                     </Text>
-                    <Text fontSize="lg">～</Text>
+                    <Text fontSize="lg" transform="rotate(90deg)">
+                      ～
+                    </Text>
                     <Text fontSize="lg">
                       {event.endTime
                         ? new Date(event.endTime).toLocaleTimeString("ja-JP", {
