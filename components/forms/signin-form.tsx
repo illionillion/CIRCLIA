@@ -20,6 +20,8 @@ import { signin } from "@/actions/auth/signin"
 import { SigninSchema } from "@/schema/auth"
 import type { SigninForm } from "@/schema/auth"
 
+const oauthOnly = process.env.NEXT_PUBLIC_SIGNIN_OAUTH_ONLY === "true"
+
 export const LoginForm = () => {
   const [isLoading, { on: start, off: end }] = useBoolean()
   const [error, setError] = useState("")
@@ -41,7 +43,54 @@ export const LoginForm = () => {
     }
   }
 
-  return (
+  return oauthOnly ? (
+    <Container m="auto" maxW="xl" w="full" h="100dvh" as={Center}>
+      <VStack
+        as="form"
+        onSubmit={handleSubmit(onSubmit)}
+        borderRadius="lg"
+        boxShadow="0px 4px 20px rgba(0, 0, 0, 0.15)"
+        p="md"
+        h="full"
+        maxH="xs"
+        w="full"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Center>
+          <Heading
+            fontSize="7xl"
+            color="black"
+            _firstLetter={{ color: "#35B0D2" }}
+            fontWeight="light"
+            textShadow="1px 1px 0 #fff,2px 2px 0 #666,3px 3px 0 #666"
+          >
+            CIRCLIA
+          </Heading>
+        </Center>
+        <Center as={VStack}>
+          <Button
+            colorScheme="purple"
+            onClick={() => signIn("microsoft-entra-id")}
+            bgGradient="linear(to-r, purple.400, pink.500)"
+            _hover={{
+              bgGradient: "linear(to-r, purple.600, pink.700)",
+              transform: "scale(1.03)",
+            }}
+            color="white"
+            boxShadow="0px 4px 15px rgba(0, 0, 0, 0.2)"
+            fullRounded
+            transition="all 0.3s ease"
+            fontSize={{ base: "md", sm: "xs" }}
+            startIcon={<MicrosoftIcon />}
+            gap={{ base: "xs", sm: "none" }}
+          >
+            Microsoftアカウントでサインイン
+          </Button>
+        </Center>
+      </VStack>
+    </Container>
+  ) : (
     <Container m="auto" maxW="4xl" w="full" h="100dvh" as={Center}>
       <VStack
         as="form"
