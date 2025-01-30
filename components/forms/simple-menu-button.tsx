@@ -43,7 +43,8 @@ export const SimpleMenuButton: FC<SimpleMenuButtonProps> = ({
           color="red"
           onClick={handleDelete}
           transition="0.5s"
-          _hover={{ transform: "scale(1.02)", transition: "0.5s" }}
+          _hover={{ transform: "scale(1.02)", transition: "0.5s", zIndex: 2 }}
+          zIndex={2}
         >
           削除
         </MenuItem>
