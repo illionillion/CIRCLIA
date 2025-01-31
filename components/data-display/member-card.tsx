@@ -97,7 +97,14 @@ export const MemberCard: FC<MemberCard> = ({
   }
 
   return (
-    <GridItem w="full" rounded="md" as={Card} bg="white">
+    <GridItem
+      w="full"
+      rounded="md"
+      as={Card}
+      bg="white"
+      transition="0.5s"
+      _hover={{ transform: "scale(1.01)", transition: "0.5s", zIndex: 1 }}
+    >
       <CardBody as={LinkBox}>
         <HStack
           as={Center}
@@ -134,23 +141,54 @@ export const MemberCard: FC<MemberCard> = ({
                     <MenuItem
                       onClick={() => openRoleDialog(0, "代表")}
                       disabled={member.role.id === 0}
+                      transition="0.5s"
+                      _hover={{
+                        transform: "scale(1.02)",
+                        transition: "0.5s",
+                        zIndex: 2,
+                      }}
+                      zIndex={2}
                     >
                       代表
                     </MenuItem>
                     <MenuItem
                       onClick={() => openRoleDialog(1, "副代表")}
                       disabled={member.role.id === 1}
+                      transition="0.5s"
+                      _hover={{
+                        transform: "scale(1.02)",
+                        transition: "0.5s",
+                        zIndex: 2,
+                      }}
+                      zIndex={2}
                     >
                       副代表
                     </MenuItem>
                     <MenuItem
                       onClick={() => openRoleDialog(2, "一般")}
                       disabled={member.role.id === 2}
+                      transition="0.5s"
+                      _hover={{
+                        transform: "scale(1.02)",
+                        transition: "0.5s",
+                        zIndex: 2,
+                      }}
+                      zIndex={2}
                     >
                       一般
                     </MenuItem>
                     <MenuSeparator />
-                    <MenuItem color="red" onClick={() => openRemoveDialog()}>
+                    <MenuItem
+                      color="red"
+                      onClick={() => openRemoveDialog()}
+                      transition="0.5s"
+                      _hover={{
+                        transform: "scale(1.02)",
+                        transition: "0.5s",
+                        zIndex: 2,
+                      }}
+                      zIndex={2}
+                    >
                       退会
                     </MenuItem>
                   </>
@@ -162,17 +200,41 @@ export const MemberCard: FC<MemberCard> = ({
                     <MenuItem
                       onClick={() => openRoleDialog(1, "副代表")}
                       disabled={member.role.id === 1}
+                      transition="0.5s"
+                      _hover={{
+                        transform: "scale(1.02)",
+                        transition: "0.5s",
+                        zIndex: 2,
+                      }}
+                      zIndex={2}
                     >
                       副代表
                     </MenuItem>
                     <MenuItem
                       onClick={() => openRoleDialog(2, "一般")}
                       disabled={member.role.id === 2}
+                      transition="0.5s"
+                      _hover={{
+                        transform: "scale(1.02)",
+                        transition: "0.5s",
+                        zIndex: 2,
+                      }}
+                      zIndex={2}
                     >
                       一般
                     </MenuItem>
                     <MenuSeparator />
-                    <MenuItem color="red" onClick={() => openRemoveDialog()}>
+                    <MenuItem
+                      color="red"
+                      onClick={() => openRemoveDialog()}
+                      transition="0.5s"
+                      _hover={{
+                        transform: "scale(1.02)",
+                        transition: "0.5s",
+                        zIndex: 2,
+                      }}
+                      zIndex={2}
+                    >
                       退会
                     </MenuItem>
                   </>
