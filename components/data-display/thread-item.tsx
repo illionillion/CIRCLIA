@@ -41,7 +41,7 @@ export const ThreadItem: FC<ThreadItemProps> = ({
       rounded="md"
       bg="white"
       transition="0.5s"
-      _hover={{ transform: "scale(1.02)", transition: "0.5s", zIndex: 1 }}
+      _hover={{ transform: "scale(1.01)", transition: "0.5s", zIndex: 1 }}
     >
       <CardBody as={LinkBox}>
         <HStack
