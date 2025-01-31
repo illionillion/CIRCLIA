@@ -122,7 +122,18 @@ export const CircleAlbums: FC<CircleAlbums> = ({
           gap="md"
         >
           {albums.map((album) => (
-            <GridItem key={album.id} as={Card} flexDir="column" bg="white">
+            <GridItem
+              key={album.id}
+              as={Card}
+              flexDir="column"
+              bg="white"
+              transition="0.5s"
+              _hover={{
+                transform: "scale(1.01)",
+                transition: "0.5s",
+                zIndex: 1,
+              }}
+            >
               <LinkBox>
                 <Carousel
                   h="xs"

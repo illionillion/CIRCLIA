@@ -27,7 +27,7 @@ export const SimpleMenuButton: FC<SimpleMenuButtonProps> = ({
         variant="ghost"
         fullRounded
       />
-      <MenuList>
+      <MenuList zIndex={2}>
         <MenuItem
           icon={<PenIcon fontSize="2xl" />}
           as={Link}
