@@ -1,5 +1,6 @@
 "use server"
 
+import { DateTime } from "luxon"
 import { auth } from "@/auth"
 import {
   getActivities,
@@ -22,8 +23,11 @@ export const fetchActivitiesByMonth = async (date: Date, circleId: string) => {
         message: "権限がありません。",
       }
     }
-    const year = date.getFullYear()
-    const month = date.getMonth() + 1 // 月は1月が0から始まるため+1
+
+    // 日本時間に変換
+    const jpDate = DateTime.fromJSDate(date).setZone("Asia/Tokyo")
+    const year = jpDate.year
+    const month = jpDate.month // Luxonでは1から始まるため+1不要
 
     const events = await getActivitiesByMonth(year, month, circleId)
 

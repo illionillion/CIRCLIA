@@ -167,16 +167,7 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
                 value={currentMonth}
                 onChange={(newMonth) => {
                   if (newMonth) {
-                    const updatedDate = new Date(
-                      newMonth.getFullYear(),
-                      newMonth.getMonth(),
-                      1,
-                      0,
-                      0,
-                      0,
-                      0,
-                    )
-                    setCurrentMonth(updatedDate)
+                    setCurrentMonth(newMonth)
                   }
                 }}
               />
