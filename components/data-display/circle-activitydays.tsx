@@ -217,7 +217,17 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
             ) : activitys && activitys.length > 0 ? (
               activitys.map((activity) => (
                 <GridItem key={activity.id}>
-                  <Card variant="outline" as={LinkBox} bg="white">
+                  <Card
+                    variant="outline"
+                    as={LinkBox}
+                    bg="white"
+                    transition="0.5s"
+                    _hover={{
+                      transform: "scale(1.01)",
+                      transition: "0.5s",
+                      zIndex: 1,
+                    }}
+                  >
                     <CardBody>
                       <HStack alignItems="start" w="full">
                         <Card

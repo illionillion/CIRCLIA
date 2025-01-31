@@ -54,14 +54,14 @@ export const ActivityMenuButton: FC<ActivityMenuButtonProps> = ({
           variant="ghost"
           fullRounded
         />
-        <MenuList
-          transition="0.5s"
-          _hover={{ transform: "scale(1.02)", transition: "0.5s" }}
-        >
+        <MenuList>
           <MenuItem
             as={Link}
             href={`/circles/${circle?.id}/activities/${activity.id}/edit`}
             disabled={!isAdmin && activity.createdBy !== userId}
+            transition="0.5s"
+            _hover={{ transform: "scale(1.02)", transition: "0.5s", zIndex: 2 }}
+            zIndex={2}
           >
             編集
           </MenuItem>
@@ -69,6 +69,9 @@ export const ActivityMenuButton: FC<ActivityMenuButtonProps> = ({
             color="red"
             disabled={!isAdmin && activity.createdBy !== userId}
             onClick={onOpen}
+            transition="0.5s"
+            _hover={{ transform: "scale(1.02)", transition: "0.5s", zIndex: 2 }}
+            zIndex={2}
           >
             削除
           </MenuItem>
@@ -76,11 +79,29 @@ export const ActivityMenuButton: FC<ActivityMenuButtonProps> = ({
           {activity.participants.some(
             (participant) => participant.userId === userId,
           ) ? (
-            <MenuItem onClick={() => handleParticipation(activity.id)}>
+            <MenuItem
+              onClick={() => handleParticipation(activity.id)}
+              transition="0.5s"
+              _hover={{
+                transform: "scale(1.02)",
+                transition: "0.5s",
+                zIndex: 2,
+              }}
+              zIndex={2}
+            >
               参加をキャンセル
             </MenuItem>
           ) : (
-            <MenuItem onClick={() => handleParticipation(activity.id)}>
+            <MenuItem
+              onClick={() => handleParticipation(activity.id)}
+              transition="0.5s"
+              _hover={{
+                transform: "scale(1.02)",
+                transition: "0.5s",
+                zIndex: 2,
+              }}
+              zIndex={2}
+            >
               参加
             </MenuItem>
           )}
