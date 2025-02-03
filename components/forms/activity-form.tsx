@@ -331,10 +331,18 @@ export const ActivityForm: FC<ActivityFormProps> = ({
             as={Link}
             href={`/circles/${circleId || ""}/activities`}
             colorScheme="riverBlue"
+            transition="0.5s"
+            _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
           >
             キャンセル
           </Button>
-          <Button type="submit" loading={isLoading} colorScheme="riverBlue">
+          <Button
+            type="submit"
+            loading={isLoading}
+            colorScheme="riverBlue"
+            transition="0.5s"
+            _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
+          >
             {mode === "create" ? "追加" : "更新"}
           </Button>
         </Center>

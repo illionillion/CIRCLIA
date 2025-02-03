@@ -165,10 +165,18 @@ export const AnnouncementForm: FC<AnnouncementFormProps> = ({
             colorScheme="riverBlue"
             as={Link}
             href={`/circles/${circleId}/notifications`}
+            transition="0.5s"
+            _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
           >
             キャンセル
           </Button>
-          <Button colorScheme="riverBlue" type="submit" loading={isLoading}>
+          <Button
+            colorScheme="riverBlue"
+            type="submit"
+            loading={isLoading}
+            transition="0.5s"
+            _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
+          >
             {mode === "create" ? "作成" : "更新"}
           </Button>
         </Center>

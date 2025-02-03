@@ -27,14 +27,24 @@ export const SimpleMenuButton: FC<SimpleMenuButtonProps> = ({
         variant="ghost"
         fullRounded
       />
-      <MenuList>
-        <MenuItem icon={<PenIcon fontSize="2xl" />} as={Link} href={editLink}>
+      <MenuList zIndex={2}>
+        <MenuItem
+          icon={<PenIcon fontSize="2xl" />}
+          as={Link}
+          href={editLink}
+          transition="0.5s"
+          _hover={{ transform: "scale(1.02)", transition: "0.5s", zIndex: 2 }}
+          zIndex={2}
+        >
           編集
         </MenuItem>
         <MenuItem
           icon={<TrashIcon fontSize="2xl" color="red" />}
           color="red"
           onClick={handleDelete}
+          transition="0.5s"
+          _hover={{ transform: "scale(1.02)", transition: "0.5s", zIndex: 2 }}
+          zIndex={2}
         >
           削除
         </MenuItem>

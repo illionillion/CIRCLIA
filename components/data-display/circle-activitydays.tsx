@@ -175,11 +175,15 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
                   onClick={handlePreviousMonth}
                   icon={<ChevronLeftIcon fontSize="2xl" />}
                   colorScheme="riverBlue"
+                  transition="0.5s"
+                  _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
                 />
                 <IconButton
                   onClick={handleNextMonth}
                   icon={<ChevronRightIcon fontSize="2xl" />}
                   colorScheme="riverBlue"
+                  transition="0.5s"
+                  _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
                 />
               </HStack>
             </HStack>
@@ -204,7 +208,17 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
             ) : activitys && activitys.length > 0 ? (
               activitys.map((activity) => (
                 <GridItem key={activity.id}>
-                  <Card variant="outline" as={LinkBox} bg="white">
+                  <Card
+                    variant="outline"
+                    as={LinkBox}
+                    bg="white"
+                    transition="0.5s"
+                    _hover={{
+                      transform: "scale(1.01)",
+                      transition: "0.5s",
+                      zIndex: 1,
+                    }}
+                  >
                     <CardBody>
                       <HStack alignItems="start" w="full">
                         <Card

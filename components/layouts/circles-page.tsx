@@ -142,7 +142,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
         <VStack
           position="sticky"
           p="md"
-          pb={0}
+          pb={mode === 0 ? "md" : "0"}
           top={0}
           backgroundImage="/images/white_marble.png"
           backgroundColor="white"
@@ -189,6 +189,8 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
                   colorScheme="riverBlue"
                   loading={loading}
                   onClick={handleSearch}
+                  transition="0.5s"
+                  _hover={{ transform: "scale(1.1)", transition: "0.5s" }}
                 >
                   検索
                 </Button>
@@ -238,7 +240,8 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
         </VStack>
         {mode === 0 ? (
           <Grid
-            p="md"
+            pb="md"
+            px="md"
             gridTemplateColumns={{
               base: "repeat(4, 1fr)",
               lg: "repeat(3, 1fr)",
@@ -247,6 +250,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
             }}
             gap="md"
             w="full"
+            paddingTop="2"
           >
             {filteredCircles?.map((data) => (
               <CircleCard key={data.id} data={data} />
