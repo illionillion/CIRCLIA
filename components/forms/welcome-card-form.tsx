@@ -29,6 +29,7 @@ import {
   ModalFooter,
   useNotice,
   useOS,
+  useBoolean,
 } from "@yamada-ui/react"
 import type { FC } from "react"
 import { useState } from "react"
@@ -66,8 +67,10 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
     })
 
   const watchCards = watch()
+  const [loading, { on: start, off: end }] = useBoolean()
 
   const onSubmit = async (data: FrontWelcomeCard) => {
+    start()
     const updatedCards = await Promise.all(
       draftCards.map(async (card, index) => {
         if (index === currentCard) {
@@ -110,6 +113,8 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
         placement: "bottom",
       })
     }
+
+    end()
   }
 
   const handlePrevCard = () => {
@@ -307,7 +312,11 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
           <Button colorScheme="riverBlue" onClick={onClose}>
             キャンセル
           </Button>
-          <Button colorScheme="riverBlue" onClick={handleSubmit(onSubmit)}>
+          <Button
+            colorScheme="riverBlue"
+            onClick={handleSubmit(onSubmit)}
+            loading={loading}
+          >
             更新
           </Button>
         </ButtonGroup>
