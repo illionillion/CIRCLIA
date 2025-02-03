@@ -162,6 +162,11 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
               md: mode !== 0 ? "column" : "row",
               sm: "column",
             }}
+            as="form"
+            onSubmit={(e) => {
+              e.preventDefault()
+              handleSearch()
+            }}
           >
             <Heading flex={1} as="h1" size="lg">
               サークル一覧
