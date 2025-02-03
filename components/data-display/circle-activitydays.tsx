@@ -63,7 +63,6 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
   const fetchActivities = async () => {
     if (!currentMonth) return
     loadingOn()
-    console.log(currentMonth) // デバッグ用
     const { events } = await fetchActivitiesByMonth(
       currentMonth,
       circle?.id || "",
@@ -85,8 +84,9 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
   const handlePreviousMonth = () => {
     setCurrentMonth((prev) => {
       if (!prev) return undefined
-      const newDate = new Date(prev)
-      newDate.setMonth(prev.getMonth() - 1) // 1ヶ月前
+      const year = prev.getFullYear()
+      const month = prev.getMonth() - 1
+      const newDate = new Date(year, month, 1)
       return newDate
     })
   }
@@ -94,8 +94,9 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
   const handleNextMonth = () => {
     setCurrentMonth((prev) => {
       if (!prev) return undefined
-      const newDate = new Date(prev)
-      newDate.setMonth(prev.getMonth() + 1) // 1ヶ月後
+      const year = prev.getFullYear()
+      const month = prev.getMonth() + 1
+      const newDate = new Date(year, month, 1)
       return newDate
     })
   }
@@ -165,17 +166,7 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
                 value={currentMonth}
                 onChange={(newMonth) => {
                   if (newMonth) {
-                    const now = new Date()
-                    const updatedDate = new Date(
-                      newMonth.getFullYear(),
-                      newMonth.getMonth(),
-                      now.getDate(),
-                      now.getHours(),
-                      now.getMinutes(),
-                      now.getSeconds(),
-                      now.getMilliseconds(),
-                    )
-                    setCurrentMonth(updatedDate)
+                    setCurrentMonth(newMonth)
                   }
                 }}
               />
