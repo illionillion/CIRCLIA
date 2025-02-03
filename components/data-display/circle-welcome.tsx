@@ -192,10 +192,10 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
                   <Image
                     userSelect="none"
                     pointerEvents="none"
-                    src="https://user0514.cdnw.net/shared/img/thumb/21830aIMGL99841974_TP_V.jpg"
+                    src="/images/default-card2.png"
                     w="full"
                     h="full"
-                    objectFit="cover"
+                    objectFit="contain"
                     alt="card 1 image"
                   />
                 </CardBody>
@@ -226,7 +226,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
               <Image
                 userSelect="none"
                 pointerEvents="none"
-                src="/images/welcome-recruiting.png"
+                src="/images/default-card1.png"
                 w="full"
                 h="full"
                 objectFit="contain"
@@ -258,10 +258,10 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
               <Image
                 userSelect="none"
                 pointerEvents="none"
-                src="/images/one-day-activities.png"
+                src="/images/default-card3.png"
                 w="full"
                 h="full"
-                objectFit="cover"
+                objectFit="contain"
                 alt="card 3 image"
               />
             )
