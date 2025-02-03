@@ -249,7 +249,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
               ))}
             </Grid>
           ) : (
-            <Center w="full" h="full" minH="60vh">
+            <Center w="full" h={{ base: "xs", sm: "md", md: "lg" }}>
               <Heading size="md" color="gray.500">
                 一致するものがありません
               </Heading>
@@ -258,8 +258,6 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
         ) : (
           <CustomGraph data={data} query={currentQuery} loading={loading} />
         )}
-
-
       </VStack>
       <IconButton
         position="fixed"
