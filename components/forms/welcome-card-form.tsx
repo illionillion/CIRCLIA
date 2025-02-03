@@ -223,7 +223,7 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
                         backgroundImage: imagePreview,
                         backgroundSize: "contain",
                         backgroundPosition: "center",
-                        backgroundColor: "gray.100",
+                        backgroundRepeat: "no-repeat",
                       }
                     : {
                         backgroundColor: "gray.100",

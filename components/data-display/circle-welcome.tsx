@@ -65,7 +65,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
       // 画像のみがある場合
       if (!card.frontTitle && card.frontImage) {
         return (
-          <CardBody display="flex" h="full" backgroundColor="gray.100">
+          <CardBody display="flex" h="full">
             <Image
               userSelect="none"
               pointerEvents="none"
@@ -88,12 +88,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
             </Heading>
           </CardHeader>
           {card.frontImage && (
-            <CardBody
-              display="flex"
-              flex={1}
-              minH={0}
-              backgroundColor="gray.100"
-            >
+            <CardBody display="flex" flex={1} minH={0}>
               <Image
                 userSelect="none"
                 pointerEvents="none"
@@ -155,7 +150,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
       {isMember && (
         <Button
           py="4"
-          startIcon={<SquarePenIcon fontSize="2xl"/>}
+          startIcon={<SquarePenIcon fontSize="2xl" />}
           ml="auto"
           colorScheme="riverBlue"
           onClick={onOpen}
