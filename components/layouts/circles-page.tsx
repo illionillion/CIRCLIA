@@ -163,7 +163,10 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
               sm: "column",
             }}
             as="form"
-            onSubmit={handleSearch}
+            onSubmit={(e) => {
+              e.preventDefault()
+              handleSearch()
+            }}
           >
             <Heading flex={1} as="h1" size="lg">
               サークル一覧
