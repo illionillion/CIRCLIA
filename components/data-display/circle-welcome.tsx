@@ -150,7 +150,7 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
       {isMember && (
         <Button
           py="4"
-          startIcon={<SquarePenIcon fontSize="2xl"/>}
+          startIcon={<SquarePenIcon fontSize="2xl" />}
           ml="auto"
           colorScheme="riverBlue"
           onClick={onOpen}
