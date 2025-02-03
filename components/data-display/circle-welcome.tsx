@@ -149,9 +149,9 @@ export const CircleWelcome: FC<CircleWelcomeProps> = ({
       />
       {isMember && (
         <Button
-          startIcon={<SquarePenIcon />}
+          py="4"
+          startIcon={<SquarePenIcon fontSize="2xl"/>}
           ml="auto"
-          mt={{ base: "-16", md: "0" }}
           colorScheme="riverBlue"
           onClick={onOpen}
         >

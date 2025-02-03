@@ -11,10 +11,6 @@ export default function NetWorkAnimation() {
 
     // ダブらないようにchildNodesが0の時だけロード
     if (animationRef.current && animationRef.current.childNodes.length === 0) {
-      console.log(
-        "load animation",
-        animationRef.current.childNodes.length === 0,
-      )
       lot.default.loadAnimation({
         autoplay: true,
         loop: true,
