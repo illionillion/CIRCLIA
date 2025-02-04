@@ -1,3 +1,8 @@
+# 動画
+
+https://github.com/user-attachments/assets/e56a39a4-be4f-4183-8558-72298852444e
+
+
 # 環境構築
 
 1. 依存関係のインストール
