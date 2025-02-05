@@ -1,5 +1,5 @@
 "use client"
-import { ChevronUpIcon, SearchIcon } from "@yamada-ui/lucide"
+import { ChevronUpIcon, SearchIcon, SettingsIcon } from "@yamada-ui/lucide"
 import type { FC } from "@yamada-ui/react"
 import {
   Box,
@@ -14,11 +14,16 @@ import {
   InputLeftElement,
   InputRightElement,
   Loading,
-  NumberInput,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverHeader,
+  PopoverTrigger,
+  Slider,
+  SliderMark,
   Tab,
   TabList,
   Tabs,
-  Tooltip,
   useBoolean,
   VStack,
 } from "@yamada-ui/react"
@@ -51,7 +56,7 @@ const CustomGraph = dynamic(
 export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
   const [query, setQuery] = useState("")
   const [currentQuery, setCurrentQuery] = useState("")
-  const [threshold, setThreshold] = useState("0.9")
+  const [threshold, setThreshold] = useState(0.9)
   const cacheRef = useRef(
     new Map<string, Awaited<ReturnType<typeof getSuggestions>>>(),
   )
@@ -71,10 +76,6 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
     }
     return 0
   })()
-
-  const onChangeThreshold = (valueAsString: string) => {
-    setThreshold(valueAsString)
-  }
 
   const filteredCircles = useMemo(
     () =>
@@ -98,7 +99,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
     }
 
     const cache = cacheRef.current
-    if (!query || isNaN(parseFloat(threshold))) {
+    if (!query) {
       setCurrentQuery(query)
       setData({ links: [], nodes: [] })
       return
@@ -107,7 +108,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
     const key = `${query}-${threshold}`
     const result = cache.has(key)
       ? cache.get(key)
-      : await getSuggestions(query, parseFloat(threshold))
+      : await getSuggestions(query, threshold)
     if (result) {
       cache.set(key, result)
       setCurrentQuery(query)
@@ -195,18 +196,36 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
               </InputRightElement>
             </InputGroup>
             {mode !== 0 && (
-              <Tooltip label="サークル間の類似度の基準を設定できます（おすすめは0.7～0.9）">
-                <NumberInput
-                  w="5xs"
-                  placeholder="類似度のしきい値"
-                  precision={2}
-                  step={0.01}
-                  min={0.5}
-                  max={1}
-                  value={threshold}
-                  onChange={onChangeThreshold}
-                />
-              </Tooltip>
+              <Popover>
+                <PopoverTrigger>
+                  <IconButton variant="ghost" icon={<SettingsIcon />} />
+                  {/* <Tooltip label="サークル間の類似度の基準を設定できます">
+                    </Tooltip> */}
+                </PopoverTrigger>
+
+                <PopoverContent w={{ base: "xl", md: "sm" }}>
+                  <PopoverHeader>類似度設定</PopoverHeader>
+                  <PopoverBody p="md">
+                    <Slider
+                      min={0.5}
+                      max={0.9}
+                      step={0.01}
+                      value={threshold}
+                      onChange={setThreshold}
+                    >
+                      <SliderMark value={0.5} w="10" ml="-md">
+                        低
+                      </SliderMark>
+                      <SliderMark value={0.75} w="10" ml="-md">
+                        中
+                      </SliderMark>
+                      <SliderMark value={0.9} w="10" ml="-md">
+                        高
+                      </SliderMark>
+                    </Slider>
+                  </PopoverBody>
+                </PopoverContent>
+              </Popover>
             )}
           </HStack>
           <Box position="relative">
