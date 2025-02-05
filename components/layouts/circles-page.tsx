@@ -86,7 +86,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
               "tags", // タグ名
             ],
           })
-        : circles,
+        : circles || [],
     [currentQuery, circles],
   )
 
@@ -237,21 +237,29 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
           </Box>
         </VStack>
         {mode === 0 ? (
-          <Grid
-            p="md"
-            gridTemplateColumns={{
-              base: "repeat(4, 1fr)",
-              lg: "repeat(3, 1fr)",
-              md: "repeat(2, 1fr)",
-              sm: "repeat(1, 1fr)",
-            }}
-            gap="md"
-            w="full"
-          >
-            {filteredCircles?.map((data) => (
-              <CircleCard key={data.id} data={data} />
-            ))}
-          </Grid>
+          filteredCircles.length > 0 ? (
+            <Grid
+              p="md"
+              gridTemplateColumns={{
+                base: "repeat(4, 1fr)",
+                lg: "repeat(3, 1fr)",
+                md: "repeat(2, 1fr)",
+                sm: "repeat(1, 1fr)",
+              }}
+              gap="md"
+              w="full"
+            >
+              {filteredCircles.map((data) => (
+                <CircleCard key={data.id} data={data} />
+              ))}
+            </Grid>
+          ) : (
+            <Center w="full" h={{ base: "xs", sm: "md", md: "lg" }}>
+              <Heading size="md" color="gray.500">
+                一致するものがありません
+              </Heading>
+            </Center>
+          )
         ) : (
           <CustomGraph data={data} query={currentQuery} loading={loading} />
         )}
