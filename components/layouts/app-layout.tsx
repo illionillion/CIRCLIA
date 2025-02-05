@@ -164,7 +164,7 @@ export const AppLayout: FC<{
               variant="ghost"
               onClick={() => signOut({ redirectTo: "/signin" })}
               icon={<LogOutIcon fontSize="2xl" />}
-              title="ログアウト"
+              title="サインアウト"
               _hover={{ transform: "scale(1.3)" }}
             />
           </VStack>
@@ -276,7 +276,7 @@ export const AppLayout: FC<{
             <MenuItem onClick={() => signOut({ redirectTo: "/signin" })}>
               <HStack w="full">
                 <LogOutIcon fontSize="8xs" />
-                <Text>ログアウト</Text>
+                <Text>サインアウト</Text>
               </HStack>
             </MenuItem>
           </MenuList>
