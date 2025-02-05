@@ -24,6 +24,7 @@ import {
   Tab,
   TabList,
   Tabs,
+  Tooltip,
   useBoolean,
   VStack,
 } from "@yamada-ui/react"
@@ -199,12 +200,12 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
               <Popover>
                 <PopoverTrigger>
                   <IconButton variant="ghost" icon={<SettingsIcon />} />
-                  {/* <Tooltip label="サークル間の類似度の基準を設定できます">
-                    </Tooltip> */}
                 </PopoverTrigger>
 
                 <PopoverContent w={{ base: "xl", md: "sm" }}>
-                  <PopoverHeader>類似度設定</PopoverHeader>
+                  <Tooltip label="サークル間の類似度の基準を設定できます">
+                    <PopoverHeader>類似度設定（{threshold}）</PopoverHeader>
+                  </Tooltip>
                   <PopoverBody p="md">
                     <Slider
                       min={0.5}
@@ -216,7 +217,7 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
                       <SliderMark value={0.5} w="10" ml="-md">
                         低
                       </SliderMark>
-                      <SliderMark value={0.75} w="10" ml="-md">
+                      <SliderMark value={0.7} w="10" ml="-md">
                         中
                       </SliderMark>
                       <SliderMark value={0.9} w="10" ml="-md">
