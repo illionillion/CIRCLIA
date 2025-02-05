@@ -198,23 +198,17 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
         linkWidth={(link: Link) => link.value * 10}
         nodeCanvasObject={(node: Node, ctx) => {
           const scale = zoomLevelRef.current
-          const label = node.label || ""
-          const fontSize = 12 / scale
+          const label = Array.from(node.label || "")
+            .filter((_, i) => i <= (node.id === "query" ? 8 : 10))
+            .join("")
+          const fontSize = 16 / scale
           ctx.font = `${fontSize}px Sans-Serif`
-          const textWidth = ctx.measureText(label).width
           const textHeight =
             ctx.measureText(label).actualBoundingBoxAscent +
             ctx.measureText(label).actualBoundingBoxDescent
-          const cardWidth = Math.max(60 / scale, textWidth + 20 / scale)
+          const cardWidth = 200 / scale
           const image = imageRef.current.get(node.id)
-          let cardHeight = 0
-
-          if (image) {
-            const imageAspectRatio = image.width / image.height
-            cardHeight = cardWidth / imageAspectRatio
-          } else {
-            cardHeight = cardWidth * (2 / 3)
-          }
+          const cardHeight = 100 / scale
 
           const totalCardHeight = cardHeight + textHeight + fontSize * 2
 
@@ -223,7 +217,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
             ctx.shadowBlur = 10
             ctx.shadowOffsetX = 0
             ctx.shadowOffsetY = 2
-            const radius = Math.max(20 / scale, textWidth / 2 + 10 / scale)
+            const radius = 80 / scale
             ctx.beginPath()
             ctx.arc(node.x || 0, node.y || 0, radius, 0, 2 * Math.PI, false)
             ctx.fillStyle = "#5cc0db"
@@ -231,7 +225,11 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
             ctx.fillStyle = "white"
             ctx.textAlign = "center"
             ctx.textBaseline = "middle"
-            ctx.fillText(label, node.x || 0, node.y || 0)
+            ctx.fillText(
+              label.length > 7 ? label.concat("...") : label,
+              node.x || 0,
+              node.y || 0,
+            )
             node.__bckgDimensions = [radius * 2, radius * 2]
             ctx.shadowColor = "transparent"
             ctx.shadowBlur = 0
@@ -257,12 +255,34 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
             ctx.shadowOffsetY = 0
 
             if (image) {
+              const imgAspect = image.width / image.height
+              const cardAspect = cardWidth / cardHeight
+
+              let sx = 0,
+                sy = 0,
+                sWidth = image.width,
+                sHeight = image.height
+
+              if (imgAspect > cardAspect) {
+                // 画像が横長 → 横をトリミング
+                sWidth = image.height * cardAspect
+                sx = (image.width - sWidth) / 2
+              } else {
+                // 画像が縦長 → 縦をトリミング
+                sHeight = image.width / cardAspect
+                sy = (image.height - sHeight) / 2
+              }
+
               ctx.drawImage(
-                image,
-                (node.x || 0) - cardWidth / 2,
+                image, // 画像ソース
+                sx,
+                sy,
+                sWidth,
+                sHeight, // トリミングする範囲
+                (node.x || 0) - cardWidth / 2, // 描画位置
                 (node.y || 0) - totalCardHeight / 2,
                 cardWidth,
-                cardHeight,
+                cardHeight, // 描画サイズ
               )
             } else {
               const labelBackgroundY =
@@ -287,7 +307,11 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
             ctx.fillStyle = "black"
             ctx.textAlign = "center"
             ctx.textBaseline = "middle"
-            ctx.fillText(label, node.x || 0, (node.y || 0) + cardHeight / 2)
+            ctx.fillText(
+              label.length > 10 ? label.concat("...") : label,
+              node.x || 0,
+              (node.y || 0) + cardHeight / 2,
+            )
             node.__bckgDimensions = [cardWidth, totalCardHeight]
           }
         }}
