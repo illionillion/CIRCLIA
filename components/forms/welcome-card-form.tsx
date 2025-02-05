@@ -46,6 +46,24 @@ interface WelcomeCardFormProps {
   userId: string
 }
 
+const placeholders = [
+  {
+    frontTitle: "何をするサークル？",
+    backTitle: "楽しくプログラミングするサークル!",
+    backDescription: "みんなで集まってプログラムをしています!\n\n★うんたら\n★かんたら\n\nみたいな例文ほしいです!\n・カード1つに収まる文章で入力量決められるといいな\n画像ファイルもアルバム詳細みたい"
+  },
+  {
+    frontTitle: "活動頻度は？",
+    backTitle: "月１回、活動しています！",
+    backDescription: "学内、学外・・・\n\n関係なく、集まったメンバーで\nその日のテーマを決めて、\n\nプログラムを作成しています♪"
+  },
+  {
+    frontTitle: "どんな雰囲気？",
+    backTitle: "わいわい楽しむ雰囲気！",
+    backDescription: "「あれがいいかな」「このほうがいいんじゃない？」\n\nと、みんなで話し合いながら作業を進めています！"
+  }
+];
+
 export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
   cards,
   open,
@@ -208,10 +226,7 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
             <Text fontSize="md">表面</Text>
             <Card minH={{ base: "sm", md: "2xs" }}>
               <CardHeader>
-                <Input
-                  placeholder="何をするサークル？"
-                  {...register("frontTitle")}
-                />
+                <Input placeholder={placeholders[currentCard].frontTitle} {...register("frontTitle")} />
               </CardHeader>
               <CardBody>
                 <Center
@@ -277,17 +292,14 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
             <Text fontSize="md">裏面</Text>
             <Card minH={{ base: "sm", md: "2xs" }}>
               <CardHeader>
-                <Input
-                  placeholder="サークルのメンバーは？"
-                  {...register("backTitle")}
-                />
+                <Input placeholder={placeholders[currentCard].frontTitle} {...register("frontTitle")} />
               </CardHeader>
               <CardBody>
                 <Textarea
                   w="full"
                   h="full"
                   flexGrow={1}
-                  placeholder="サークルの詳しい説明"
+                  placeholder={placeholders[currentCard].backDescription}
                   {...register("backDescription")}
                 />
               </CardBody>
@@ -314,3 +326,4 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
     </Modal>
   )
 }
+
