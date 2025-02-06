@@ -84,7 +84,6 @@ function generateTree(
       closestRoot.embedding,
     )
 
-    // console.log(`${closestRoot.name}と${suggestion.name}: ${similarityToClosestRoot}`);
     // 類似度が0.9未満の場合は追加しない
     if (similarityToClosestRoot < threshold) return
 

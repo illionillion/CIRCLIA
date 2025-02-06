@@ -44,7 +44,6 @@ export const WeekCalendar: React.FC<WeekCalendarProps> = ({
   const [currentDate, setCurrentDate] = useState<Date>(getMonday(new Date()))
   const [calendarData, setCalendarData] =
     useState<Awaited<ReturnType<typeof getWeeklyActivities>>>(initialData)
-  console.log(calendarData)
 
   // 現在の日付から週の日付配列を生成
   const weekDates = generateWeekDates(currentDate)

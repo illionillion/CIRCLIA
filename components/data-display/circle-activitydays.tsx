@@ -63,7 +63,6 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
   const fetchActivities = async () => {
     if (!currentMonth) return
     loadingOn()
-    console.log(currentMonth) // デバッグ用
     const { events } = await fetchActivitiesByMonth(
       currentMonth,
       circle?.id || "",
@@ -167,16 +166,7 @@ export const CircleActivitydays: FC<CircleActivitydays> = ({
                 value={currentMonth}
                 onChange={(newMonth) => {
                   if (newMonth) {
-                    const updatedDate = new Date(
-                      newMonth.getFullYear(),
-                      newMonth.getMonth(),
-                      1,
-                      0,
-                      0,
-                      0,
-                      0,
-                    )
-                    setCurrentMonth(updatedDate)
+                    setCurrentMonth(newMonth)
                   }
                 }}
               />
