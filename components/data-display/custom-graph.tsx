@@ -199,14 +199,14 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
         nodeCanvasObject={(node: Node, ctx) => {
           const scale = zoomLevelRef.current
           const label = Array.from(node.label || "")
-            .filter((_, i) => i <= (node.id === "query" ? 8 : 10))
+            .filter((_, i) => i <= (node.id === "query" ? 7 : 9))
             .join("")
           const fontSize = 16 / scale
           ctx.font = `${fontSize}px Sans-Serif`
           const textHeight =
             ctx.measureText(label).actualBoundingBoxAscent +
             ctx.measureText(label).actualBoundingBoxDescent
-          const cardWidth = 200 / scale
+          const cardWidth = 180 / scale
           const image = imageRef.current.get(node.id)
           const cardHeight = 100 / scale
 
@@ -217,7 +217,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
             ctx.shadowBlur = 10
             ctx.shadowOffsetX = 0
             ctx.shadowOffsetY = 2
-            const radius = 80 / scale
+            const radius = 75 / scale
             ctx.beginPath()
             ctx.arc(node.x || 0, node.y || 0, radius, 0, 2 * Math.PI, false)
             ctx.fillStyle = "#5cc0db"
@@ -308,7 +308,7 @@ const CustomGraph: FC<CustomGraphProps> = ({ query, data, loading }) => {
             ctx.textAlign = "center"
             ctx.textBaseline = "middle"
             ctx.fillText(
-              label.length > 10 ? label.concat("...") : label,
+              label.length > 9 ? label.concat("...") : label,
               node.x || 0,
               (node.y || 0) + cardHeight / 2,
             )
