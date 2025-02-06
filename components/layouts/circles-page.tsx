@@ -57,7 +57,7 @@ const CustomGraph = dynamic(
 export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
   const [query, setQuery] = useState("")
   const [currentQuery, setCurrentQuery] = useState("")
-  const [threshold, setThreshold] = useState(0.9)
+  const [threshold, setThreshold] = useState(0.7)
   const cacheRef = useRef(
     new Map<string, Awaited<ReturnType<typeof getSuggestions>>>(),
   )
@@ -199,12 +199,19 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
             {mode !== 0 && (
               <Popover>
                 <PopoverTrigger>
-                  <IconButton variant="ghost" icon={<SettingsIcon />} />
+                  <IconButton
+                    variant="ghost"
+                    icon={<SettingsIcon />}
+                    rounded="full"
+                  />
                 </PopoverTrigger>
 
                 <PopoverContent w={{ base: "xl", md: "sm" }}>
-                  <Tooltip label="サークル間の類似度の基準を設定できます">
-                    <PopoverHeader>類似度設定（{threshold}）</PopoverHeader>
+                  <Tooltip
+                    label="サークル間の類似度の基準を設定できます"
+                    placement="top-start"
+                  >
+                    <PopoverHeader>類似度設定</PopoverHeader>
                   </Tooltip>
                   <PopoverBody p="md">
                     <Slider
@@ -213,15 +220,33 @@ export const CirclesPage: FC<CirclesPageProps> = ({ circles }) => {
                       step={0.01}
                       value={threshold}
                       onChange={setThreshold}
+                      colorScheme="riverBlue"
+                      thumbProps={{
+                        borderColor: "riverBlue.500",
+                        borderWidth: 2,
+                        boxSize: 4,
+                      }}
                     >
-                      <SliderMark value={0.5} w="10" ml="-md">
+                      <SliderMark value={0.5} w="10" mt={2} ml="-5">
                         低
                       </SliderMark>
-                      <SliderMark value={0.7} w="10" ml="-md">
+                      <SliderMark value={0.7} w="10" mt={2} ml="-5">
                         中
                       </SliderMark>
-                      <SliderMark value={0.9} w="10" ml="-md">
+                      <SliderMark value={0.9} w="10" mt={2} ml="-5">
                         高
+                      </SliderMark>
+                      <SliderMark
+                        value={threshold}
+                        bg="riverBlue.500"
+                        color="white"
+                        py="0.5"
+                        rounded="md"
+                        w="10"
+                        mt="-10"
+                        ml="-5"
+                      >
+                        {threshold}
                       </SliderMark>
                     </Slider>
                   </PopoverBody>
