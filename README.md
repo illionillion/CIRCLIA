@@ -1,7 +1,6 @@
 # 動画
 
-https://github.com/user-attachments/assets/e56a39a4-be4f-4183-8558-72298852444e
-
+https://github.com/user-attachments/assets/7c74cee5-845a-450c-b3b4-e4d2b4486ba2
 
 # 環境構築
 
