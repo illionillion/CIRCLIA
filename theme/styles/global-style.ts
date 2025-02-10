@@ -21,4 +21,11 @@ export const globalStyle: UIStyle = {
   ".wmde-markdown ol": {
     listStyle: "decimal",
   },
+  ".desktop .w-md-editor-toolbar li > button": {
+    height: "auto !important",
+  },
+  ".desktop .w-md-editor-toolbar button svg": {
+    width: "18px",
+    height: "18px",
+  },
 }

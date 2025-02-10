@@ -19,6 +19,7 @@ import {
   Snacks,
   Text,
   useBoolean,
+  useBreakpoint,
   useOS,
   useSafeLayoutEffect,
   useSnacks,
@@ -73,6 +74,9 @@ export const ProfileForm: FC<ProfileForm> = ({ user }) => {
   const { snack, snacks } = useSnacks()
   const router = useRouter()
   const os = useOS()
+  const breakPoint = useBreakpoint()
+  const mdClass =
+    breakPoint === "sm" || breakPoint === "md" ? "mobile" : "desktop"
   const onSubmit = async (data: FrontUserProfileForm) => {
     start()
     if (watch("profileImageUrl") && !data.profileImageUrl) {
@@ -221,6 +225,7 @@ export const ProfileForm: FC<ProfileForm> = ({ user }) => {
                 onChange={onChange}
                 height={300}
                 data-color-mode="light"
+                className={mdClass}
                 preview={os === "ios" || os === "android" ? "edit" : "live"}
                 previewOptions={{
                   wrapperElement: {
