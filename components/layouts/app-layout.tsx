@@ -58,6 +58,7 @@ export const AppLayout: FC<{
         right={0}
       >
         <Heading
+          w="fit-content"
           color="white"
           _firstLetter={{ color: "#35B0D2" }}
           fontWeight="light"
