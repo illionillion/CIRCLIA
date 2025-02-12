@@ -298,7 +298,7 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
             <Text fontSize="md">裏面</Text>
             <Card minH={{ base: "sm", md: "2xs" }}>
               <CardHeader>
-                <Input placeholder={placeholders[currentCard].frontTitle} {...register("backTitle")} />
+                <Input placeholder={placeholders[currentCard].backTitle} {...register("backTitle")} />
               </CardHeader>
               <CardBody>
                 <Textarea
