@@ -51,19 +51,22 @@ const placeholders = [
   {
     frontTitle: "何をするサークル？",
     backTitle: "楽しくプログラミングするサークル!",
-    backDescription: "みんなで集まってプログラムをしています!\n\n★勉強するだけでなく、ハッカソンや個人開発などで実践を積み重ね切磋琢磨しています。\n\n★初心者でも一緒に成長していける環境なのでぜひ一緒に取り組みましょう。\n\nみたいな例文ほしいです!\n・カード1つに収まる文章で入力量決められるといいな\n画像ファイルもアルバム詳細みたい"
+    backDescription:
+      "みんなで集まってプログラムをしています!\n\n★勉強するだけでなく、ハッカソンや個人開発などで実践を積み重ね切磋琢磨しています。\n\n★初心者でも一緒に成長していける環境なのでぜひ一緒に取り組みましょう。\n\nみたいな例文ほしいです!\n・カード1つに収まる文章で入力量決められるといいな\n画像ファイルもアルバム詳細みたい",
   },
   {
     frontTitle: "活動頻度は？",
     backTitle: "月１回、活動しています！",
-    backDescription: "学内、学外・・・\n\n関係なく、集まったメンバーで\nその日のテーマを決めて、\n\nプログラムを作成しています♪"
+    backDescription:
+      "学内、学外・・・\n\n関係なく、集まったメンバーで\nその日のテーマを決めて、\n\nプログラムを作成しています♪",
   },
   {
     frontTitle: "どんな雰囲気？",
     backTitle: "わいわい楽しむ雰囲気！",
-    backDescription: "「あれがいいかな」「このほうがいいんじゃない？」\n\nと、みんなで話し合いながら作業を進めています！"
-  }
-];
+    backDescription:
+      "「あれがいいかな」「このほうがいいんじゃない？」\n\nと、みんなで話し合いながら作業を進めています！",
+  },
+]
 
 export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
   cards,
@@ -231,7 +234,10 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
             <Text fontSize="md">表面</Text>
             <Card minH={{ base: "sm", md: "2xs" }}>
               <CardHeader>
-                <Input placeholder={placeholders[currentCard].frontTitle} {...register("frontTitle")} />
+                <Input
+                  placeholder={placeholders[currentCard].frontTitle}
+                  {...register("frontTitle")}
+                />
               </CardHeader>
               <CardBody>
                 <Center
@@ -298,7 +304,10 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
             <Text fontSize="md">裏面</Text>
             <Card minH={{ base: "sm", md: "2xs" }}>
               <CardHeader>
-                <Input placeholder={placeholders[currentCard].backTitle} {...register("backTitle")} />
+                <Input
+                  placeholder={placeholders[currentCard].backTitle}
+                  {...register("backTitle")}
+                />
               </CardHeader>
               <CardBody>
                 <Textarea
@@ -336,4 +345,3 @@ export const WelcomeCardForm: FC<WelcomeCardFormProps> = ({
     </Modal>
   )
 }
-
