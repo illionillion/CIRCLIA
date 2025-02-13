@@ -103,7 +103,8 @@
       "ws": "^8.17.1",
       "got": "^11.8.5",
       "esbuild": "^0.25.0",
-      "mdast-util-gfm-autolink-literal": "2.0.0"
+      "mdast-util-gfm-autolink-literal": "2.0.0",
+      "serialize-javascript": "^6.0.2"
     }
   }
 }
