@@ -59,8 +59,6 @@
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "@next-auth/prisma-adapter": "^1.0.7",
     "@next/eslint-plugin-next": "^14.2.23",
-    "@octokit/request-error": "^6.1.6",
-    "@octokit/rest": "^21.1.0",
     "@prisma/client": "^5.22.0",
     "@types/eslint__js": "^8.42.3",
     "@types/node": "^20.17.14",
@@ -104,7 +102,8 @@
       "got": "^11.8.5",
       "esbuild": "^0.25.0",
       "mdast-util-gfm-autolink-literal": "2.0.0",
-      "serialize-javascript": "^6.0.2"
+      "serialize-javascript": "^6.0.2",
+      "dompurify": "^3.2.4"
     }
   }
 }
